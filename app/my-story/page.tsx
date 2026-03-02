@@ -60,7 +60,7 @@ export default function MyStoryPage() {
                             <h4 className="text-xl font-bold mb-3">The Current Setup</h4>
                             <p className="text-sm text-[#6b6b6b]">
                                 Now I&apos;m based in Spain, with Schengen access across 27+ countries.
-                                I run my business from my laptop — anywhere with wifi and good coffee.
+                                I run my business from my laptop,anywhere with wifi and good coffee.
                             </p>
                         </div>
                     </div>
@@ -79,11 +79,11 @@ export default function MyStoryPage() {
                 <div className="mt-16 pt-12 border-t border-[#e7ddd3] text-center">
                     <h3 className="text-3xl font-bold mb-4">Ready to build your own system?</h3>
                     <p className="text-[#6b6b6b] mb-8 max-w-lg mx-auto">
-                        Let&apos;s figure out if Spain&apos;s Digital Nomad Visa — or another route — is the right play for you.
+                        Let&apos;s figure out if Spain&apos;s Digital Nomad Visa (or another route) is the right play for you.
                     </p>
 
                     <Link
-                        href="/#contact"
+                        href="https://calendly.com/abie-gamao/spain-dnv"
                         className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#3a3a3a] text-white font-bold text-lg hover:bg-[#e3a99c] hover:shadow-xl hover:shadow-[#e3a99c]/30 transition-all duration-300 group"
                     >
                         <span>Book a Consultation</span>

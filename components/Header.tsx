@@ -81,7 +81,7 @@ export default function Header() {
             </a>
           ))}
           <Link
-            href="/booking"
+            href="https://calendly.com/abie-gamao/spain-dnv"
             onClick={() => setIsMobileMenuOpen(false)}
             className="mt-2 px-8 py-3 rounded-full bg-[#3a3a3a] text-white font-semibold hover:bg-[#e3a99c] transition-colors w-full text-center block"
           >
