@@ -14,8 +14,7 @@ import {
 
 const navLinks = [
   { name: "Services", link: "/#services" },
-  { name: "Destinations", link: "/#destinations" },
-  { name: "Free Tool", link: "/document-checklist" },
+  { name: "Free Checklist", link: "/document-checklist" },
   { name: "Blogs", link: "/blog" },
   { name: "Contact", link: "/contact" },
   { name: "About", link: "/my-story" },
@@ -42,7 +41,7 @@ export default function Header() {
         />
 
         <Link
-          href="/booking"
+          href="https://calendly.com/abie-gamao/spain-dnv"
           className="relative z-20 flex-shrink-0 px-6 py-2.5 rounded-full bg-[#3a3a3a] text-white text-sm font-semibold hover:bg-[#e3a99c] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
         >
           Let&apos;s Talk
