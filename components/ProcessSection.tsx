@@ -129,10 +129,10 @@ export default function ProcessSection() {
         {/* Bottom CTA */}
         <div className="mt-24 text-center">
           <a
-            href="#contact"
+            href="https://calendly.com/abie-gamao/spain-dnv"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#3a3a3a] text-white font-bold text-lg hover:bg-[#e3a99c] transition-all duration-300 shadow-xl hover:shadow-[#e3a99c]/40 transform hover:-translate-y-1"
           >
-            <span>Book Your Free Consultation</span>
+            <span>Book Your Consultation</span>
             <ArrowRight className="w-5 h-5" />
           </a>
           <p className="mt-4 text-sm text-[#6b6b6b]">
