@@ -93,9 +93,7 @@ export default function WhyChooseUsSection() {
             </h2>
 
             <p className="font-[family-name:var(--font-body)] text-lg text-[#6b6b6b] mb-10 leading-relaxed max-w-lg">
-              I didn&apos;t have privilege or connections. I had research,
-              systems-thinking, and stubbornness. I documented everything so
-              you can skip the years of trial and error.
+              I spent months studying Spanish immigration law, reading UGE documentation, and stress-testing every requirement against my own profile. I applied via UGE with 10 Schengen days left ~ no lawyer, no agency, no shortcuts. Just a well-built system. Now I&apos;ve packaged it so you can do the same, faster and with far less stress.
             </p>
 
             {/* Feature list */}

@@ -105,8 +105,8 @@ export default function Footer() {
               <p className="text-[#e3a99c] text-[10px] md:text-xs font-black tracking-[0.3em] uppercase">Freedom Engineer</p>
             </Link>
             <p className="text-white/60 text-base md:text-lg leading-relaxed max-w-md mb-8 mx-auto lg:mx-0">
-              I turned my weak passport into a boarding pass to Europe. Now I help other nomads
-              do the same ~ with systems, not luck.
+              I turned a passport that felt like a cage into a boarding pass to Europe.
+              No lawyer. No agency. Just a system I built, and now I&apos;m giving it to you.
             </p>
 
             <div className="flex gap-4 justify-center lg:justify-start">

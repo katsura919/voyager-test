@@ -83,6 +83,39 @@ export default async function BlogListingPage({
             </div>
           </div>
 
+          {/* Pinned: DNV Updates 2026 */}
+          {(!search && (!category || category === "all")) && (
+            <div className="mb-10">
+              <Link
+                href="/dnv-updates-2026"
+                className="group flex flex-col md:flex-row gap-6 bg-[#3a3a3a] rounded-[2rem] p-6 md:p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="flex-shrink-0 md:w-56 h-40 md:h-auto rounded-2xl overflow-hidden bg-[#e3a99c]/20 flex items-center justify-center">
+                  <span className="text-5xl">🇪🇸</span>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e3a99c]/20 border border-[#e3a99c]/30 text-xs font-bold tracking-widest text-[#e3a99c] uppercase">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#e3a99c] animate-pulse" />
+                      February 2026 · Pinned
+                    </span>
+                    <span className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-white/60 uppercase tracking-widest">Spain DNV</span>
+                  </div>
+                  <h3 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-bold text-white mb-3 leading-tight group-hover:text-[#e3a99c] transition-colors">
+                    Spain DNV: What UGE Actually Expects in 2026
+                  </h3>
+                  <p className="text-white/60 text-sm leading-relaxed mb-4 max-w-xl">
+                    UGE held a conference in Valencia clarifying exactly how they evaluate DNV applications and renewals. Non-Lucrative → DNV is now closed, Social Security is mandatory from day one, and income thresholds have shifted. Everything you need to know, in plain English.
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-sm font-bold text-[#e3a99c] group-hover:gap-3 transition-all">
+                    Read the full breakdown
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </Link>
+            </div>
+          )}
+
           {displayedBlogs.length === 0 ? (
             <div className="text-center py-24 bg-[var(--color-secondary)]/10 rounded-[3rem] border border-dashed border-[var(--color-border)]">
               <div className="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
