@@ -35,6 +35,7 @@ const dnvDropdown = [
   { name: "Why Us", link: "/digital-nomad-visa#why-us" },
   { name: "FAQ", link: "/digital-nomad-visa#faq" },
   { name: "Free Checklist", link: "/document-checklist" },
+  { name: "✦ Free Assessment", link: "/assessment" },
 ];
 
 export default function Header() {
@@ -141,7 +142,11 @@ export default function Header() {
                     <a
                       key={item.name}
                       href={item.link}
-                      className="flex items-center px-5 py-3 text-sm text-[#3a3a3a] hover:bg-[#f9f5f2] hover:text-[#e3a99c] transition-colors duration-150"
+                      className={`flex items-center px-5 py-3 text-sm transition-colors duration-150 ${
+                        item.name.includes("Assessment")
+                          ? "text-[#e3a99c] font-bold bg-[#f2d6c9]/20 hover:bg-[#f2d6c9]/40 border-t border-[#e7ddd3] mt-1"
+                          : "text-[#3a3a3a] hover:bg-[#f9f5f2] hover:text-[#e3a99c]"
+                      }`}
                     >
                       {item.name}
                     </a>
@@ -212,7 +217,11 @@ export default function Header() {
                     key={item.name}
                     href={item.link}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-sm text-[#e3a99c] hover:text-[#d38b7b] transition-colors py-0.5 font-medium"
+                    className={`text-sm transition-colors py-0.5 font-medium ${
+                      item.name.includes("Assessment")
+                        ? "text-[#e3a99c] font-bold"
+                        : "text-[#e3a99c] hover:text-[#d38b7b]"
+                    }`}
                   >
                     {item.name}
                   </a>

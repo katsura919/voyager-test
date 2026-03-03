@@ -338,6 +338,12 @@ export default function DigitalNomadVisaPage() {
           </div>
 
           <p className="mt-5 text-xs text-[#aaaaaa]">30-minute strategy call ~ fee credited toward your package.</p>
+          <p className="mt-3 text-xs text-[#aaaaaa]">
+            Not sure if you qualify?{" "}
+            <Link href="/assessment" className="underline underline-offset-2 hover:text-[#e3a99c] transition-colors">
+              Take the free 2-minute assessment →
+            </Link>
+          </p>
         </div>
       </section>
 
