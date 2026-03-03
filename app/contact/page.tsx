@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Instagram, Youtube, Facebook, AtSign, ArrowRight, Mail, Linkedin, User, Loader2, CheckCircle2, MapPin } from "lucide-react";
+import { Instagram, Youtube, Facebook, AtSign, ArrowRight, Mail, Linkedin, User, Loader2, CheckCircle2, MapPin, Globe, Briefcase } from "lucide-react";
 import Link from "next/link";
 
 function ContactForm() {
@@ -240,6 +240,43 @@ export default function ContactPage() {
                                             </div>
                                         </Link>
                                     ))}
+                                </div>
+                            </div>
+
+                            {/* Website card */}
+                            <div className="bg-white rounded-3xl p-6 shadow-sm border border-[#e7ddd3]">
+                                <p className="text-xs font-bold tracking-widest text-[#aaaaaa] uppercase mb-4">More from Abie</p>
+                                <div className="flex flex-col gap-3">
+                                    <Link
+                                        href="https://abiemaxey.com"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-3 p-3 rounded-2xl border border-[#e7ddd3] hover:border-[#e3a99c] hover:text-[#e3a99c] transition-all duration-200 group"
+                                    >
+                                        <div className="w-8 h-8 rounded-xl bg-[#f2d6c9]/40 flex items-center justify-center flex-shrink-0">
+                                            <Globe className="w-4 h-4 text-[#e3a99c]" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="text-xs font-bold text-[#3a3a3a] leading-none mb-0.5 group-hover:text-[#e3a99c] transition-colors">abiemaxey.com</p>
+                                            <p className="text-[11px] text-[#aaaaaa]">Personal website</p>
+                                        </div>
+                                        <ArrowRight className="w-3.5 h-3.5 ml-auto text-[#aaaaaa] group-hover:text-[#e3a99c] group-hover:translate-x-0.5 transition-all" />
+                                    </Link>
+                                    <Link
+                                        href="https://abie-portfolio.vercel.app/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-3 p-3 rounded-2xl border border-[#e7ddd3] hover:border-[#e3a99c] hover:text-[#e3a99c] transition-all duration-200 group"
+                                    >
+                                        <div className="w-8 h-8 rounded-xl bg-[#bbcccd]/30 flex items-center justify-center flex-shrink-0">
+                                            <Briefcase className="w-4 h-4 text-[#7a8f90]" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="text-xs font-bold text-[#3a3a3a] leading-none mb-0.5 group-hover:text-[#e3a99c] transition-colors">Media Kit & Services</p>
+                                            <p className="text-[11px] text-[#aaaaaa]">Content creation · Work with me</p>
+                                        </div>
+                                        <ArrowRight className="w-3.5 h-3.5 ml-auto text-[#aaaaaa] group-hover:text-[#e3a99c] group-hover:translate-x-0.5 transition-all" />
+                                    </Link>
                                 </div>
                             </div>
 
