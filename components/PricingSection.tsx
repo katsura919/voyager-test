@@ -44,7 +44,7 @@ const pricingPlans = [
   {
     name: "The VIP Concierge",
     description: "Sit back and relax while we handle the heavy lifting from start to finish (+€149/additional dependent)",
-    price: "450",
+    price: "550",
     currency: "€",
     period: "one-time",
     features: [
