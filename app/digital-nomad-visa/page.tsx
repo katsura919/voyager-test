@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PlaybookAccessModal from "@/components/PlaybookAccessModal";
+import PricingSection from "@/components/PricingSection";
 import {
   FileText,
   Check,
@@ -254,6 +256,7 @@ const faqs = [
 
 export default function DigitalNomadVisaPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [playbookOpen, setPlaybookOpen] = useState(false);
 
   return (
     <main className="min-h-screen bg-[#f9f5f2] overflow-hidden">
@@ -708,7 +711,7 @@ export default function DigitalNomadVisaPage() {
                 { value: "2yr", label: "Path to Spanish citizenship for Filipinos & Latin Americans ~ faster than most nationalities", color: "#e3a99c", bg: "#f2d6c9" },
                 { value: "24%", label: "Flat tax rate under Beckham Law ~ for employed DNV holders only. Autónomos have different tax rules.", color: "#8fa38d", bg: "#d4e0d3" },
                 { value: "26+", label: "Schengen countries you can travel to freely as a Spanish resident", color: "#7a8f90", bg: "#e0eaeb" },
-                { value: "🇵🇭", label: "Built for Filipinos, by a Filipino who made it to Spain", color: "#e3a99c", bg: "#f2d6c9" },
+                { value: "🌍", label: "Built for remote workers worldwide ~ Filipinos get the fastest citizenship path (2 yrs)", color: "#e3a99c", bg: "#f2d6c9" },
               ].map((stat, i) => (
                 <div
                   key={i}
@@ -729,6 +732,9 @@ export default function DigitalNomadVisaPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Pricing ──────────────────────────────────────────────────────── */}
+      <PricingSection />
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section id="faq" className="bg-white section-padding">
@@ -773,6 +779,29 @@ export default function DigitalNomadVisaPage() {
         </div>
       </section>
 
+      {/* ── Free Playbook ─────────────────────────────────────────────────── */}
+      <PlaybookAccessModal isOpen={playbookOpen} onClose={() => setPlaybookOpen(false)} />
+      <section className="bg-[#f9f5f2] border-y border-[#e7ddd3] py-14 px-6">
+        <div className="max-w-xl mx-auto text-center">
+          <p className="text-xs font-bold tracking-widest text-[#7a8f90] uppercase mb-3">Not ready to commit?</p>
+          <h3 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-bold text-[#3a3a3a] mb-3">
+            Start with the FREE Playbook{" "}
+            <span className="font-script text-[#e3a99c] text-3xl md:text-4xl relative inline-block transform -rotate-1">(Lite Version)</span>
+          </h3>
+          <p className="font-[family-name:var(--font-body)] text-sm text-[#6b6b6b] mb-7">
+            The exact steps, documents, and process I used to get approved. No lawyer needed.
+          </p>
+          <button
+            onClick={() => setPlaybookOpen(true)}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#3a3a3a] text-white font-bold hover:bg-[#e3a99c] transition-all duration-300 group cursor-pointer"
+          >
+            Start Here for Free
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+          <p className="text-xs text-[#aaaaaa] mt-4">Instant access · Lifetime updates · Zero spam</p>
+        </div>
+      </section>
+
       {/* ── Final CTA ────────────────────────────────────────────────────── */}
       <section className="section-padding bg-[#3a3a3a] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#e3a99c]/10 rounded-full blur-[80px] pointer-events-none" />
@@ -780,9 +809,9 @@ export default function DigitalNomadVisaPage() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
-            <span className="text-sm">🇵🇭→🇪🇸</span>
+            <span className="text-sm">🌍→🇪🇸</span>
             <span className="text-xs font-bold tracking-widest text-[#e3a99c] uppercase">
-              Built for Filipinos
+              Remote workers worldwide
             </span>
           </div>
 
