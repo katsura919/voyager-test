@@ -22,6 +22,7 @@ const footerLinks = {
     { name: "Get the Playbook", href: "/#pricing" },
     { name: "Book a Strategy Call", href: "https://calendly.com/abie-gamao/spain-dnv" },
     { name: "Appointments (NIE/TIE)", href: "/appointments" },
+    { name: "Document Translations", href: "/translations" },
     { name: "Checklist", href: "/document-checklist" },
   ],
 };

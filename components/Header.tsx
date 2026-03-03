@@ -23,6 +23,7 @@ const navLinks = [
 const servicesDropdown = [
   { name: "Pricing & Packages", link: "/#pricing" },
   { name: "Book Appointment (NIE/TIE)", link: "/appointments" },
+  { name: "Document Translations", link: "/translations" },
 ];
 
 export default function Header() {
