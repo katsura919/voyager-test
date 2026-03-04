@@ -92,12 +92,12 @@ const questions: Question[] = [
     icon: MapPin,
     tag: "Location",
     title: "Where are you right now?",
-    subtitle: "Your current location determines whether you apply via UGE in Spain or a consulate abroad.",
+    subtitle: "This helps us figure out the right timing for your move and UGE application in Spain.",
     options: [
-      { id: "in_spain", emoji: "🇪🇸", label: "Already in Spain", description: "Apply directly via UGE, no consulate needed" },
-      { id: "outside_spain", emoji: "✈️", label: "Outside Spain & Schengen", description: "Apply at the Spanish consulate in your country" },
-      { id: "schengen_tourist", emoji: "🛂", label: "In Schengen on tourist entry", description: "Timing is critical, let's map this out" },
-      { id: "schengen_visa", emoji: "📋", label: "In another EU country with a visa", description: "Apply via consulate in your residence country" },
+      { id: "in_spain", emoji: "🇪🇸", label: "Already in Spain", description: "Perfect, you can apply directly via UGE" },
+      { id: "planning_move", emoji: "✈️", label: "Planning to move to Spain soon", description: "We'll map the best timing for your entry and application" },
+      { id: "schengen_tourist", emoji: "🛂", label: "In Schengen on a tourist entry", description: "Timing is key, let's figure out your window" },
+      { id: "outside_europe", emoji: "🌍", label: "Outside Europe for now", description: "We'll plan your move to Spain and application timeline together" },
     ],
   },
   {
@@ -215,17 +215,17 @@ function calculateResult(answers: Answers): Result {
   let applicationPath = "";
   let timingNote = "";
   if (location === "in_spain") {
-    applicationPath = "UGE (Unidad de Grandes Empresas), apply online or in-person directly in Spain. No consulate needed.";
-    timingNote = "UGE processing typically takes 20 business days. Fastest route available.";
-  } else if (location === "outside_spain") {
-    applicationPath = "Spanish consulate in your home country, you'll submit and collect your visa there before entering Spain.";
-    timingNote = "Allow 4–12 weeks depending on your consulate. Book your appointment early.";
+    applicationPath = "UGE (Unidad de Grandes Empresas), apply online or in-person directly in Spain. This is the path I recommend and the one I used myself.";
+    timingNote = "UGE processing typically takes 20 business days. You're in the best position to move quickly.";
+  } else if (location === "planning_move") {
+    applicationPath = "Plan your entry into Spain and apply via UGE once you arrive. We'll map the right timing around your current situation.";
+    timingNote = "A strategy call will help us work out the exact entry window and preparation checklist before you fly.";
   } else if (location === "schengen_tourist") {
-    applicationPath = "Enter Spain and apply via UGE, but your Schengen entry timing is critical. This needs a tailored strategy.";
-    timingNote = "A strategy call is strongly recommended to avoid overstay risks.";
+    applicationPath = "You can enter Spain on your current Schengen days and apply via UGE, but timing is everything. Your remaining days and entry date matter.";
+    timingNote = "Book a strategy call so we can map this out carefully before you commit to a flight.";
   } else {
-    applicationPath = "Apply at the Spanish consulate in your current country of residence, not necessarily your home country.";
-    timingNote = "Verify consulate jurisdiction for your specific location before booking an appointment.";
+    applicationPath = "The goal is to get you into Spain so you can apply via UGE directly. We'll figure out the right timing and entry strategy for your situation.";
+    timingNote = "A strategy call will give us a clear picture of your timeline and what to prepare before you arrive.";
   }
 
   // Work track
@@ -409,7 +409,7 @@ export default function AssessmentPage() {
                 <div className="space-y-4">
                   {[
                     { icon: CheckCircle2, color: "#8fa38d", text: "Eligibility verdict based on your income, work setup, and background" },
-                    { icon: MapPin, color: "#7a8f90", text: "Best application path, UGE in Spain vs. consulate abroad" },
+                    { icon: MapPin, color: "#7a8f90", text: "Entry timing strategy and your UGE application path in Spain" },
                     { icon: Briefcase, color: "#e3a99c", text: "Your employment track, employed vs. autónomo, and what documents you'll need" },
                     { icon: CalendarCheck, color: "#bbcccd", text: "Personalised next steps to start or strengthen your application" },
                   ].map((item, i) => (

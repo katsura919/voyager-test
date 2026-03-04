@@ -27,9 +27,9 @@ const answerLabels: Record<string, Record<string, string>> = {
   },
   "4": {
     in_spain: "🇪🇸 Already in Spain → UGE route",
-    outside_spain: "✈️ Outside Spain & Schengen → Consulate route",
+    planning_move: "✈️ Planning to move to Spain soon",
     schengen_tourist: "🛂 In Schengen on tourist entry",
-    schengen_visa: "📋 In another EU country with a visa",
+    outside_europe: "🌍 Outside Europe for now",
   },
   "5": {
     under_3mo: "🌱 Less than 3 months remote",
