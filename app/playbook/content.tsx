@@ -4,23 +4,17 @@ import {
     BookOpen,
     CheckCircle,
     ChevronRight,
-    Globe,
+    Search,
     FileText,
-    Shield,
-    Clock,
-    Star,
-    AlertCircle,
-    ArrowRight,
-    Lightbulb,
-    MapPin,
-    Phone,
-    Mail,
+    Menu,
+    X,
     ExternalLink,
-    Users,
-    Zap,
-    Sparkles
+    ArrowRight,
+    Clock,
+    Home
 } from "lucide-react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 interface Props {
     userName?: string;
@@ -30,7 +24,7 @@ type ContentBlock =
     | { type: "intro"; text: string }
     | { type: "highlight"; label?: string; items: string[] }
     | { type: "checklist"; label?: string; items: string[] }
-    | { type: "callout"; icon: string; text: string }
+    | { type: "callout"; icon: string; text: string; bgClass?: string; borderClass?: string }
     | { type: "steps"; items: { step: string; title: string; desc: string }[] }
     | { type: "docList"; categories: { label: string; docs: string[] }[] }
     | { type: "linkList"; label?: string; items: { label: string; url: string }[] };
@@ -44,565 +38,425 @@ type Section = {
 
 const sections: Section[] = [
     {
-        id: "overview",
+        id: "what-is-it",
         emoji: "🇪🇸",
-        title: "What is the Spain Digital Nomad Visa?",
+        title: "What’s Spain’s Digital Nomad Visa?",
         content: [
             {
                 type: "intro",
-                text: "The Spain Digital Nomad Visa (DNV), also known as the 'Startup Law Visa', is a residency permit that allows remote workers and freelancers from non-EU countries to live and work legally in Spain for up to 5 years.",
+                text: "Spain’s Digital Nomad Visa (officially “Visado de Teletrabajador”) allows non-EU remote workers to live legally in Spain while working for companies or clients outside Spain. It’s one of Europe’s most attractive options for digital nomads. Introduced in 2023 as part of Spain’s Startup Act, the visa lets non-EU citizens (including UK nationals) live & work remotely in Spain for up to five years."
+            }
+        ]
+    },
+    {
+        id: "eligibility",
+        emoji: "📋",
+        title: "Who is eligible?",
+        content: [
+            {
+                type: "highlight",
+                label: "Basic Qualifications",
+                items: [
+                    "Age: 18+",
+                    "Nationality: Non-EU/EEA citizens only",
+                    "Work Status: Remote employee OR freelancer/entrepreneur",
+                    "Professional credentials: A university degree (bachelor’s or higher), OR 3+ years documented work experience in your field"
+                ]
             },
             {
                 type: "highlight",
-                label: "Key Benefits",
+                label: "Income Requirements (2026)",
                 items: [
-                    "Live legally in Spain for up to 5 years (renewable)",
-                    "Travel freely within the Schengen Zone",
-                    "Access to Spain's public healthcare system",
-                    "Path to permanent residency after 5 years",
-                    "Special tax regime (Beckham Law) — flat 24% tax rate for first 6 years",
-                    "Bring your spouse and dependents under the same application",
-                ],
+                    "Single applicant: €2,894/month minimum (gross, before taxes)",
+                    "With spouse/partner: €4,017/month minimum",
+                    "Each additional dependent: Add 25% of base amount"
+                ]
+            },
+            {
+                type: "callout",
+                icon: "📝",
+                text: "Note: These thresholds are tied to Spain’s minimum wage and can increase over time.",
+                bgClass: "bg-[#e7ddd3]/30",
+                borderClass: "border-[#e7ddd3]"
+            },
+            {
+                type: "checklist",
+                label: "Other Requirements",
+                items: [
+                    "Clean criminal record (past 5 years)",
+                    "Valid passport with at least 12+ months remaining",
+                    "Private health insurance valid in Spain",
+                    "Applicant must not have been a resident in Spain in the past 5 years"
+                ]
+            }
+        ]
+    },
+    {
+        id: "work-requirements",
+        emoji: "💻",
+        title: "Work Requirements",
+        content: [
+            {
+                type: "highlight",
+                label: "For employees:",
+                items: [
+                    "You must have an employment contract with a company outside Spain",
+                    "Company must have been operating for 1+ year",
+                    "You need a letter from your employer confirming remote work permission"
+                ]
+            },
+            {
+                type: "highlight",
+                label: "For freelancers:",
+                items: [
+                    "At least 80% of your income must come from clients outside Spain",
+                    "You can work up to 20% for Spanish clients",
+                    "Your business must be established for 1+ year"
+                ]
+            }
+        ]
+    },
+    {
+        id: "getting-into-spain",
+        emoji: "✈️",
+        title: "Getting into Spain",
+        content: [
+            {
+                type: "intro",
+                text: "If you use the UGE route (online application via Unit for Large Enterprises & Strategic Collectives), you might need a Schengen visa to enter Spain first (if your nationality requires it)."
             },
             {
                 type: "callout",
                 icon: "💡",
-                text: "The DNV is processed through the Unidad de Grandes Empresas (UGE) — Spain's fast-track immigration office. Processing time is typically 20–30 business days from submission.",
+                text: "FUN FACT: Did you know that you can get a Schengen Visa from any country regardless if you’re just a tourist?\n\nYou just need to prove:\n✔ You’re a long-term traveller (been out of your country for more than 6 months+)\nor..\n✔ You have an exceptional circumstance. Read more about it here.\n\nI did this twice in the USA 🇺🇸 and Bosnia 🇧🇦 via the Netherlands Embassy. 👉 Here’s the proof.\n\nI love applying via the Netherlands as they have been really generous. I always get 90-days multiple entry even when I only requested for 2-weeks. I heard you can do this via France Embassy as well. But they tend to give you lesser days than Netherlands.",
+                bgClass: "bg-[#f2d6c9]/40",
+                borderClass: "border-[#f2d6c9]"
             },
-        ],
-    },
-    {
-        id: "eligibility",
-        emoji: "✅",
-        title: "Who Qualifies?",
-        content: [
             {
                 type: "intro",
-                text: "You must meet ALL of the following requirements to be eligible for the Spain DNV:",
-            },
-            {
-                type: "checklist",
-                items: [
-                    "Non-EU/EEA national (EU citizens don't need this visa)",
-                    "Work remotely for a company outside Spain OR be a freelancer with non-Spanish clients",
-                    "Minimum income: €2,646/month (approx. 200% of Spain's minimum wage for 2025)",
-                    "Clean criminal record from your home country (past 5 years)",
-                    "No prior immigration violations in Spain",
-                    "Valid health insurance covering Spain",
-                    "Must have been working for your current employer for at least 3 months",
-                ],
-            },
-            {
-                type: "callout",
-                icon: "⚠️",
-                text: "Freelancers: You can qualify if your Spanish clients represent less than 20% of your total income. This is key — document it carefully.",
-            },
-        ],
-    },
-    {
-        id: "documents",
-        emoji: "📄",
-        title: "Required Documents Checklist",
-        content: [
-            {
-                type: "intro",
-                text: "Gather these documents BEFORE starting your application. All foreign documents must be apostilled and translated into Spanish by a sworn translator.",
-            },
-            {
-                type: "docList",
-                categories: [
-                    {
-                        label: "Identity & Status",
-                        docs: [
-                            "Valid passport (minimum 1 year validity beyond intended stay)",
-                            "Passport photos (biometric, white background, 32×26mm)",
-                            "EX-01 Application form (completed and signed)",
-                            "Modelo 790 Código 052 (fee payment receipt — approx. €73)",
-                        ],
-                    },
-                    {
-                        label: "Work & Income Proof",
-                        docs: [
-                            "Employment contract or freelance contracts showing remote work",
-                            "Last 3 months payslips OR bank statements showing income",
-                            "Letter from employer confirming remote work authorization",
-                            "For freelancers: invoices + client contracts + tax filings",
-                            "Company registration documents (apostilled)",
-                        ],
-                    },
-                    {
-                        label: "Criminal & Health",
-                        docs: [
-                            "Criminal background check (apostilled + Spanish translation)",
-                            "Private health insurance policy valid in Spain (min. 6 months)",
-                        ],
-                    },
-                    {
-                        label: "Apostille & Translation",
-                        docs: [
-                            "All foreign documents need an Apostille stamp (Hague Apostille Convention)",
-                            "Spanish sworn translation of all apostilled documents",
-                            "Check if your country is a Hague Convention member",
-                        ],
-                    },
-                ],
-            },
-            {
-                type: "callout",
-                icon: "📌",
-                text: "Pro tip: Order your criminal background check FIRST — it takes the longest (2–6 weeks in most countries). The apostille adds another 1–3 weeks.",
-            },
-        ],
-    },
-    {
-        id: "process",
-        emoji: "🗺️",
-        title: "Step-by-Step Application Process",
-        content: [
-            {
-                type: "intro",
-                text: "Follow this exact process. Skipping steps or submitting incomplete documents is the #1 reason for rejections.",
-            },
-            {
-                type: "steps",
-                items: [
-                    {
-                        step: "01",
-                        title: "Order your criminal background check",
-                        desc: "Apply from your home country. You need 5-year history. In the Philippines: NBI Clearance. In the US: FBI Apostille Service. Allow 4–8 weeks total including apostille.",
-                    },
-                    {
-                        step: "02",
-                        title: "Get your documents apostilled",
-                        desc: "Submit background check + employment documents to the apostille authority in your country. For US: State Secretary of State office. For others: Ministry of Foreign Affairs.",
-                    },
-                    {
-                        step: "03",
-                        title: "Get sworn Spanish translations",
-                        desc: "Find a jurado (sworn translator) accredited by the Spanish Ministry of Foreign Affairs. Costs €20–60 per document. Do NOT use Google Translate or unaccredited translators.",
-                    },
-                    {
-                        step: "04",
-                        title: "Set up a health insurance policy",
-                        desc: "Must cover Spain, have no copays and no deductibles (\"sin copagos, sin franquicias\"). Recommended: Adeslas, Sanitas, or Cigna Global. Cost: €50–150/month.",
-                    },
-                    {
-                        step: "05",
-                        title: "Complete EX-01 form & pay fee",
-                        desc: "Fill out the EX-01 form (available on sede.administracionespublicas.gob.es). Pay the Modelo 790-052 fee (~€73) at any Spanish bank or online. Keep the receipt.",
-                    },
-                    {
-                        step: "06",
-                        title: "Request UGE appointment (DigiCert)",
-                        desc: "The UGE requires digital certificate (Cl@ve or FNMT). Book your appointment via sedes.sepe.es. Appointments fill up fast — check daily at 8am Madrid time.",
-                    },
-                    {
-                        step: "07",
-                        title: "Submit application to UGE",
-                        desc: "Submit online via sede.administracionespublicas.gob.es using your digital certificate, or in person at the UGE office in Madrid. Online is faster and strongly recommended.",
-                    },
-                    {
-                        step: "08",
-                        title: "Wait for resolution (20–30 business days)",
-                        desc: "Check status via the UGE online portal. You'll receive an email notification. If approved, you'll get a resolution letter to collect your visa.",
-                    },
-                    {
-                        step: "09",
-                        title: "Collect visa & enter Spain",
-                        desc: "Take the resolution to the Spanish consulate in your country to collect your D-Visa sticker. Enter Spain within 6 months.",
-                    },
-                    {
-                        step: "10",
-                        title: "Apply for TIE (Residency Card)",
-                        desc: "Within 30 days of entering Spain, book a NIE + TIE appointment at your local Policía Nacional. This card is your official residency card.",
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        id: "uge-tips",
-        emoji: "🏛️",
-        title: "UGE Insider Tips",
-        content: [
-            {
-                type: "intro",
-                text: "The UGE (Unidad de Grandes Empresas) is where your application actually goes. Here's what most guides don't tell you:",
-            },
-            {
-                type: "highlight",
-                label: "What UGE Officers Look For",
-                items: [
-                    "Consistency — your income proof must match across payslips, contracts, and bank statements",
-                    "The 3-month minimum employment rule is strictly enforced — do NOT apply early",
-                    "Health insurance must explicitly say 'sin copagos, sin franquicias' in Spanish",
-                    "Your employer letter must be on official company letterhead with a real signature",
-                    "Apostille dates must be within 3 months of application submission",
-                ],
-            },
-            {
-                type: "callout",
-                icon: "🔑",
-                text: "The UGE has a maximum 45 business days to respond. If you don't hear back, it's considered approved by administrative silence ('silencio administrativo positivo'). Document the submission date.",
-            },
-            {
-                type: "linkList",
-                label: "Official UGE Links",
-                items: [
-                    {
-                        label: "UGE Online Portal (Application Submission)",
-                        url: "https://sede.administracionespublicas.gob.es/",
-                    },
-                    {
-                        label: "DNV Official Requirements (Ministerio de Inclusión)",
-                        url: "https://www.inclusion.gob.es/",
-                    },
-                    {
-                        label: "Check FNMT DigiCert (Digital Certificate)",
-                        url: "https://www.sede.fnmt.gob.es/",
-                    },
-                    {
-                        label: "Spanish Accredited Sworn Translators Registry",
-                        url: "https://www.exteriores.gob.es/",
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        id: "tax",
-        emoji: "💰",
-        title: "Tax Considerations (Beckham Law)",
-        content: [
-            {
-                type: "intro",
-                text: "Spain's special expat tax regime — known as the Beckham Law (Régimen Especial de Trabajadores Desplazados) — is one of the most valuable benefits of the DNV.",
-            },
-            {
-                type: "highlight",
-                label: "Beckham Law at a Glance",
-                items: [
-                    "Flat 24% income tax rate (vs. up to 47% standard progressive rate)",
-                    "Applies only to Spanish-source income (foreign income often exempt)",
-                    "Valid for 6 tax years",
-                    "Must apply within 6 months of registering as a Spanish tax resident",
-                    "Form: Modelo 149",
-                    "Not automatic — you must actively elect this regime",
-                ],
-            },
-            {
-                type: "callout",
-                icon: "⚠️",
-                text: "Consult a Spanish tax advisor (gestor or asesor fiscal) before deciding. The Beckham Law is excellent for high earners but may not benefit everyone, especially those with complex freelance income structures.",
-            },
-        ],
-    },
-    {
-        id: "settling",
-        emoji: "🏠",
-        title: "Settling In Spain — First 30 Days",
-        content: [
-            {
-                type: "intro",
-                text: "Once you arrive in Spain, here's your action checklist for the first month:",
-            },
-            {
-                type: "checklist",
-                items: [
-                    "Register at your local Ayuntamiento (town hall) — Empadronamiento certificate",
-                    "Open a Spanish bank account (Sabadell, BBVA, or N26 are expat-friendly)",
-                    "Book NIE + TIE appointment at Policía Nacional (book as soon as you land)",
-                    "Get a Spanish SIM card (Orange, Vodafone, or Movistar)",
-                    "Register with a local health center (Centro de Salud) using your TIE",
-                    "Elect Beckham Law tax regime if applicable (Modelo 149, within 6 months)",
-                    "Join expat communities: Internations, Facebook groups, local meetups",
-                ],
-            },
-            {
-                type: "callout",
-                icon: "🏘️",
-                text: "Best cities for digital nomads in Spain: Barcelona (vibrant but expensive), Valencia (best value), Madrid (business hub), Málaga (growing nomad scene), Las Palmas de Gran Canaria (best weather + low cost).",
-            },
-        ],
-    },
+                text: "If you want to apply via Netherlands 🇳🇱 like I did, here’s how to start."
+            }
+        ]
+    }
 ];
 
 export default function PlaybookContent({ userName }: Props) {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState<string>(sections[0].id);
+
+    // Setup intersection observer to highlight TOC
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            { rootMargin: "-20% 0px -80% 0px" }
+        );
+
+        sections.forEach((s) => {
+            const el = document.getElementById(s.id);
+            if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Local storage for checklist items
+    const [completedItems, setCompletedItems] = useState<Record<string, boolean>>({});
+
+    useEffect(() => {
+        const saved = localStorage.getItem("playbook_progress");
+        if (saved) {
+            try {
+                setCompletedItems(JSON.parse(saved));
+            } catch (e) {
+                console.error("Failed to parse progress", e);
+            }
+        }
+    }, []);
+
+    const toggleItem = (itemText: string) => {
+        const newCompleted = { ...completedItems, [itemText]: !completedItems[itemText] };
+        setCompletedItems(newCompleted);
+        localStorage.setItem("playbook_progress", JSON.stringify(newCompleted));
+    };
+
     return (
-        <main className="min-h-screen bg-[#f9f5f2]">
-            {/* Top bar */}
-            <nav className="sticky top-0 z-50 px-6 py-4 bg-white/80 backdrop-blur-md border-b border-[#e7ddd3] flex items-center justify-between">
-                <Link href="/" className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-[#e3a99c]" />
-                    <span className="font-[family-name:var(--font-heading)] text-lg font-bold text-[#3a3a3a]">
-                        Happy Voyager
-                    </span>
-                </Link>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#e3a99c]/10 border border-[#e3a99c]/20">
-                    <CheckCircle className="w-3.5 h-3.5 text-[#e3a99c]" />
-                    <span className="text-xs font-semibold text-[#e3a99c] font-[family-name:var(--font-body)]">
-                        Playbook Pro — Full Access
-                    </span>
-                </div>
-            </nav>
+        <div className="min-h-screen flex bg-[#f9f5f2]">
+            {/* Mobile Sidebar Overlay */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
 
-            {/* Hero */}
-            <div className="bg-[#3a3a3a] text-white px-6 py-16 text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#3a3a3a] via-[#4a4a4a] to-[#3a3a3a]" />
-                <div className="absolute top-0 right-0 w-96 h-96 bg-[#e3a99c]/10 rounded-full blur-[80px]" />
-                <div className="relative z-10 max-w-3xl mx-auto">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6">
-                        <Sparkles className="w-3.5 h-3.5 text-[#e3a99c]" />
-                        <span className="text-xs font-bold tracking-wider text-[#e3a99c] uppercase font-[family-name:var(--font-body)]">
-                            Spain Digital Nomad Visa
+            {/* Left Sidebar (Main Nav) */}
+            <aside
+                className={`fixed lg:sticky top-0 left-0 h-screen w-72 bg-white border-r border-[#e7ddd3] z-50 flex flex-col transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+                    }`}
+            >
+                <div className="p-6 border-b border-[#e7ddd3] flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-2">
+                        <BookOpen className="w-5 h-5 text-[#e3a99c]" />
+                        <span className="font-[family-name:var(--font-heading)] font-bold text-[#3a3a3a]">
+                            Happy Voyager
                         </span>
-                    </div>
-                    <h1 className="font-[family-name:var(--font-heading)] text-5xl md:text-6xl font-bold mb-4 leading-tight">
-                        {userName ? `Welcome, ${userName}! 👋` : "Your Playbook Pro 🇪🇸"}
-                    </h1>
-                    <p className="font-[family-name:var(--font-body)] text-white/70 text-lg max-w-xl mx-auto leading-relaxed">
-                        The complete, no-fluff system to get your Spain DNV — from docs to
-                        doorstep.
-                    </p>
-
-                    {/* Stats */}
-                    <div className="mt-10 grid grid-cols-3 gap-4 max-w-lg mx-auto">
-                        {[
-                            { value: "7", label: "Sections" },
-                            { value: "10", label: "Process Steps" },
-                            { value: "∞", label: "Lifetime Updates" },
-                        ].map(({ value, label }) => (
-                            <div
-                                key={label}
-                                className="bg-white/10 rounded-2xl p-4 border border-white/10"
-                            >
-                                <div className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[#e3a99c]">
-                                    {value}
-                                </div>
-                                <div className="font-[family-name:var(--font-body)] text-xs text-white/60 mt-1">
-                                    {label}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Table of Contents */}
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-                <div className="bg-white rounded-[2rem] p-8 border border-[#e7ddd3] shadow-sm mb-12">
-                    <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#3a3a3a] mb-6 flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-[#e3a99c]" />
-                        Table of Contents
-                    </h2>
-                    <div className="space-y-2">
-                        {sections.map((section, i) => (
-                            <a
-                                key={section.id}
-                                href={`#${section.id}`}
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#f9f5f2] transition-colors group"
-                            >
-                                <span className="text-lg">{section.emoji}</span>
-                                <span className="font-[family-name:var(--font-body)] text-[#3a3a3a] group-hover:text-[#e3a99c] transition-colors flex-1 font-medium">
-                                    {i + 1}. {section.title}
-                                </span>
-                                <ChevronRight className="w-4 h-4 text-[#aaaaaa] group-hover:text-[#e3a99c] transition-colors" />
-                            </a>
-                        ))}
-                    </div>
+                    </Link>
+                    <button
+                        className="lg:hidden text-[#6b6b6b] hover:text-[#3a3a3a]"
+                        onClick={() => setSidebarOpen(false)}
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
                 </div>
 
-                {/* Content sections */}
-                <div className="space-y-12">
-                    {sections.map((section, sIdx) => (
-                        <section
-                            key={section.id}
-                            id={section.id}
-                            className="scroll-mt-24"
+                <div className="p-4 flex-1 overflow-y-auto">
+                    <div className="mb-6 relative">
+                        <Search className="w-4 h-4 text-[#aaaaaa] absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                            type="text"
+                            placeholder="Search playbook..."
+                            className="w-full bg-[#f9f5f2] border border-[#e7ddd3] rounded-lg py-2 pl-9 pr-4 text-sm font-[family-name:var(--font-body)] text-[#3a3a3a] focus:outline-none focus:border-[#e3a99c] transition-colors"
+                        />
+                    </div>
+
+                    <div className="space-y-1">
+                        <div className="px-3 mb-2 text-xs font-bold text-[#aaaaaa] uppercase tracking-wider font-[family-name:var(--font-heading)]">
+                            Chapters
+                        </div>
+                        <Link
+                            href="#"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#e3a99c]/10 text-[#e3a99c] font-medium font-[family-name:var(--font-body)]"
                         >
-                            {/* Section header */}
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#3a3a3a] text-2xl flex-shrink-0">
-                                    {section.emoji}
-                                </div>
-                                <div>
-                                    <span className="font-[family-name:var(--font-body)] text-xs font-bold text-[#e3a99c] uppercase tracking-widest">
-                                        Section {sIdx + 1}
-                                    </span>
-                                    <h2 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-bold text-[#3a3a3a] leading-tight">
+                            <span className="w-5 text-center">📖</span>
+                            Ch 1: Visa & Eligibility
+                        </Link>
+                        {/* Placeholders for future chapters */}
+                        <Link
+                            href="#"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-[#6b6b6b] hover:bg-[#f9f5f2] hover:text-[#3a3a3a] transition-colors font-medium font-[family-name:var(--font-body)] opacity-60 pointer-events-none"
+                        >
+                            <span className="w-5 text-center">🔒</span>
+                            Ch 2: Application Process (Coming Next)
+                        </Link>
+                    </div>
+                </div>
+
+                <div className="p-4 border-t border-[#e7ddd3]">
+                    <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-[#3a3a3a] flex items-center justify-center text-white font-bold text-sm">
+                            {userName ? userName[0].toUpperCase() : "U"}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="text-sm font-bold text-[#3a3a3a] truncate">
+                                {userName || "Pro User"}
+                            </div>
+                            <div className="text-xs text-[#e3a99c]">Playbook Pro</div>
+                        </div>
+                    </div>
+                    <Link
+                        href="/"
+                        className="mt-4 flex items-center gap-2 text-sm text-[#6b6b6b] hover:text-[#3a3a3a] transition-colors"
+                    >
+                        <Home className="w-4 h-4" />
+                        Back to Home
+                    </Link>
+                </div>
+            </aside>
+
+            {/* Main Content Area */}
+            <main className="flex-1 flex flex-col min-w-0">
+                {/* Mobile Top Bar */}
+                <header className="lg:hidden sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#e7ddd3] px-4 py-3 flex items-center justify-between">
+                    <button
+                        onClick={() => setSidebarOpen(true)}
+                        className="p-2 -ml-2 text-[#3a3a3a] hover:bg-[#f9f5f2] rounded-lg transition-colors"
+                    >
+                        <Menu className="w-5 h-5" />
+                    </button>
+                    <span className="font-[family-name:var(--font-heading)] font-bold text-[#3a3a3a] text-sm">
+                        Chapter 1
+                    </span>
+                    <div className="w-5" /> {/* Spacer for centering */}
+                </header>
+
+                <div className="flex-1 overflow-y-auto px-6 lg:px-12 py-10 lg:py-16">
+                    <div className="max-w-3xl mx-auto">
+                        {/* Breadcrumbs */}
+                        <nav className="flex items-center gap-2 text-sm text-[#aaaaaa] font-[family-name:var(--font-body)] mb-8">
+                            <span>Playbook Pro</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                            <span className="text-[#3a3a3a] font-medium">Chapter 1: Eligibility</span>
+                        </nav>
+
+                        {/* Chapter Hero */}
+                        <div className="mb-14">
+                            <h1 className="font-[family-name:var(--font-heading)] text-4xl lg:text-5xl font-bold text-[#3a3a3a] leading-tight mb-4">
+                                What’s this visa about and do I qualify?
+                            </h1>
+                            <p className="font-[family-name:var(--font-body)] text-xl text-[#6b6b6b] leading-relaxed">
+                                The essential criteria you need to meet before starting your Spain Digital Nomad Visa journey.
+                            </p>
+                            <div className="flex items-center gap-4 mt-6 text-sm text-[#6b6b6b]">
+                                <span className="flex items-center gap-1">
+                                    <Clock className="w-4 h-4" /> 5 min read
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Content Blocks */}
+                        <div className="space-y-16">
+                            {sections.map((section) => (
+                                <section key={section.id} id={section.id} className="scroll-mt-24">
+                                    <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#3a3a3a] mb-6 flex items-center gap-3">
+                                        <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#3a3a3a] text-xl flex-shrink-0 shadow-sm">
+                                            {section.emoji}
+                                        </span>
                                         {section.title}
                                     </h2>
-                                </div>
-                            </div>
 
-                            <div className="space-y-6">
-                                {(section.content as ContentBlock[]).map((block: ContentBlock, bIdx) => {
-                                    if (block.type === "intro") {
-                                        return (
-                                            <p
-                                                key={bIdx}
-                                                className="font-[family-name:var(--font-body)] text-[#6b6b6b] leading-relaxed text-base"
-                                            >
-                                                {block.text}
-                                            </p>
-                                        );
-                                    }
-
-                                    if (block.type === "callout") {
-                                        return (
-                                            <div
-                                                key={bIdx}
-                                                className="flex items-start gap-4 p-5 rounded-2xl bg-[#e3a99c]/8 border border-[#e3a99c]/20"
-                                            >
-                                                <span className="text-2xl flex-shrink-0">
-                                                    {block.icon}
-                                                </span>
-                                                <p className="font-[family-name:var(--font-body)] text-[#6b6b6b] leading-relaxed text-sm">
-                                                    {block.text}
-                                                </p>
-                                            </div>
-                                        );
-                                    }
-
-                                    if (block.type === "highlight" || block.type === "checklist") {
-                                        return (
-                                            <div
-                                                key={bIdx}
-                                                className="bg-white rounded-2xl p-6 border border-[#e7ddd3]"
-                                            >
-                                                {block.label && (
-                                                    <h3 className="font-[family-name:var(--font-heading)] text-base font-bold text-[#3a3a3a] mb-4">
-                                                        {block.label}
-                                                    </h3>
-                                                )}
-                                                <ul className="space-y-3">
-                                                    {block.items.map((item: string, i: number) => (
-                                                        <li key={i} className="flex items-start gap-3">
-                                                            <CheckCircle className="w-4 h-4 text-[#e3a99c] flex-shrink-0 mt-0.5" />
-                                                            <span className="font-[family-name:var(--font-body)] text-sm text-[#6b6b6b] leading-relaxed">
-                                                                {item}
-                                                            </span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        );
-                                    }
-
-                                    if (block.type === "steps") {
-                                        return (
-                                            <div key={bIdx} className="space-y-4">
-                                                {block.items.map((step: { step: string; title: string; desc: string }, i: number) => (
-                                                    <div
-                                                        key={i}
-                                                        className="flex gap-4 bg-white rounded-2xl p-5 border border-[#e7ddd3] hover:shadow-md transition-shadow"
+                                    <div className="space-y-6">
+                                        {section.content.map((block, bIdx) => {
+                                            if (block.type === "intro") {
+                                                return (
+                                                    <p
+                                                        key={bIdx}
+                                                        className="font-[family-name:var(--font-body)] text-[#3a3a3a] text-lg leading-[1.8]"
                                                     >
-                                                        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#3a3a3a] flex items-center justify-center text-white font-bold font-[family-name:var(--font-heading)] text-sm">
-                                                            {step.step}
-                                                        </div>
-                                                        <div>
-                                                            <h4 className="font-[family-name:var(--font-heading)] font-bold text-[#3a3a3a] mb-1">
-                                                                {step.title}
-                                                            </h4>
-                                                            <p className="font-[family-name:var(--font-body)] text-sm text-[#6b6b6b] leading-relaxed">
-                                                                {step.desc}
-                                                            </p>
+                                                        {block.text}
+                                                    </p>
+                                                );
+                                            }
+
+                                            if (block.type === "callout") {
+                                                return (
+                                                    <div
+                                                        key={bIdx}
+                                                        className={`flex items-start gap-4 p-6 rounded-2xl border ${block.bgClass || "bg-[#e3a99c]/10"
+                                                            } ${block.borderClass || "border-[#e3a99c]/20"}`}
+                                                    >
+                                                        <span className="text-2xl flex-shrink-0 mt-1">
+                                                            {block.icon}
+                                                        </span>
+                                                        <div className="font-[family-name:var(--font-body)] text-[#3a3a3a] leading-relaxed whitespace-pre-wrap">
+                                                            {block.text}
                                                         </div>
                                                     </div>
-                                                ))}
-                                            </div>
-                                        );
-                                    }
+                                                );
+                                            }
 
-                                    if (block.type === "docList") {
-                                        return (
-                                            <div key={bIdx} className="space-y-4">
-                                                {block.categories.map((cat: { label: string; docs: string[] }, i: number) => (
+                                            if (block.type === "highlight") {
+                                                return (
                                                     <div
-                                                        key={i}
-                                                        className="bg-white rounded-2xl p-5 border border-[#e7ddd3]"
+                                                        key={bIdx}
+                                                        className="bg-white rounded-2xl p-6 lg:p-8 border border-[#e7ddd3] shadow-sm"
                                                     >
-                                                        <h4 className="font-[family-name:var(--font-heading)] font-bold text-[#3a3a3a] mb-3 text-sm uppercase tracking-wider">
-                                                            📁 {cat.label}
-                                                        </h4>
-                                                        <ul className="space-y-2">
-                                                            {cat.docs.map((doc, j) => (
-                                                                <li
-                                                                    key={j}
-                                                                    className="flex items-start gap-2.5"
-                                                                >
-                                                                    <div className="w-1.5 h-1.5 rounded-full bg-[#e3a99c] flex-shrink-0 mt-2" />
-                                                                    <span className="font-[family-name:var(--font-body)] text-sm text-[#6b6b6b]">
-                                                                        {doc}
+                                                        {block.label && (
+                                                            <h3 className="font-[family-name:var(--font-heading)] text-lg font-bold text-[#3a3a3a] mb-5">
+                                                                {block.label}
+                                                            </h3>
+                                                        )}
+                                                        <ul className="space-y-4">
+                                                            {block.items.map((item, i) => (
+                                                                <li key={i} className="flex items-start gap-3">
+                                                                    <div className="w-1.5 h-1.5 rounded-full bg-[#e3a99c] flex-shrink-0 mt-2.5" />
+                                                                    <span className="font-[family-name:var(--font-body)] text-base text-[#3a3a3a] leading-relaxed">
+                                                                        {item}
                                                                     </span>
                                                                 </li>
                                                             ))}
                                                         </ul>
                                                     </div>
-                                                ))}
-                                            </div>
-                                        );
-                                    }
+                                                );
+                                            }
 
-                                    if (block.type === "linkList") {
-                                        return (
-                                            <div
-                                                key={bIdx}
-                                                className="bg-white rounded-2xl p-6 border border-[#e7ddd3]"
-                                            >
-                                                <h3 className="font-[family-name:var(--font-heading)] text-base font-bold text-[#3a3a3a] mb-4">
-                                                    {block.label}
-                                                </h3>
-                                                <div className="space-y-2">
-                                                    {block.items.map((link: { label: string; url: string }, i: number) => (
-                                                        <a
-                                                            key={i}
-                                                            href={link.url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="flex items-center gap-2 px-4 py-3 rounded-xl hover:bg-[#f9f5f2] group transition-colors"
-                                                        >
-                                                            <ExternalLink className="w-3.5 h-3.5 text-[#e3a99c] flex-shrink-0" />
-                                                            <span className="font-[family-name:var(--font-body)] text-sm text-[#3a3a3a] group-hover:text-[#e3a99c] transition-colors">
-                                                                {link.label}
-                                                            </span>
-                                                        </a>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        );
-                                    }
+                                            if (block.type === "checklist") {
+                                                return (
+                                                    <div
+                                                        key={bIdx}
+                                                        className="bg-white rounded-2xl p-6 lg:p-8 border border-[#e7ddd3] shadow-sm"
+                                                    >
+                                                        {block.label && (
+                                                            <h3 className="font-[family-name:var(--font-heading)] text-lg font-bold text-[#3a3a3a] mb-5">
+                                                                {block.label}
+                                                            </h3>
+                                                        )}
+                                                        <ul className="space-y-3">
+                                                            {block.items.map((item, i) => {
+                                                                const isChecked = completedItems[item] || false;
+                                                                return (
+                                                                    <li
+                                                                        key={i}
+                                                                        className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#f9f5f2] transition-colors cursor-pointer group"
+                                                                        onClick={() => toggleItem(item)}
+                                                                    >
+                                                                        <div className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border flex items-center justify-center transition-colors ${isChecked ? "bg-[#bbcccd] border-[#bbcccd]" : "border-[#aaaaaa] group-hover:border-[#e3a99c]"}`}>
+                                                                            {isChecked && <CheckCircle className="w-3.5 h-3.5 text-white" />}
+                                                                        </div>
+                                                                        <span className={`font-[family-name:var(--font-body)] text-base leading-relaxed transition-colors ${isChecked ? "text-[#aaaaaa] line-through" : "text-[#3a3a3a]"}`}>
+                                                                            {item}
+                                                                        </span>
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </div>
+                                                );
+                                            }
 
-                                    return null;
-                                })}
+                                            return null;
+                                        })}
+                                    </div>
+                                </section>
+                            ))}
+                        </div>
+
+                        {/* Next Chapter CTA */}
+                        <div className="mt-20 pt-10 border-t border-[#e7ddd3]">
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 bg-white p-8 rounded-2xl border border-[#e7ddd3] shadow-sm">
+                                <div>
+                                    <div className="text-sm text-[#aaaaaa] font-bold tracking-wider uppercase mb-1 font-[family-name:var(--font-heading)]">Up Next</div>
+                                    <h3 className="text-xl font-bold text-[#3a3a3a] font-[family-name:var(--font-heading)]">Chapter 2: Application Process</h3>
+                                </div>
+                                <button className="px-6 py-3 rounded-xl bg-[#e3a99c] text-white font-bold font-[family-name:var(--font-body)] hover:bg-[#d4998c] transition-colors shadow-md flex items-center gap-2 flex-shrink-0 opacity-50 cursor-not-allowed">
+                                    Next Chapter <ArrowRight className="w-4 h-4" />
+                                </button>
                             </div>
-                        </section>
-                    ))}
-                </div>
-
-                {/* Footer CTA */}
-                <div className="mt-16 bg-[#3a3a3a] rounded-[2rem] p-10 text-center text-white relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#3a3a3a] to-[#4a4a4a]" />
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#e3a99c]/10 rounded-full blur-[60px]" />
-                    <div className="relative z-10">
-                        <div className="text-4xl mb-4">🎉</div>
-                        <h2 className="font-[family-name:var(--font-heading)] text-3xl font-bold mb-3">
-                            You&apos;re ready to move to Spain!
-                        </h2>
-                        <p className="font-[family-name:var(--font-body)] text-white/70 max-w-md mx-auto mb-8 leading-relaxed">
-                            Need hands-on help? Upgrade to a strategy session or full VIP
-                            concierge service.
-                        </p>
-                        <Link
-                            href="/#pricing"
-                            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#e3a99c] text-white font-bold font-[family-name:var(--font-body)] hover:bg-white hover:text-[#3a3a3a] transition-all duration-300 shadow-lg"
-                        >
-                            View Upgrade Options
-                            <ArrowRight className="w-4 h-4" />
-                        </Link>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </main>
+            </main>
+
+            {/* Right Sidebar (Table of Contents) */}
+            <aside className="hidden xl:block w-72 h-screen sticky top-0 overflow-y-auto px-6 py-12">
+                <div className="font-[family-name:var(--font-heading)] text-sm font-bold text-[#3a3a3a] uppercase tracking-wider mb-6 flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-[#aaaaaa]" />
+                    On this page
+                </div>
+                <nav className="space-y-3 relative before:absolute before:inset-y-0 before:left-[7px] before:w-px before:bg-[#e7ddd3]">
+                    {sections.map((section) => (
+                        <a
+                            key={section.id}
+                            href={`#${section.id}`}
+                            className={`flex items-start gap-4 text-sm font-[family-name:var(--font-body)] transition-colors relative ${activeSection === section.id
+                                ? "text-[#e3a99c] font-bold"
+                                : "text-[#6b6b6b] hover:text-[#3a3a3a]"
+                                }`}
+                        >
+                            <div className={`w-4 h-4 rounded-full border-[3px] flex-shrink-0 mt-0.5 z-10 transition-colors ${activeSection === section.id
+                                ? "bg-white border-[#e3a99c]"
+                                : "bg-[#f9f5f2] border-transparent"
+                                }`} />
+                            {section.title}
+                        </a>
+                    ))}
+                </nav>
+            </aside>
+        </div>
     );
 }

@@ -2,29 +2,23 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 import {
     BookOpen,
     Lock,
-    CheckCircle,
     ArrowRight,
-    ChevronRight,
-    Sparkles,
-    FileText,
-    Globe,
     Shield,
     Clock,
     Star,
     AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
-import PlaybookContent from "./content";
 
 export default function PlaybookPage() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const [hasAccess, setHasAccess] = useState(false);
-    const [userName, setUserName] = useState("");
+    const router = useRouter();
 
     const handleAccess = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -46,44 +40,41 @@ export default function PlaybookPage() {
             return;
         }
 
-        setUserName(data.name?.split(" ")[0] || "");
         // Save to session so they don't have to re-enter
         sessionStorage.setItem("playbook_email", email.toLowerCase().trim());
-        setHasAccess(true);
+        sessionStorage.setItem("playbook_name", data.name?.split(" ")[0] || "");
+
+        router.push("/playbook/whats-this-playbook-about");
     };
 
-    if (hasAccess) {
-        return <PlaybookContent userName={userName} />;
-    }
-
     return (
-        <main className="min-h-screen bg-[#f9f5f2] flex flex-col">
+        <main className="min-h-screen bg-white flex flex-col font-sans">
             {/* Top nav */}
-            <nav className="px-6 py-5 flex items-center justify-between border-b border-[#e7ddd3]">
+            <nav className="px-6 py-4 flex items-center justify-between border-b border-[#EAE9E9]">
                 <Link href="/" className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-[#e3a99c]" />
-                    <span className="font-[family-name:var(--font-heading)] text-lg font-bold text-[#3a3a3a]">
+                    <BookOpen className="w-5 h-5 text-[#37352f]" />
+                    <span className="text-[15px] font-semibold text-[#37352f]">
                         Happy Voyager
                     </span>
                 </Link>
-                <span className="text-xs text-[#aaaaaa] flex items-center gap-1.5">
-                    <Lock className="w-3.5 h-3.5" />
+                <span className="text-[13px] text-[#787774] flex items-center gap-1.5 font-medium">
+                    <Lock className="w-3 h-3" />
                     Purchasers only
                 </span>
             </nav>
 
             {/* Email gate */}
             <div className="flex-1 flex items-center justify-center px-4 py-16">
-                <div className="w-full max-w-md">
+                <div className="w-full max-w-[400px]">
                     {/* Header */}
-                    <div className="text-center mb-10">
-                        <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white shadow-lg border border-[#e7ddd3] mb-6">
-                            <BookOpen className="w-9 h-9 text-[#e3a99c]" />
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#f7f7f5] border border-[#EAE9E9] mb-6">
+                            <BookOpen className="w-7 h-7 text-[#37352f]" />
                         </div>
-                        <h1 className="font-[family-name:var(--font-heading)] text-4xl font-bold text-[#3a3a3a] mb-3">
+                        <h1 className="text-3xl font-bold text-[#37352f] mb-3 tracking-tight">
                             Playbook Pro
                         </h1>
-                        <p className="font-[family-name:var(--font-body)] text-[#6b6b6b] leading-relaxed">
+                        <p className="text-[15px] text-[#787774] leading-relaxed">
                             Your complete guide to the Spain Digital Nomad Visa.
                             <br />
                             Enter the email you used to purchase.
@@ -91,12 +82,12 @@ export default function PlaybookPage() {
                     </div>
 
                     {/* Form card */}
-                    <div className="bg-white rounded-[2rem] p-8 shadow-xl border border-[#e7ddd3]">
+                    <div className="bg-white rounded-xl p-8 border border-[#EAE9E9] shadow-sm">
                         <form onSubmit={handleAccess} className="space-y-4">
                             <div>
                                 <label
                                     htmlFor="email"
-                                    className="block text-sm font-semibold text-[#3a3a3a] mb-2 font-[family-name:var(--font-body)]"
+                                    className="block text-[13px] font-semibold text-[#787774] mb-2 uppercase tracking-wide"
                                 >
                                     Purchase email
                                 </label>
@@ -107,14 +98,14 @@ export default function PlaybookPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="you@example.com"
-                                    className="w-full px-4 py-3.5 rounded-xl border border-[#e7ddd3] bg-[#f9f5f2] text-[#3a3a3a] placeholder-[#aaaaaa] focus:outline-none focus:ring-2 focus:ring-[#e3a99c]/40 focus:border-[#e3a99c] transition-all font-[family-name:var(--font-body)]"
+                                    className="w-full px-3 py-2.5 rounded shadow-sm border border-[#EAE9E9] bg-white text-[15px] text-[#37352f] placeholder-[#d3d1cb] focus:outline-none focus:border-[#2383e2] focus:ring-1 focus:ring-[#2383e2] transition-all"
                                 />
                             </div>
 
                             {error && (
-                                <div className="flex items-start gap-2.5 px-4 py-3 rounded-xl bg-red-50 border border-red-100">
-                                    <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm text-red-600 font-[family-name:var(--font-body)]">
+                                <div className="flex items-start gap-2.5 px-3 py-2.5 rounded bg-[#fdf2f2] border border-[#f9cpx-3]">
+                                    <AlertCircle className="w-4 h-4 text-[#d83a52] flex-shrink-0 mt-0.5" />
+                                    <p className="text-[13px] text-[#d83a52]">
                                         {error}
                                     </p>
                                 </div>
@@ -123,11 +114,11 @@ export default function PlaybookPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full py-4 rounded-xl bg-[#3a3a3a] text-white font-bold font-[family-name:var(--font-body)] flex items-center justify-center gap-2 hover:bg-[#e3a99c] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg"
+                                className="w-full py-2.5 rounded bg-[#2383e2] text-white font-medium text-[15px] flex items-center justify-center gap-2 hover:bg-[#1f73c7] transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
                             >
                                 {loading ? (
                                     <>
-                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        <div className="w-4 h-4 border-[3px] border-white/30 border-t-white rounded-full animate-spin" />
                                         Verifying...
                                     </>
                                 ) : (
@@ -139,12 +130,12 @@ export default function PlaybookPage() {
                             </button>
                         </form>
 
-                        <div className="mt-6 pt-6 border-t border-[#e7ddd3] text-center">
-                            <p className="text-sm text-[#aaaaaa] font-[family-name:var(--font-body)]">
+                        <div className="mt-6 pt-5 border-t border-[#EAE9E9] text-center">
+                            <p className="text-[13px] text-[#787774]">
                                 Haven&apos;t purchased yet?{" "}
                                 <Link
                                     href="/#pricing"
-                                    className="text-[#e3a99c] font-semibold hover:underline"
+                                    className="text-[#2383e2] font-medium hover:underline"
                                 >
                                     Get the Playbook Pro →
                                 </Link>
