@@ -16,7 +16,6 @@ import {
 
 const navLinks = [
   { name: "About", link: "/my-story" },
-  { name: "Contact", link: "/contact" },
 ];
 
 const blogFeatured = [
@@ -390,10 +389,10 @@ function HeaderInner({ darkBg }: { darkBg?: boolean }) {
 
         <div className="relative z-20 flex-shrink-0 flex items-center gap-2">
           <Link
-            href="/playbook-pro"
+            href="/playbook"
             className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#3a3a3a] text-white text-xs font-bold tracking-wide hover:bg-[#e3a99c] transition-all duration-300 whitespace-nowrap"
           >
-            📖 Playbook Pro
+            📖 Playbook
             <span className="text-[9px] font-bold tracking-widest uppercase text-white/60 bg-white/10 rounded-full px-1.5 py-0.5 leading-none">
               PRO
             </span>
@@ -430,7 +429,7 @@ function HeaderInner({ darkBg }: { darkBg?: boolean }) {
         >
           {/* Playbook Pro ~ standalone prominent link */}
           <Link
-            href="/playbook-pro"
+            href="/playbook"
             onClick={() => setIsMobileMenuOpen(false)}
             className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-[#3a3a3a] text-white font-bold text-sm"
           >

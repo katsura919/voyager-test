@@ -1,7 +1,109 @@
+"use client";
+
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ArrowRight, Globe, MapPin, Plane, Calendar, CheckCircle2, Heart, Zap, Instagram, AtSign, Linkedin, Youtube, Facebook, Mail, Briefcase, RefreshCw, AlertTriangle, FileText } from "lucide-react";
+import { ArrowRight, Globe, MapPin, Plane, Calendar, CheckCircle2, Heart, Zap, Instagram, AtSign, Linkedin, Youtube, Facebook, Mail, Briefcase, RefreshCw, AlertTriangle, FileText, User, Loader2 } from "lucide-react";
 import Link from "next/link";
+
+function ContactFormEmbed() {
+  const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (!formData.firstName || !formData.email || !formData.message) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          message: formData.message,
+          tags: ["Contact Form Inquiry"],
+        }),
+      });
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please email me directly.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+        <div className="w-14 h-14 rounded-full bg-[#8fa38d]/15 flex items-center justify-center">
+          <CheckCircle2 className="w-7 h-7 text-[#8fa38d]" />
+        </div>
+        <h3 className="text-xl font-bold text-[#3a3a3a]">Message received!</h3>
+        <p className="text-[#6b6b6b] text-sm">I&apos;ll get back to you within 1~2 business days.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <div className="bg-red-50 text-red-500 text-sm p-3 rounded-xl border border-red-100">{error}</div>
+      )}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="relative">
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
+          <input
+            type="text" name="firstName" placeholder="First Name *"
+            value={formData.firstName} onChange={handleChange} required
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#e7ddd3] focus:border-[#e3a99c] focus:ring-2 focus:ring-[#e3a99c]/20 outline-none transition-all bg-white text-sm"
+          />
+        </div>
+        <div className="relative">
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
+          <input
+            type="text" name="lastName" placeholder="Last Name"
+            value={formData.lastName} onChange={handleChange}
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#e7ddd3] focus:border-[#e3a99c] focus:ring-2 focus:ring-[#e3a99c]/20 outline-none transition-all bg-white text-sm"
+          />
+        </div>
+      </div>
+      <div className="relative">
+        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#aaaaaa]" />
+        <input
+          type="email" name="email" placeholder="Email Address *"
+          value={formData.email} onChange={handleChange} required
+          className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#e7ddd3] focus:border-[#e3a99c] focus:ring-2 focus:ring-[#e3a99c]/20 outline-none transition-all bg-white text-sm"
+        />
+      </div>
+      <textarea
+        name="message" placeholder="Tell me about your situation *" rows={4}
+        value={formData.message} onChange={handleChange} required
+        className="w-full px-4 py-3 rounded-xl border border-[#e7ddd3] focus:border-[#e3a99c] focus:ring-2 focus:ring-[#e3a99c]/20 outline-none transition-all bg-white text-sm resize-none"
+      />
+      <button
+        type="submit" disabled={loading}
+        className="w-full py-3.5 rounded-xl bg-[#3a3a3a] text-white font-bold hover:bg-[#e3a99c] transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+      >
+        {loading
+          ? <><Loader2 className="w-4 h-4 animate-spin" /><span>Sending...</span></>
+          : <><span>Send Message</span><ArrowRight className="w-4 h-4" /></>}
+      </button>
+    </form>
+  );
+}
 
 const stats = [
   { value: "27+", label: "Countries visited", sub: "Philippine passport only", color: "#e3a99c", bg: "#f2d6c9" },
@@ -514,6 +616,72 @@ export default function MyStoryPage() {
                   </Link>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── GET IN TOUCH ── */}
+      <section className="py-20 px-6 bg-[#f9f5f2]" id="contact">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f2d6c9]/40 border border-[#f2d6c9] mb-4">
+              <span className="text-xs font-bold tracking-widest text-[#e3a99c] uppercase">Get in Touch</span>
+            </div>
+            <h2 className="font-[family-name:var(--font-heading)] text-4xl font-bold text-[#3a3a3a]">
+              Let&apos;s talk.
+            </h2>
+            <p className="text-[#6b6b6b] text-sm mt-3 max-w-md mx-auto">
+              Have a question about the visa process or want to explore working together? Drop me a message.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-5 gap-8 items-start">
+            {/* Form */}
+            <div className="lg:col-span-3 bg-white rounded-3xl p-8 border border-[#e7ddd3] shadow-sm">
+              <ContactFormEmbed />
+            </div>
+
+            {/* Info */}
+            <div className="lg:col-span-2 flex flex-col gap-4">
+              <div className="bg-white rounded-3xl p-6 border border-[#e7ddd3] shadow-sm">
+                <div className="flex items-center gap-4 mb-4">
+                  <img src="/assets/avatar.png" alt="Abie Maxey" className="w-12 h-12 rounded-2xl object-cover border-2 border-[#e7ddd3]" />
+                  <div>
+                    <p className="font-bold text-[#3a3a3a] text-sm">Abie Maxey</p>
+                    <p className="text-xs text-[#6b6b6b]">Freedom Engineer</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-[#6b6b6b]">
+                    <MapPin className="w-4 h-4 text-[#e3a99c] flex-shrink-0" />
+                    <span>Based in Spain 🇪🇸</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-[#6b6b6b]">
+                    <Mail className="w-4 h-4 text-[#e3a99c] flex-shrink-0" />
+                    <a href="mailto:hello@abiemaxey.com" className="hover:text-[#e3a99c] transition-colors">
+                      hello@abiemaxey.com
+                    </a>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-[#e7ddd3]">
+                  <p className="text-xs text-[#aaaaaa]">Typical reply within 1~2 business days.</p>
+                </div>
+              </div>
+
+              <Link
+                href="https://calendly.com/abie-gamao/spain-dnv"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 bg-[#3a3a3a] rounded-3xl p-6 group hover:bg-[#e3a99c] transition-colors duration-300"
+              >
+                <div>
+                  <p className="text-xs font-bold tracking-widest uppercase text-white/50 mb-1">Prefer to talk?</p>
+                  <p className="font-bold text-white text-sm">Book a Strategy Call</p>
+                  <p className="text-xs text-white/50 mt-0.5">30 min · Calendly</p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+              </Link>
             </div>
           </div>
         </div>
