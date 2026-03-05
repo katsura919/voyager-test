@@ -64,11 +64,11 @@ const freeToolsItems = [
     bg: "#e0eaeb",
   },
   {
-    emoji: "📖",
-    title: "Playbook Lite",
-    sub: "The DNV roadmap condensed",
-    link: "/#pricing",
-    bg: "#d4e0d3",
+    emoji: "🏆",
+    title: "Playbook Pro",
+    sub: "Full course: application → citizenship",
+    link: "/playbook-pro",
+    bg: "#f2d6c9",
   },
   {
     emoji: "🗓",
@@ -113,7 +113,7 @@ const spainVisasDropdown = [
   },
 ];
 
-export default function Header() {
+export default function Header({ darkBg }: { darkBg?: boolean } = {}) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [spainVisasOpen, setSpainVisasOpen] = useState(false);
@@ -163,7 +163,7 @@ export default function Header() {
   return (
     <Navbar className="fixed top-0 z-50 font-[family-name:var(--font-body)]">
       {/* ── Desktop ───────────────────────────────────────────────────────── */}
-      <NavBody>
+      <NavBody className={darkBg ? "!bg-[#f9f5f2]/95 !backdrop-blur-md shadow-[0_0_0_1px_rgba(231,221,211,0.6)]" : ""}>
         <Link href="/#hero" className="relative z-20 flex-shrink-0">
           <img
             src="/assets/logo.png"
@@ -410,7 +410,7 @@ export default function Header() {
       </NavBody>
 
       {/* ── Mobile ────────────────────────────────────────────────────────── */}
-      <MobileNav className="px-4">
+      <MobileNav className={`px-4${darkBg ? " !bg-[#f9f5f2]/95 !backdrop-blur-md shadow-[0_0_0_1px_rgba(231,221,211,0.6)]" : ""}`}>
         <MobileNavHeader>
           <Link href="/#hero">
             <img
