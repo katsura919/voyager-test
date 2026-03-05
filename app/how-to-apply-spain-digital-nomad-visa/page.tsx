@@ -95,10 +95,11 @@ const documents = [
     color: "#e3a99c",
     bg: "#f2d6c9",
     items: [
-      { text: "Client contracts or letters", note: "Proving active, ongoing remote work" },
-      { text: "Invoices from last 3+ months", note: "Showing consistent income from foreign clients" },
-      { text: "Bank statements", note: "Matching your invoice income. 3 months minimum" },
-      { text: "Proof of business registration", note: "In your home country or wherever you're legally operating" },
+      { text: "Client contracts or letters", note: "Proving active, ongoing remote work from foreign clients" },
+      { text: "Invoices from last 3+ months", note: "Showing consistent income. Sworn Spanish translation required." },
+      { text: "Bank statements", note: "Matching your invoice income. 3 months minimum." },
+      { text: "Proof of business/activity registration", note: "🇵🇭 Philippines: DTI Certificate of Business Registration (sole proprietor) or SEC Certificate · 🇺🇸 US: Certificate of Coverage (CoC) from SSA, or LLC/DBA registration docs · 🇬🇧 UK: HMRC Self Assessment registration letter + UTR confirmation, or Companies House certificate if Ltd. All require apostille + sworn Spanish translation." },
+      { text: "Certificate of Coverage (CoC) ~ if applicable", note: "Proves you're paying Social Security in your home country so you're exempt from Spanish SS. 🇺🇸 US: Request from SSA (Form SSA-2490) · 🇬🇧 UK: Apply via HMRC (CA3837/CA8421) · 🇵🇭 Philippines: No bilateral treaty ~ you'll need to register with RETA (Spanish SS for self-employed) from day one." },
     ],
   },
 ];
@@ -444,6 +445,49 @@ export default function HowToApplyDNVPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Country-specific self-employment proof */}
+              <div className="bg-white rounded-2xl border border-[#e7ddd3] overflow-hidden">
+                <div className="px-5 py-3 bg-[#f2d6c9]/30 border-b border-[#e7ddd3]">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#e3a99c]">Business registration proof ~ by country</p>
+                </div>
+                <div className="divide-y divide-[#f9f5f2]">
+                  {[
+                    {
+                      flag: "🇵🇭",
+                      country: "Philippines",
+                      doc: "DTI Certificate of Business Registration",
+                      note: "For sole proprietors. SEC Certificate if registered as a corporation or partnership. Apostille at DFA + sworn Spanish translation.",
+                    },
+                    {
+                      flag: "🇺🇸",
+                      country: "United States",
+                      doc: "Certificate of Coverage (CoC) from SSA",
+                      note: "Request via Form SSA-2490. Proves US SS coverage so you may be exempt from Spanish RETA. Also include LLC/DBA registration if applicable. Apostille at state level.",
+                    },
+                    {
+                      flag: "🇬🇧",
+                      country: "United Kingdom",
+                      doc: "HMRC Self Assessment registration letter + UTR confirmation",
+                      note: "For Certificate of Coverage: apply to HMRC via CA3837 (employed abroad) or CA8421 (self-employed abroad). Companies House certificate if operating as Ltd. Apostille via FCDO.",
+                    },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4 px-5 py-4">
+                      <span className="text-2xl flex-shrink-0">{item.flag}</span>
+                      <div>
+                        <p className="text-sm font-bold text-[#3a3a3a] mb-0.5">{item.country} ~ <span className="font-normal">{item.doc}</span></p>
+                        <p className="text-xs text-[#aaaaaa] leading-relaxed">{item.note}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex items-start gap-4 px-5 py-4 bg-[#fdf1ee]">
+                    <AlertTriangle className="w-4 h-4 text-[#e3a99c] flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-[#6b6b6b] leading-relaxed">
+                      <strong className="text-[#3a3a3a]">Filipinos:</strong> The Philippines has no bilateral Social Security treaty with Spain. This means you cannot use a CoC to claim exemption. You must register with <strong className="text-[#3a3a3a]">RETA</strong> (Spain&apos;s self-employed Social Security scheme) from day one of your DNV approval.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="bg-[#f0f4f0] border border-[#d4e0d3] rounded-2xl p-4">

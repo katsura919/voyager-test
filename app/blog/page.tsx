@@ -52,12 +52,11 @@ export default async function BlogListingPage({
 
           <div className="container mx-auto relative z-10 max-w-4xl text-center space-y-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-script text-[var(--color-charcoal)] animate-fade-in relative inline-block">
-              <span className="relative z-10">Our Travel Journal</span>
+              <span className="relative z-10">Guides & Resources</span>
               <span className="absolute bottom-2 left-0 w-full h-3 bg-[var(--color-primary)]/30 -rotate-1 rounded-full -z-10" />
             </h1>
             <p className="text-lg md:text-xl text-[var(--color-muted-foreground)] max-w-2xl mx-auto leading-relaxed">
-              Stories, tips, and inspiration for your next handcrafted journey.
-              Discover the world through our eyes.
+              Everything I know about the Spain Digital Nomad Visa, written the way I wish someone had written it for me.
             </p>
           </div>
         </section>
@@ -71,14 +70,14 @@ export default async function BlogListingPage({
             <div>
               <h2 className="text-3xl md:text-4xl font-script text-[var(--color-charcoal)] mb-2 relative inline-block">
                 <span className="relative z-10">
-                  {search || (category && category !== "all") ? "Filtered Stories" : "Featured Stories"}
+                  {search || (category && category !== "all") ? "Filtered Articles" : "Latest Articles"}
                 </span>
                 <span className="absolute bottom-1 left-0 w-full h-2 bg-[var(--color-primary)]/20 -rotate-1 rounded-full -z-10" />
               </h2>
               <p className="text-[var(--color-muted-foreground)] mt-2">
                 {search || (category && category !== "all")
                   ? `Found ${total} ${total === 1 ? 'article' : 'articles'}`
-                  : "Handpicked articles and travel guides"}
+                  : "In-depth DNV guides, visa updates, and remote living resources"}
               </p>
             </div>
           </div>
