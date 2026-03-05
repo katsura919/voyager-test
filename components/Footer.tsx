@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Instagram,
@@ -36,7 +37,7 @@ const socialLinks = [
   { icon: Youtube, href: "https://www.youtube.com/@abiemaxey", label: "YouTube" },
 ];
 
-export default function Footer() {
+function FooterInner() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
   const [error, setError] = useState("");
@@ -218,5 +219,19 @@ export default function Footer() {
 
       </div>
     </footer>
+  );
+}
+
+function FooterWithEmbedCheck() {
+  const searchParams = useSearchParams();
+  if (searchParams.get("embed") === "1") return null;
+  return <FooterInner />;
+}
+
+export default function Footer() {
+  return (
+    <Suspense fallback={<FooterInner />}>
+      <FooterWithEmbedCheck />
+    </Suspense>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import {
@@ -57,20 +58,6 @@ const freeToolsItems = [
     bg: "#f2d6c9",
   },
   {
-    emoji: "📋",
-    title: "Document Checklist",
-    sub: "Full list, printable & ready",
-    link: "/document-checklist",
-    bg: "#e0eaeb",
-  },
-  {
-    emoji: "🏆",
-    title: "Playbook Pro",
-    sub: "Full course: application → citizenship",
-    link: "/playbook-pro",
-    bg: "#f2d6c9",
-  },
-  {
     emoji: "🗓",
     title: "Schengen Day Calculator",
     sub: "Track your 90/180 days live",
@@ -113,7 +100,7 @@ const spainVisasDropdown = [
   },
 ];
 
-export default function Header({ darkBg }: { darkBg?: boolean } = {}) {
+function HeaderInner({ darkBg }: { darkBg?: boolean }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [spainVisasOpen, setSpainVisasOpen] = useState(false);
@@ -401,12 +388,23 @@ export default function Header({ darkBg }: { darkBg?: boolean } = {}) {
           ))}
         </div>
 
-        <Link
-          href="https://calendly.com/abie-gamao/spain-dnv"
-          className="relative z-20 flex-shrink-0 px-5 py-2.5 rounded-full bg-[#3a3a3a] text-white text-sm font-semibold hover:bg-[#e3a99c] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap"
-        >
-          Book a Call
-        </Link>
+        <div className="relative z-20 flex-shrink-0 flex items-center gap-2">
+          <Link
+            href="/playbook-pro"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#3a3a3a] text-white text-xs font-bold tracking-wide hover:bg-[#e3a99c] transition-all duration-300 whitespace-nowrap"
+          >
+            📖 Playbook Pro
+            <span className="text-[9px] font-bold tracking-widest uppercase text-white/60 bg-white/10 rounded-full px-1.5 py-0.5 leading-none">
+              PRO
+            </span>
+          </Link>
+          <Link
+            href="https://calendly.com/abie-gamao/spain-dnv"
+            className="px-5 py-2.5 rounded-full border border-[#3a3a3a]/30 text-[#3a3a3a] text-sm font-semibold hover:bg-[#3a3a3a] hover:text-white transition-all duration-300 whitespace-nowrap"
+          >
+            Book a Call
+          </Link>
+        </div>
       </NavBody>
 
       {/* ── Mobile ────────────────────────────────────────────────────────── */}
@@ -430,6 +428,20 @@ export default function Header({ darkBg }: { darkBg?: boolean } = {}) {
           onClose={() => setIsMobileMenuOpen(false)}
           className="bg-[#f9f5f2] border-t border-[#e7ddd3]"
         >
+          {/* Playbook Pro ~ standalone prominent link */}
+          <Link
+            href="/playbook-pro"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-[#3a3a3a] text-white font-bold text-sm"
+          >
+            <span className="flex items-center gap-2">
+              📖 Playbook
+            </span>
+            <span className="text-[9px] font-bold tracking-widest uppercase text-white/60 bg-white/10 rounded-full px-2 py-1 leading-none">
+              PRO
+            </span>
+          </Link>
+
           {/* Spain Visas expandable */}
           <div className="w-full">
             <button
@@ -604,5 +616,19 @@ export default function Header({ darkBg }: { darkBg?: boolean } = {}) {
         </MobileNavMenu>
       </MobileNav>
     </Navbar>
+  );
+}
+
+function HeaderWithEmbedCheck({ darkBg }: { darkBg?: boolean }) {
+  const searchParams = useSearchParams();
+  if (searchParams.get("embed") === "1") return null;
+  return <HeaderInner darkBg={darkBg} />;
+}
+
+export default function Header({ darkBg }: { darkBg?: boolean } = {}) {
+  return (
+    <Suspense fallback={<HeaderInner darkBg={darkBg} />}>
+      <HeaderWithEmbedCheck darkBg={darkBg} />
+    </Suspense>
   );
 }

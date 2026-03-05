@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -24,6 +24,7 @@ import {
   Trophy,
   RefreshCw,
   AlertTriangle,
+  Mail,
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────
@@ -100,7 +101,7 @@ const phases = [
         ],
         time: "10 min",
         tag: "Checklist",
-        free: false,
+        free: true,
         link: "/document-checklist",
       },
       {
@@ -464,6 +465,148 @@ function tagStyle(tag: string) {
 }
 
 /* ─────────────────────────────────────────────
+   Lesson Modal (iframe)
+───────────────────────────────────────────── */
+function LessonModal({
+  url,
+  title,
+  onClose,
+}: {
+  url: string;
+  title: string;
+  onClose: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-[95] flex flex-col">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal panel */}
+      <div className="relative flex flex-col w-full h-full max-w-5xl mx-auto my-4 lg:my-8 rounded-2xl overflow-hidden shadow-2xl">
+        {/* Top bar */}
+        <div className="flex-shrink-0 flex items-center justify-between gap-4 bg-[#3a3a3a] text-white px-4 py-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#e3a99c] flex-shrink-0" />
+            <p className="text-sm font-semibold text-white truncate">{title}</p>
+          </div>
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-[11px] text-white/50 hover:text-white/90 transition-colors"
+            >
+              Full page <ExternalLink className="w-3 h-3" />
+            </a>
+            <button
+              onClick={onClose}
+              className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+            >
+              <X className="w-4 h-4 text-white" />
+            </button>
+          </div>
+        </div>
+
+        {/* iframe */}
+        <iframe
+          src={`${url}${url.includes("?") ? "&" : "?"}embed=1`}
+          className="flex-1 w-full border-0 bg-[#f9f5f2]"
+          title={title}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Email Capture Modal
+───────────────────────────────────────────── */
+function EmailCaptureModal({
+  lessonTitle,
+  onSubmit,
+  onClose,
+}: {
+  lessonTitle: string;
+  onSubmit: (email: string) => void;
+  onClose: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      onSubmit(email);
+    }, 600);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#f0ebe6] flex items-center justify-center hover:bg-[#e7ddd3] transition-colors"
+        >
+          <X className="w-4 h-4 text-[#6b6b6b]" />
+        </button>
+
+        <div className="w-12 h-12 rounded-2xl bg-[#d4e0d3] flex items-center justify-center mx-auto mb-5">
+          <Mail className="w-6 h-6 text-[#8fa38d]" />
+        </div>
+
+        <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#3a3a3a] text-center mb-2">
+          Unlock Free Access
+        </h2>
+        <p className="text-[#6b6b6b] text-sm text-center mb-1 leading-relaxed">
+          Enter your email to unlock:
+        </p>
+        <p className="text-[#3a3a3a] text-sm font-semibold text-center mb-6 px-4">
+          {lessonTitle}
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); setError(""); }}
+            placeholder="your@email.com"
+            className="w-full px-4 py-3 rounded-xl border border-[#e7ddd3] bg-[#f9f5f2] text-[#3a3a3a] text-sm focus:outline-none focus:border-[#e3a99c] transition-colors"
+            autoFocus
+          />
+          {error && <p className="text-[#e3a99c] text-xs">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3.5 rounded-full bg-[#3a3a3a] text-white font-bold hover:bg-[#e3a99c] transition-colors duration-300 flex items-center justify-center gap-2 disabled:opacity-70"
+          >
+            {loading ? (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                <Unlock className="w-4 h-4" />
+                Unlock Free Lesson
+              </>
+            )}
+          </button>
+        </form>
+        <p className="text-center text-[10px] text-[#aaaaaa] mt-4">
+          No spam. Unsubscribe anytime.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
    Unlock Modal
 ───────────────────────────────────────────── */
 function UnlockModal({ onClose }: { onClose: () => void }) {
@@ -530,6 +673,21 @@ export default function PlaybookProPage() {
   const [activePhase, setActivePhase] = useState("qualify");
   const [expandedPhases, setExpandedPhases] = useState<string[]>(["qualify"]);
   const [showModal, setShowModal] = useState(false);
+  const [lessonModal, setLessonModal] = useState<{ url: string; title: string } | null>(null);
+  const [emailCaptureTarget, setEmailCaptureTarget] = useState<{ url: string; title: string } | null>(null);
+  const [emailCaptured, setEmailCaptured] = useState(false);
+
+  useEffect(() => {
+    setEmailCaptured(!!localStorage.getItem("hv_email"));
+  }, []);
+
+  const openFreeLesson = (url: string, title: string) => {
+    if (emailCaptured) {
+      setLessonModal({ url, title });
+    } else {
+      setEmailCaptureTarget({ url, title });
+    }
+  };
 
   const togglePhase = (id: string) => {
     setExpandedPhases((prev) =>
@@ -537,8 +695,10 @@ export default function PlaybookProPage() {
     );
   };
 
-  const handleLessonClick = (lesson: { free: boolean; link: string | null }) => {
-    if (!lesson.free) {
+  const handleLessonClick = (lesson: { free: boolean; link: string | null; title: string }) => {
+    if (lesson.free && lesson.link) {
+      openFreeLesson(lesson.link, lesson.title);
+    } else if (!lesson.free) {
       setShowModal(true);
     }
   };
@@ -557,6 +717,25 @@ export default function PlaybookProPage() {
     <>
       <Header darkBg />
       {showModal && <UnlockModal onClose={() => setShowModal(false)} />}
+      {emailCaptureTarget && (
+        <EmailCaptureModal
+          lessonTitle={emailCaptureTarget.title}
+          onSubmit={(email) => {
+            localStorage.setItem("hv_email", email);
+            setEmailCaptured(true);
+            setLessonModal({ url: emailCaptureTarget.url, title: emailCaptureTarget.title });
+            setEmailCaptureTarget(null);
+          }}
+          onClose={() => setEmailCaptureTarget(null)}
+        />
+      )}
+      {lessonModal && (
+        <LessonModal
+          url={lessonModal.url}
+          title={lessonModal.title}
+          onClose={() => setLessonModal(null)}
+        />
+      )}
 
       <div className="min-h-screen bg-[#f9f5f2] font-sans text-[#3a3a3a]">
 
@@ -587,7 +766,7 @@ export default function PlaybookProPage() {
               {[
                 { value: `${totalLessons}`, label: "Lessons" },
                 { value: "6", label: "Phases" },
-                { value: `${freeLessons}`, label: "Free to access" },
+                { value: `${freeLessons}`, label: "Free ~ email required" },
                 { value: "~2 hrs", label: "Total read time" },
               ].map((s) => (
                 <div key={s.label}>
@@ -652,7 +831,7 @@ export default function PlaybookProPage() {
                               key={lesson.id}
                               onClick={() => {
                                 if (lesson.free) {
-                                  if (lesson.link) window.location.href = lesson.link;
+                                  if (lesson.link) openFreeLesson(lesson.link, lesson.title);
                                 } else {
                                   setShowModal(true);
                                 }
@@ -711,11 +890,11 @@ export default function PlaybookProPage() {
 
             {/* Free access banner */}
             <div className="bg-[#d4e0d3]/50 border border-[#8fa38d]/40 rounded-2xl px-5 py-4 flex items-start gap-3">
-              <Unlock className="w-4 h-4 text-[#8fa38d] flex-shrink-0 mt-0.5" />
+              <Mail className="w-4 h-4 text-[#8fa38d] flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-semibold text-[#3a3a3a]">Phase 0 is free</p>
+                <p className="text-sm font-semibold text-[#3a3a3a]">Phase 0 ~ free with your email</p>
                 <p className="text-xs text-[#6b6b6b] mt-0.5">
-                  Start with the eligibility check and visa overview ~ no purchase needed. Unlock all {totalLessons - freeLessons} remaining lessons with Playbook Pro.
+                  Drop your email to unlock the eligibility check and visa overview. Unlock all {totalLessons - freeLessons} remaining lessons with Playbook Pro.
                 </p>
               </div>
               <button
@@ -749,7 +928,7 @@ export default function PlaybookProPage() {
                       </h2>
                       <p className="text-sm text-[#6b6b6b]">{phase.description}</p>
                     </div>
-                    {phaseIdx > 0 && (
+                    {phaseIdx > 0 && phase.lessons.every((l) => !l.free) && (
                       <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center">
                         <Lock className="w-4 h-4 text-[#6b6b6b]" />
                       </div>
@@ -767,7 +946,7 @@ export default function PlaybookProPage() {
                           ? "border-[#e7ddd3] hover:border-[#e3a99c] hover:shadow-md cursor-pointer"
                           : "border-[#e7ddd3] cursor-pointer"
                       }`}
-                      onClick={() => handleLessonClick(lesson)}
+                      onClick={() => handleLessonClick({ ...lesson, title: lesson.title })}
                     >
                       <div className="p-5">
                         <div className="flex items-start justify-between gap-4">
@@ -829,13 +1008,15 @@ export default function PlaybookProPage() {
                             </div>
                             {lesson.free ? (
                               lesson.link ? (
-                                <Link
-                                  href={lesson.link}
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="flex items-center gap-1 text-[10px] font-bold text-[#8fa38d] hover:underline whitespace-nowrap"
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openFreeLesson(lesson.link!, lesson.title);
+                                  }}
+                                  className="flex items-center gap-1 text-[10px] font-bold text-[#8fa38d] hover:text-[#e3a99c] transition-colors whitespace-nowrap"
                                 >
-                                  Open <ExternalLink className="w-3 h-3" />
-                                </Link>
+                                  Open <BookOpen className="w-3 h-3" />
+                                </button>
                               ) : null
                             ) : (
                               <div className="w-7 h-7 rounded-lg bg-[#f0ebe6] flex items-center justify-center">
@@ -859,10 +1040,10 @@ export default function PlaybookProPage() {
                   <div className="mt-4 border-2 border-dashed border-[#e3a99c]/40 rounded-2xl p-6 text-center bg-[#f2d6c9]/20">
                     <Lock className="w-5 h-5 text-[#e3a99c] mx-auto mb-3" />
                     <p className="font-bold text-[#3a3a3a] mb-1 text-sm">
-                      Phases 1~5 are locked
+                      Most of Phases 1~5 are Pro-only
                     </p>
                     <p className="text-xs text-[#6b6b6b] mb-4 max-w-sm mx-auto">
-                      Unlock all {totalLessons - freeLessons} remaining lessons to continue from document prep to citizenship.
+                      Unlock all {totalLessons - freeLessons} remaining Pro lessons to continue from document prep to citizenship.
                     </p>
                     <button
                       onClick={() => setShowModal(true)}
