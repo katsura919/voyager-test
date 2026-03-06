@@ -269,17 +269,15 @@ function UnlockModal({
         <div className="flex rounded-xl bg-[#f0ebe6] p-1 mb-6">
           <button
             onClick={() => switchTab("buy")}
-            className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
-              tab === "buy" ? "bg-white text-[#3a3a3a] shadow-sm" : "text-[#6b6b6b]"
-            }`}
+            className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${tab === "buy" ? "bg-white text-[#3a3a3a] shadow-sm" : "text-[#6b6b6b]"
+              }`}
           >
             Get Access
           </button>
           <button
             onClick={() => switchTab("restore")}
-            className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
-              tab === "restore" ? "bg-white text-[#3a3a3a] shadow-sm" : "text-[#6b6b6b]"
-            }`}
+            className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${tab === "restore" ? "bg-white text-[#3a3a3a] shadow-sm" : "text-[#6b6b6b]"
+              }`}
           >
             Restore Access
           </button>
@@ -379,6 +377,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
   const [activePhase, setActivePhase] = useState(config.phases[0]?.id ?? "");
   const [expandedPhases, setExpandedPhases] = useState<string[]>([config.phases[0]?.id ?? ""]);
   const [showModal, setShowModal] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(false);
   const [lessonModal, setLessonModal] = useState<{ url: string; title: string } | null>(null);
   const [emailCaptureTarget, setEmailCaptureTarget] = useState<{ url: string; title: string } | null>(null);
   const [emailCaptured, setEmailCaptured] = useState(false);
@@ -436,7 +435,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
     } else {
       setEmailCaptured(!!localStorage.getItem("hv_email"));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const openFreeLesson = (url: string, title: string) => {
@@ -509,6 +508,109 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
         />
       )}
 
+      {/* ── Mobile Nav Bottom Sheet ───────────────────────────── */}
+      {showMobileNav && (
+        <div className="fixed inset-0 z-[90] lg:hidden" onClick={() => setShowMobileNav(false)}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-[#3a3a3a] rounded-t-3xl max-h-[88vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Drag handle */}
+            <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
+              <div className="w-10 h-1 rounded-full bg-white/20" />
+            </div>
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 flex-shrink-0">
+              <p className="text-[10px] font-bold tracking-widest text-white/40 uppercase">
+                Course Navigation
+              </p>
+              <button onClick={() => setShowMobileNav(false)}>
+                <X className="w-4 h-4 text-white/60" />
+              </button>
+            </div>
+            {/* Scrollable nav */}
+            <nav className="flex-1 overflow-y-auto py-2">
+              {config.phases.map((phase) => {
+                const isExpanded = expandedPhases.includes(phase.id);
+                const isActive = activePhase === phase.id;
+                return (
+                  <div key={phase.id}>
+                    <button
+                      onClick={() => { togglePhase(phase.id); scrollToPhase(phase.id); }}
+                      className={`w-full flex items-center justify-between px-5 py-3 transition-colors ${isActive ? "bg-white/10 text-white" : "text-white/60 hover:text-white hover:bg-white/5"
+                        }`}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-lg flex-shrink-0">{phase.emoji}</span>
+                        <div className="text-left min-w-0">
+                          <p className="text-[9px] font-bold tracking-widest uppercase text-white/30">
+                            {phase.phase}
+                          </p>
+                          <p className="text-sm font-semibold leading-tight">{phase.title}</p>
+                        </div>
+                      </div>
+                      <svg
+                        className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {isExpanded && (
+                      <div className="ml-5 border-l border-white/10 py-1">
+                        {phase.lessons.map((lesson) => (
+                          <button
+                            key={lesson.id}
+                            onClick={() => {
+                              setShowMobileNav(false);
+                              if (isPro) {
+                                if (lesson.link) setLessonModal({ url: lesson.link, title: lesson.title });
+                              } else if (lesson.free) {
+                                if (lesson.link) openFreeLesson(lesson.link, lesson.title);
+                              } else {
+                                setShowModal(true);
+                              }
+                            }}
+                            className="w-full flex items-center gap-3 pl-4 pr-4 py-2 text-left group"
+                          >
+                            {lesson.free || isPro ? (
+                              <span className="w-3.5 h-3.5 rounded-full border border-[#8fa38d] bg-[#8fa38d]/20 flex-shrink-0" />
+                            ) : (
+                              <Lock className="w-3 h-3 text-white/20 flex-shrink-0" />
+                            )}
+                            <span className="text-xs text-white/50 group-hover:text-white/80 transition-colors leading-snug">
+                              {lesson.number}. {lesson.title}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+            {/* CTA */}
+            <div className="p-4 border-t border-white/10 flex-shrink-0">
+              {isPro ? (
+                <div className="w-full py-3 rounded-xl bg-[#8fa38d]/20 text-[#8fa38d] text-sm font-bold flex items-center justify-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  Full Access Active
+                </div>
+              ) : (
+                <button
+                  onClick={() => { setShowMobileNav(false); setShowModal(true); }}
+                  className="w-full py-3 rounded-xl bg-[#e3a99c] text-white text-sm font-bold hover:bg-[#d38b7b] transition-colors flex items-center justify-center gap-2"
+                >
+                  <Zap className="w-4 h-4" />
+                  Unlock All {totalLessons} Lessons
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="min-h-screen bg-[#f9f5f2] font-sans text-[#3a3a3a]">
 
         {/* ── Hero ──────────────────────────────────────────────── */}
@@ -535,7 +637,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
               {[
                 { value: `${totalLessons}`, label: "Lessons" },
                 { value: `${config.phases.length}`, label: "Phases" },
-                { value: `${freeLessons}`, label: "Free ~ email required" },
+                { value: `${freeLessons}`, label: "Free" },
                 { value: config.totalTime, label: "Total read time" },
               ].map((s) => (
                 <div key={s.label}>
@@ -566,9 +668,8 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                     <div key={phase.id}>
                       <button
                         onClick={() => { togglePhase(phase.id); scrollToPhase(phase.id); }}
-                        className={`w-full flex items-center justify-between px-4 py-2.5 transition-colors ${
-                          isActive ? "bg-white/10 text-white" : "text-white/60 hover:text-white hover:bg-white/5"
-                        }`}
+                        className={`w-full flex items-center justify-between px-4 py-2.5 transition-colors ${isActive ? "bg-white/10 text-white" : "text-white/60 hover:text-white hover:bg-white/5"
+                          }`}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
                           <span className="text-base flex-shrink-0">{phase.emoji}</span>
@@ -642,21 +743,33 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
           {/* ── Main Content ─────────────────────────────────────── */}
           <main className="flex-1 min-w-0 px-4 lg:px-0 space-y-6">
 
-            {/* Mobile phase tabs */}
-            <div className="flex lg:hidden gap-2 overflow-x-auto pb-2 scrollbar-hide">
-              {config.phases.map((phase) => (
+            {/* Mobile sticky nav bar */}
+            <div className="lg:hidden sticky top-16 z-30 -mx-4 px-4 pt-2.5 pb-2 bg-[#f9f5f2]/95 backdrop-blur-sm border-b border-[#e7ddd3] space-y-2">
+              {/* Row 1 ~ All Lessons button */}
+              <div className="flex justify-center">
                 <button
-                  key={phase.id}
-                  onClick={() => scrollToPhase(phase.id)}
-                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                    activePhase === phase.id
-                      ? "bg-[#3a3a3a] text-white"
-                      : "bg-white border border-[#e7ddd3] text-[#6b6b6b] hover:border-[#e3a99c]"
-                  }`}
+                  onClick={() => setShowMobileNav(true)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#3a3a3a] text-white text-xs font-bold shadow-sm"
                 >
-                  {phase.emoji} {phase.title}
+                  <BookOpen className="w-3.5 h-3.5" />
+                  All Lessons
                 </button>
-              ))}
+              </div>
+              {/* Row 2 ~ Phase pills */}
+              <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+                {config.phases.map((phase) => (
+                  <button
+                    key={phase.id}
+                    onClick={() => scrollToPhase(phase.id)}
+                    className={`flex-shrink-0 px-2 py-0.5 rounded-full text-[10px] font-semibold transition-colors whitespace-nowrap ${activePhase === phase.id
+                        ? "bg-[#e3a99c] text-white"
+                        : "bg-white border border-[#e7ddd3] text-[#6b6b6b]"
+                      }`}
+                  >
+                    {phase.emoji} {phase.phase}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Access banner */}
@@ -721,11 +834,10 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                   {phase.lessons.map((lesson) => (
                     <div
                       key={lesson.id}
-                      className={`relative bg-white border rounded-2xl overflow-hidden transition-all duration-200 ${
-                        lesson.free || isPro
+                      className={`relative bg-white border rounded-2xl overflow-hidden transition-all duration-200 ${lesson.free || isPro
                           ? "border-[#e7ddd3] hover:border-[#e3a99c] hover:shadow-md cursor-pointer"
                           : "border-[#e7ddd3] cursor-pointer"
-                      }`}
+                        }`}
                       onClick={() => handleLessonClick(lesson)}
                     >
                       <div className="p-5">
