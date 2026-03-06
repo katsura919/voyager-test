@@ -31,6 +31,23 @@ const softLanding: PlaybookConfig = {
     accent: "#c47c5a",
     bg: "#f5e6dc",
   },
+  nextPlaybook: {
+    slug: "spanish-passport",
+    title: "The Spanish Passport Playbook",
+    tagline: "Chapter 3 ~ You've built the life. Now make it permanent. Turn your years in Spain into an EU passport.",
+    emoji: "🏆",
+    accent: "#c9a84c",
+    bg: "#f5ecd7",
+    chapterLabel: "Chapter 3",
+    phasePreview: [
+      { emoji: "🔄", title: "DNV Renewal Strategy" },
+      { emoji: "📖", title: "DELE A2 Language Test" },
+      { emoji: "🏛️", title: "CCSE Civic Exam" },
+      { emoji: "🏠", title: "Permanent Residency" },
+      { emoji: "🎖️", title: "Citizenship Application" },
+      { emoji: "🛂", title: "Your EU Passport" },
+    ],
+  },
   phases: [
     // ─────────────────────────────────────────
     // PHASE 0 ~ Before You Land

@@ -1154,7 +1154,7 @@ export default function PlaybookTemplate({
             </div>
 
             {/* ── What's Next: Chapter 2 Reveal ───────────────────── */}
-            {next && !waitlistMode && (
+            {next && (
               <div className="mt-6 relative overflow-hidden rounded-3xl" style={{ backgroundColor: "#18140e" }}>
 
                 {/* Ambient glow */}
@@ -1186,7 +1186,7 @@ export default function PlaybookTemplate({
                   {/* Hero text */}
                   <div className="text-center mb-10">
                     <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: `${next.accent}80` }}>
-                      Chapter 2
+                      {next.chapterLabel}
                     </p>
                     <div className="text-6xl mb-5">{next.emoji}</div>
                     <h3 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
@@ -1220,10 +1220,10 @@ export default function PlaybookTemplate({
                     style={{ borderColor: `${next.accent}20`, backgroundColor: `${next.accent}08` }}
                   >
                     <div className="flex items-center gap-2 text-xs">
-                      <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ backgroundColor: "#e3a99c", color: "#18140e" }}>
-                        🇪🇸
+                      <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ backgroundColor: config.catalog.accent, color: "#18140e" }}>
+                        {config.catalog.emoji}
                       </span>
-                      <span className="text-white/60">DNV Playbook</span>
+                      <span className="text-white/60">{config.heroTitle.replace("The ", "").replace(" Playbook Pro", "").replace(" Playbook", "")}</span>
                     </div>
                     <div className="flex-1 h-px opacity-30" style={{ backgroundColor: next.accent }} />
                     <span className="text-[10px]" style={{ color: next.accent }}>You are here</span>
@@ -1232,7 +1232,7 @@ export default function PlaybookTemplate({
                       <span className="w-6 h-6 rounded-full border flex items-center justify-center text-[10px]" style={{ borderColor: `${next.accent}60` }}>
                         {next.emoji}
                       </span>
-                      <span className="text-white/40">Passport</span>
+                      <span className="text-white/40">{next.title.replace("The ", "").replace(" Playbook", "")}</span>
                     </div>
                   </div>
 
@@ -1244,7 +1244,7 @@ export default function PlaybookTemplate({
                       style={{ backgroundColor: next.accent, color: "#18140e" }}
                     >
                       <Trophy className="w-4 h-4" />
-                      Preview Chapter 2
+                      Preview {next.chapterLabel}
                     </Link>
                     <p className="text-white/20 text-xs mt-4">
                       Early access ~ join the waitlist and be first in line.

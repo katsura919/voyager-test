@@ -43,6 +43,7 @@ export interface NextPlaybookPreview {
   emoji: string;
   accent: string;
   bg: string;
+  chapterLabel: string;        // e.g. "Chapter 2", "Chapter 3"
   phasePreview: Array<{ emoji: string; title: string }>;
 }
 

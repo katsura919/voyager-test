@@ -30,7 +30,7 @@ export default function PlaybookCatalogPage() {
               📖 Playbook Library
             </span>
             <h1 className="font-[family-name:var(--font-heading)] text-4xl md:text-5xl font-bold mb-4 leading-tight">
-              The Spain Visa Playbooks
+              The Happy Voyager Playbooks
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed mb-8">
               Step-by-step systems for every stage of your Spain journey ~ from visa application to EU passport.
