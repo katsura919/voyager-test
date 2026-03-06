@@ -81,7 +81,7 @@ const documents = [
 export default function SpainBankAccountGuidePage() {
   return (
     <div className="min-h-screen bg-[#f9f5f2] text-[#3a3a3a] font-sans">
-      <Header />
+      <Header darkBg />
 
       {/* Hero */}
       <div className="bg-[#3a3a3a] text-white pt-28 pb-16 px-6">
