@@ -380,6 +380,7 @@ export default function PlaybookTemplate({
     (acc, p) => acc + p.lessons.filter((l) => l.free).length,
     0
   );
+  const next = config.nextPlaybook ?? null;
 
   const [activePhase, setActivePhase] = useState(config.phases[0]?.id ?? "");
   const [expandedPhases, setExpandedPhases] = useState<string[]>([config.phases[0]?.id ?? ""]);
@@ -1151,6 +1152,108 @@ export default function PlaybookTemplate({
                 </p>
               )}
             </div>
+
+            {/* ── What's Next: Chapter 2 Reveal ───────────────────── */}
+            {next && !waitlistMode && (
+              <div className="mt-6 relative overflow-hidden rounded-3xl" style={{ backgroundColor: "#18140e" }}>
+
+                {/* Ambient glow */}
+                <div className="absolute inset-0 pointer-events-none">
+                  <div
+                    className="absolute -top-16 -right-16 w-72 h-72 rounded-full blur-3xl opacity-25"
+                    style={{ backgroundColor: next.accent }}
+                  />
+                  <div
+                    className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full blur-3xl opacity-15"
+                    style={{ backgroundColor: next.accent }}
+                  />
+                </div>
+
+                <div className="relative z-10 px-8 pt-10 pb-8 md:px-12 md:pt-12">
+
+                  {/* Chapter divider */}
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="h-px flex-1 opacity-20" style={{ backgroundColor: next.accent }} />
+                    <span
+                      className="text-[9px] font-bold tracking-[0.25em] uppercase px-4 py-1.5 rounded-full border"
+                      style={{ color: next.accent, borderColor: `${next.accent}40`, backgroundColor: `${next.accent}10` }}
+                    >
+                      ✦ &nbsp; What&apos;s Next &nbsp; ✦
+                    </span>
+                    <div className="h-px flex-1 opacity-20" style={{ backgroundColor: next.accent }} />
+                  </div>
+
+                  {/* Hero text */}
+                  <div className="text-center mb-10">
+                    <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: `${next.accent}80` }}>
+                      Chapter 2
+                    </p>
+                    <div className="text-6xl mb-5">{next.emoji}</div>
+                    <h3 className="font-[family-name:var(--font-heading)] text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+                      {next.title}
+                    </h3>
+                    <p className="text-white/50 text-base max-w-lg mx-auto leading-relaxed">
+                      {next.tagline}
+                    </p>
+                  </div>
+
+                  {/* Phase roadmap */}
+                  <div className="flex flex-wrap justify-center gap-2 mb-10">
+                    {next.phasePreview.map((phase, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-medium text-white/50"
+                        style={{ borderColor: `${next.accent}25`, backgroundColor: `${next.accent}08` }}
+                      >
+                        <span>{phase.emoji}</span>
+                        <span>{phase.title}</span>
+                        {i < next.phasePreview.length - 1 && (
+                          <span className="ml-1 opacity-30" style={{ color: next.accent }}>→</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Journey tracker */}
+                  <div
+                    className="flex items-center gap-3 justify-center mb-10 px-4 py-3 rounded-2xl border mx-auto max-w-sm"
+                    style={{ borderColor: `${next.accent}20`, backgroundColor: `${next.accent}08` }}
+                  >
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ backgroundColor: "#e3a99c", color: "#18140e" }}>
+                        🇪🇸
+                      </span>
+                      <span className="text-white/60">DNV Playbook</span>
+                    </div>
+                    <div className="flex-1 h-px opacity-30" style={{ backgroundColor: next.accent }} />
+                    <span className="text-[10px]" style={{ color: next.accent }}>You are here</span>
+                    <div className="flex-1 h-px opacity-20" style={{ backgroundColor: next.accent }} />
+                    <div className="flex items-center gap-2 text-xs opacity-50">
+                      <span className="w-6 h-6 rounded-full border flex items-center justify-center text-[10px]" style={{ borderColor: `${next.accent}60` }}>
+                        {next.emoji}
+                      </span>
+                      <span className="text-white/40">Passport</span>
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="text-center pb-2">
+                    <Link
+                      href={`/playbook/${next.slug}`}
+                      className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-sm transition-all hover:opacity-90 hover:scale-[1.02] active:scale-100"
+                      style={{ backgroundColor: next.accent, color: "#18140e" }}
+                    >
+                      <Trophy className="w-4 h-4" />
+                      Preview Chapter 2
+                    </Link>
+                    <p className="text-white/20 text-xs mt-4">
+                      Early access ~ join the waitlist and be first in line.
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+            )}
 
           </main>
         </div>

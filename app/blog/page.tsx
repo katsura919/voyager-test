@@ -86,6 +86,7 @@ export default async function BlogListingPage({
 
           {/* Pinned Articles */}
           {(!search && (!category || category === "all")) && (
+            <div>
             <div className="mb-10 space-y-5">
 
               {/* Pinned: DNV Updates 2026 */}
@@ -165,7 +166,7 @@ export default async function BlogListingPage({
                     My Road to Spanish Citizenship (+ A2 by 2026)
                   </h3>
                   <p className="text-[#6b6b6b] text-sm leading-relaxed mb-4 max-w-xl">
-                    Filipinos only need 2 years of residency, not 10. No renunciation. And I'm doing it publicly, with live countdowns, a study plan, and zero chill. This is the endgame.
+                    Filipinos only need 2 years of residency, not 10. No renunciation. And I&apos;m doing it publicly, with live countdowns, a study plan, and zero chill. This is the endgame.
                   </p>
                   <span className="inline-flex items-center gap-2 text-sm font-bold text-[#8fa38d] group-hover:gap-3 transition-all">
                     Follow the journey
@@ -174,6 +175,95 @@ export default async function BlogListingPage({
                 </div>
               </Link>
 
+            </div>
+
+            {/* Soft Landing Guides ~ compact grid */}
+            <div className="mb-10">
+              <p className="text-[10px] font-bold tracking-widest uppercase text-[#c47c5a] mb-5">
+                🌞 Soft Landing Guides
+              </p>
+              <div className="grid md:grid-cols-3 gap-4">
+
+                {/* NIE & TIE Guide */}
+                <Link
+                  href="/nie-and-tie-guide"
+                  className="group bg-white border border-[#e7ddd3] rounded-2xl overflow-hidden hover:border-[#6b8cba]/50 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="px-5 pt-5 pb-4 bg-[#dde8f5]">
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <span className="text-3xl">🪪</span>
+                      <span className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-[#6b8cba] text-white flex-shrink-0">
+                        Identity Docs
+                      </span>
+                    </div>
+                    <h3 className="font-[family-name:var(--font-heading)] text-base font-bold text-[#3a3a3a] leading-snug">
+                      NIE vs TIE: What&apos;s the Difference and How to Get Both
+                    </h3>
+                  </div>
+                  <div className="px-5 py-4">
+                    <p className="text-xs text-[#6b6b6b] leading-relaxed mb-3">
+                      The 6-step TIE process, 790-012 fee, cita previa, and every document you need. The fastest path to legal identity in Spain.
+                    </p>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6b8cba] group-hover:gap-2 transition-all">
+                      Read the guide <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Padrón Guide */}
+                <Link
+                  href="/padron-guide"
+                  className="group bg-white border border-[#e7ddd3] rounded-2xl overflow-hidden hover:border-[#8fa38d]/60 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="px-5 pt-5 pb-4 bg-[#d4e0d3]">
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <span className="text-3xl">📋</span>
+                      <span className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-[#8fa38d] text-white flex-shrink-0">
+                        Registration
+                      </span>
+                    </div>
+                    <h3 className="font-[family-name:var(--font-heading)] text-base font-bold text-[#3a3a3a] leading-snug">
+                      What Is the Padrón and Why You Need It First
+                    </h3>
+                  </div>
+                  <div className="px-5 py-4">
+                    <p className="text-xs text-[#6b6b6b] leading-relaxed mb-3">
+                      Your Padrón municipal is required for your TIE, bank account, healthcare, and schools. Here&apos;s how to register and what to bring.
+                    </p>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8fa38d] group-hover:gap-2 transition-all">
+                      Read the guide <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Bank Account Guide */}
+                <Link
+                  href="/spain-bank-account-guide"
+                  className="group bg-white border border-[#e7ddd3] rounded-2xl overflow-hidden hover:border-[#c9a84c]/60 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="px-5 pt-5 pb-4 bg-[#f5ecd7]">
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <span className="text-3xl">🏦</span>
+                      <span className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-[#c9a84c] text-white flex-shrink-0">
+                        Banking
+                      </span>
+                    </div>
+                    <h3 className="font-[family-name:var(--font-heading)] text-base font-bold text-[#3a3a3a] leading-snug">
+                      Opening a Bank Account in Spain as an Expat (2026)
+                    </h3>
+                  </div>
+                  <div className="px-5 py-4">
+                    <p className="text-xs text-[#6b6b6b] leading-relaxed mb-3">
+                      Sabadell vs BBVA vs CaixaBank, what documents to bring, and how to structure Wise + Revolut + a Spanish IBAN for life here.
+                    </p>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#c9a84c] group-hover:gap-2 transition-all">
+                      Read the guide <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </Link>
+
+              </div>
+            </div>
             </div>
           )}
 

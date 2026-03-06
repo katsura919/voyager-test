@@ -10,12 +10,14 @@
 import type { PlaybookConfig } from "./types";
 import spainDnv from "./spain-dnv";
 import visaRunner from "./visa-runner";
+import softLanding from "./soft-landing";
+import spanishPassport from "./spanish-passport";
 
 // ── Available playbooks (purchasable) ────────
 export const PLAYBOOKS: PlaybookConfig[] = [spainDnv];
 
 // ── Waitlist playbooks (preview + email capture) ──
-export const WAITLIST_PLAYBOOKS: PlaybookConfig[] = [visaRunner];
+export const WAITLIST_PLAYBOOKS: PlaybookConfig[] = [visaRunner, softLanding, spanishPassport];
 
 // ── Coming-soon catalog entries (display only) ──
 export const COMING_SOON = [
@@ -38,26 +40,6 @@ export const COMING_SOON = [
     status: "coming-soon" as const,
     accent: "#c9a84c",
     bg: "#f5ecd7",
-  },
-  {
-    emoji: "🏆",
-    title: "Citizenship Fast Track",
-    tagline: "2-year path for PH & LATAM nationals",
-    description:
-      "If your country has historical ties with Spain, you can apply for citizenship after just 2 years. Full playbook for Filipino and Latin American nationals.",
-    status: "coming-soon" as const,
-    accent: "#7a8f90",
-    bg: "#e0eaeb",
-  },
-  {
-    emoji: "🌞",
-    title: "The Soft Landing Playbook",
-    tagline: "Life in Spain, from day one",
-    description:
-      "NIE appointments, bank accounts, healthcare registration, SIM cards, housing contracts, and schooling ~ everything you need to actually live here once the visa is stamped.",
-    status: "coming-soon" as const,
-    accent: "#c47c5a",
-    bg: "#f5e6dc",
   },
 ];
 

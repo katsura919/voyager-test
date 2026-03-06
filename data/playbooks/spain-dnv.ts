@@ -8,9 +8,9 @@ const spainDnv: PlaybookConfig = {
   heroTitle: "Spain DNV Playbook Pro",
   heroDescription:
     "The complete system for getting Spain's Digital Nomad Visa, building your life in Spain, and becoming a Spanish citizen ~ all in one place, step by step.",
-  totalTime: "~2.5 hrs",
+  totalTime: "~3 hrs",
   modalFeatures: [
-    "21 lessons across 6 phases",
+    "24 lessons across 6 phases",
     "Application → Citizenship, step by step",
     "Links to every tool, checklist, and guide",
     "Tax strategy + Beckham Law breakdown",
@@ -18,7 +18,7 @@ const spainDnv: PlaybookConfig = {
   ],
   finalCtaTitle: "Application → Spanish Passport",
   finalCtaDescription:
-    "21 lessons. 6 phases. One complete system. Get everything from first document to citizenship ceremony.",
+    "24 lessons. 6 phases. One complete system. Get everything from first document to citizenship ceremony.",
   catalog: {
     emoji: "🇪🇸",
     tagline: "DNV application → Spanish citizenship",
@@ -27,6 +27,22 @@ const spainDnv: PlaybookConfig = {
     status: "available",
     accent: "#e3a99c",
     bg: "#f2d6c9",
+  },
+  nextPlaybook: {
+    slug: "spanish-passport",
+    title: "The Spanish Passport Playbook",
+    tagline: "Chapter 2 ~ Turn your Spanish residency into an EU passport.",
+    emoji: "🏆",
+    accent: "#c9a84c",
+    bg: "#f5ecd7",
+    phasePreview: [
+      { emoji: "🔄", title: "DNV Renewal Strategy" },
+      { emoji: "📖", title: "DELE A2 Language Test" },
+      { emoji: "🏛️", title: "CCSE Civic Exam" },
+      { emoji: "🏠", title: "Permanent Residency" },
+      { emoji: "🎖️", title: "Citizenship Application" },
+      { emoji: "🛂", title: "Your EU Passport" },
+    ],
   },
   phases: [
     {
@@ -293,8 +309,59 @@ const spainDnv: PlaybookConfig = {
           link: null,
         },
         {
-          id: "l13",
+          id: "l12a",
           number: "14",
+          title: "Padrón Registration Guide",
+          description:
+            "Your empadronamiento is the single most important first step after arriving. Without it, nothing else works ~ no TIE appointment, no bank account, no healthcare enrollment.",
+          bullets: [
+            "What the Padrón is and why banks, TIE offices, and healthcare all require it",
+            "Exact documents to bring to your local Ayuntamiento",
+            "How to register online in Madrid and Barcelona",
+            "Processing times by city + how to get a certified copy fast",
+          ],
+          time: "8 min",
+          tag: "Free Guide",
+          free: true,
+          link: "/padron-guide",
+        },
+        {
+          id: "l12b",
+          number: "15",
+          title: "NIE & TIE: What They Are and How to Get Both",
+          description:
+            "Your NIE is a number. Your TIE is a physical card. You need both ~ and the process to get them is different. Here's the full picture, step by step.",
+          bullets: [
+            "NIE vs TIE ~ the critical difference most guides get wrong",
+            "The 6-step TIE process from Padrón to card collection",
+            "Fee 790-012 ~ what to pay and how to pay it",
+            "What to do when cita previa slots are weeks out",
+          ],
+          time: "10 min",
+          tag: "Free Guide",
+          free: true,
+          link: "/nie-and-tie-guide",
+        },
+        {
+          id: "l12c",
+          number: "16",
+          title: "Opening a Spanish Bank Account",
+          description:
+            "You need a Spanish IBAN for rent, utilities, and life here. Wise and Revolut aren't enough. Here's which banks work for foreigners and exactly what to bring.",
+          bullets: [
+            "Why Wise and Revolut fail for Spanish direct debits and utilities",
+            "Sabadell vs BBVA vs CaixaBank ~ which is most foreigner-friendly",
+            "Exact documents required to open an account as a new resident",
+            "The recommended three-account setup for life in Spain",
+          ],
+          time: "8 min",
+          tag: "Free Guide",
+          free: true,
+          link: "/spain-bank-account-guide",
+        },
+        {
+          id: "l13",
+          number: "17",
           title: "NIE & TIE Appointment Guide",
           description:
             "How to book your NIE and TIE appointments at the police station, what to bring, what to expect, and how to handle long wait times.",
@@ -311,7 +378,7 @@ const spainDnv: PlaybookConfig = {
         },
         {
           id: "l14",
-          number: "15",
+          number: "18",
           title: "Document Translations ~ What Needs Translating",
           description:
             "Not every document needs a sworn translation. Learn what does, how to get it certified, and who is legally authorized to do it in Spain.",
@@ -339,7 +406,7 @@ const spainDnv: PlaybookConfig = {
       lessons: [
         {
           id: "l15",
-          number: "16",
+          number: "19",
           title: "DNV Renewal ~ The Complete Process",
           description:
             "What changes at renewal vs initial application, which documents you need to gather again, and how to renew without any gaps in your residency continuity.",
@@ -356,7 +423,7 @@ const spainDnv: PlaybookConfig = {
         },
         {
           id: "l16",
-          number: "17",
+          number: "20",
           title: "Spain Tax Obligations for Digital Nomads",
           description:
             "The 183-day tax residency rule, when you become a Spanish tax resident, what you owe, and when you need a gestor to handle your Modelo 100.",
@@ -373,7 +440,7 @@ const spainDnv: PlaybookConfig = {
         },
         {
           id: "l17",
-          number: "18",
+          number: "21",
           title: "Beckham Law ~ Is It Worth It?",
           description:
             "Spain's expat flat-tax regime explained ~ who qualifies, how to apply within the first 6 months, and whether the 24% flat rate actually saves you money.",
@@ -401,7 +468,7 @@ const spainDnv: PlaybookConfig = {
       lessons: [
         {
           id: "l18",
-          number: "19",
+          number: "22",
           title: "The Road to Permanent Residency",
           description:
             "After 5 years of continuous legal residency, you qualify for larga duración (permanent residency). Here's exactly how to apply and what not to mess up.",
@@ -418,7 +485,7 @@ const spainDnv: PlaybookConfig = {
         },
         {
           id: "l19",
-          number: "20",
+          number: "23",
           title: "Spanish Citizenship ~ Full Timeline",
           description:
             "From DELE language test to oath ceremony ~ the complete citizenship application process in the correct order.",
@@ -435,7 +502,7 @@ const spainDnv: PlaybookConfig = {
         },
         {
           id: "l20",
-          number: "21",
+          number: "24",
           title: "The 2-Year Path (Philippines & LATAM)",
           description:
             "If your country has a historical tie with Spain, you can apply for citizenship after just 2 years ~ not 10. Full guide for Filipino and Latin American nationals.",

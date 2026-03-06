@@ -36,6 +36,16 @@ export interface PlaybookCatalogMeta {
   bg: string;                // bg color for catalog card header chip
 }
 
+export interface NextPlaybookPreview {
+  slug: string;
+  title: string;
+  tagline: string;
+  emoji: string;
+  accent: string;
+  bg: string;
+  phasePreview: Array<{ emoji: string; title: string }>;
+}
+
 export interface PlaybookConfig {
   slug: string;              // URL slug — e.g. "spain-dnv"
   badge: string;             // e.g. "Playbook Pro"
@@ -49,4 +59,5 @@ export interface PlaybookConfig {
   finalCtaDescription: string;
   catalog: PlaybookCatalogMeta;
   phases: Phase[];
+  nextPlaybook?: NextPlaybookPreview; // "What's Next" chapter reveal
 }
