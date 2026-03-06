@@ -31,7 +31,7 @@ export interface PlaybookCatalogMeta {
   emoji: string;
   tagline: string;           // 1-line hook shown on catalog card
   description: string;       // 2-sentence description for catalog card
-  status: "available" | "coming-soon";
+  status: "available" | "waitlist" | "coming-soon";
   accent: string;            // accent color for catalog card
   bg: string;                // bg color for catalog card header chip
 }

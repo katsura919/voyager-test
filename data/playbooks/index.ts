@@ -11,8 +11,11 @@ import type { PlaybookConfig } from "./types";
 import spainDnv from "./spain-dnv";
 import visaRunner from "./visa-runner";
 
-// ── Available playbooks ──────────────────────
-export const PLAYBOOKS: PlaybookConfig[] = [spainDnv, visaRunner];
+// ── Available playbooks (purchasable) ────────
+export const PLAYBOOKS: PlaybookConfig[] = [spainDnv];
+
+// ── Waitlist playbooks (preview + email capture) ──
+export const WAITLIST_PLAYBOOKS: PlaybookConfig[] = [visaRunner];
 
 // ── Coming-soon catalog entries (display only) ──
 export const COMING_SOON = [
@@ -58,12 +61,19 @@ export const COMING_SOON = [
   },
 ];
 
-// ── Lookup helper ────────────────────────────
+// ── Lookup helpers ────────────────────────────
 export function getPlaybook(slug: string): PlaybookConfig | undefined {
   return PLAYBOOKS.find((p) => p.slug === slug);
 }
 
+export function getWaitlistPlaybook(slug: string): PlaybookConfig | undefined {
+  return WAITLIST_PLAYBOOKS.find((p) => p.slug === slug);
+}
+
 // ── Static params for Next.js generateStaticParams ──
 export function getAvailableSlugs(): { slug: string }[] {
-  return PLAYBOOKS.map((p) => ({ slug: p.slug }));
+  return [
+    ...PLAYBOOKS.map((p) => ({ slug: p.slug })),
+    ...WAITLIST_PLAYBOOKS.map((p) => ({ slug: p.slug })),
+  ];
 }

@@ -19,6 +19,7 @@ import {
   Mail,
 } from "lucide-react";
 import type { PlaybookConfig } from "@/data/playbooks/types";
+import WaitlistModal from "./WaitlistModal";
 
 /* ─────────────────────────────────────────────
    Tag color helper
@@ -367,7 +368,13 @@ function UnlockModal({
 /* ─────────────────────────────────────────────
    Main Template
 ───────────────────────────────────────────── */
-export default function PlaybookTemplate({ config }: { config: PlaybookConfig }) {
+export default function PlaybookTemplate({
+  config,
+  waitlistMode = false,
+}: {
+  config: PlaybookConfig;
+  waitlistMode?: boolean;
+}) {
   const totalLessons = config.phases.reduce((acc, p) => acc + p.lessons.length, 0);
   const freeLessons = config.phases.reduce(
     (acc, p) => acc + p.lessons.filter((l) => l.free).length,
@@ -377,6 +384,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
   const [activePhase, setActivePhase] = useState(config.phases[0]?.id ?? "");
   const [expandedPhases, setExpandedPhases] = useState<string[]>([config.phases[0]?.id ?? ""]);
   const [showModal, setShowModal] = useState(false);
+  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
   const [lessonModal, setLessonModal] = useState<{ url: string; title: string } | null>(null);
   const [emailCaptureTarget, setEmailCaptureTarget] = useState<{ url: string; title: string } | null>(null);
@@ -386,8 +394,10 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
 
   const proKey = `hv_pro_${config.slug}`;
 
-  // Handle Stripe return (session_id in URL) + restore stored pro access
+  // Handle Stripe return + restore stored pro access (skipped in waitlist mode)
   useEffect(() => {
+    if (waitlistMode) return;
+
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get("session_id");
 
@@ -427,7 +437,6 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
           }
         })
         .catch(() => {
-          // Offline fallback ~ trust localStorage
           setIsPro(true);
           setProEmail(storedProEmail);
           setEmailCaptured(true);
@@ -453,6 +462,10 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
   };
 
   const handleLessonClick = (lesson: { free: boolean; link: string | null; title: string }) => {
+    if (waitlistMode) {
+      setShowWaitlistModal(true);
+      return;
+    }
     if (isPro) {
       if (lesson.link) setLessonModal({ url: lesson.link, title: lesson.title });
     } else if (lesson.free && lesson.link) {
@@ -471,11 +484,16 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
     }
   };
 
+  // Derived: is a lesson "accessible" (open to click into)
+  const isLessonAccessible = (lesson: { free: boolean }) =>
+    !waitlistMode && (isPro || lesson.free);
+
   return (
     <>
       <Header darkBg />
 
-      {showModal && (
+      {/* Stripe unlock modal */}
+      {showModal && !waitlistMode && (
         <UnlockModal
           onClose={() => setShowModal(false)}
           onProUnlocked={(email) => {
@@ -488,7 +506,16 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
           modalFeatures={config.modalFeatures}
         />
       )}
-      {emailCaptureTarget && (
+
+      {/* Waitlist modal */}
+      {showWaitlistModal && (
+        <WaitlistModal
+          playbook={config}
+          onClose={() => setShowWaitlistModal(false)}
+        />
+      )}
+
+      {emailCaptureTarget && !waitlistMode && (
         <EmailCaptureModal
           lessonTitle={emailCaptureTarget.title}
           onSubmit={(email) => {
@@ -564,7 +591,9 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                             key={lesson.id}
                             onClick={() => {
                               setShowMobileNav(false);
-                              if (isPro) {
+                              if (waitlistMode) {
+                                setShowWaitlistModal(true);
+                              } else if (isPro) {
                                 if (lesson.link) setLessonModal({ url: lesson.link, title: lesson.title });
                               } else if (lesson.free) {
                                 if (lesson.link) openFreeLesson(lesson.link, lesson.title);
@@ -574,7 +603,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                             }}
                             className="w-full flex items-center gap-3 pl-4 pr-4 py-2 text-left group"
                           >
-                            {lesson.free || isPro ? (
+                            {isLessonAccessible(lesson) ? (
                               <span className="w-3.5 h-3.5 rounded-full border border-[#8fa38d] bg-[#8fa38d]/20 flex-shrink-0" />
                             ) : (
                               <Lock className="w-3 h-3 text-white/20 flex-shrink-0" />
@@ -592,7 +621,16 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
             </nav>
             {/* CTA */}
             <div className="p-4 border-t border-white/10 flex-shrink-0">
-              {isPro ? (
+              {waitlistMode ? (
+                <button
+                  onClick={() => { setShowMobileNav(false); setShowWaitlistModal(true); }}
+                  className="w-full py-3 rounded-xl text-white text-sm font-bold transition-colors flex items-center justify-center gap-2"
+                  style={{ backgroundColor: config.catalog.accent }}
+                >
+                  <Mail className="w-4 h-4" />
+                  Join the Waitlist
+                </button>
+              ) : isPro ? (
                 <div className="w-full py-3 rounded-xl bg-[#8fa38d]/20 text-[#8fa38d] text-sm font-bold flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />
                   Full Access Active
@@ -623,9 +661,18 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
               <span className="text-[10px] font-bold tracking-widest uppercase bg-white/10 text-white/60 px-3 py-1.5 rounded-full">
                 {config.badgeLabel}
               </span>
-              <span className="text-[10px] font-bold tracking-widest uppercase bg-[#8fa38d]/20 text-[#8fa38d] border border-[#8fa38d]/30 px-3 py-1.5 rounded-full">
-                {config.updatedLabel}
-              </span>
+              {waitlistMode ? (
+                <span
+                  className="text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full border"
+                  style={{ color: config.catalog.accent, borderColor: `${config.catalog.accent}40`, backgroundColor: `${config.catalog.accent}20` }}
+                >
+                  🚀 Early Access ~ Join the Waitlist
+                </span>
+              ) : (
+                <span className="text-[10px] font-bold tracking-widest uppercase bg-[#8fa38d]/20 text-[#8fa38d] border border-[#8fa38d]/30 px-3 py-1.5 rounded-full">
+                  {config.updatedLabel}
+                </span>
+              )}
             </div>
             <h1 className="font-[family-name:var(--font-heading)] text-4xl md:text-5xl font-bold mb-4 leading-tight">
               {config.heroTitle}
@@ -634,17 +681,40 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
               {config.heroDescription}
             </p>
             <div className="flex flex-wrap gap-6 mb-6">
-              {[
-                { value: `${totalLessons}`, label: "Lessons" },
-                { value: `${config.phases.length}`, label: "Phases" },
-                { value: `${freeLessons}`, label: "Free" },
-                { value: config.totalTime, label: "Total read time" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="text-2xl font-bold text-white">{s.value}</p>
-                  <p className="text-xs text-white/40 uppercase tracking-widest">{s.label}</p>
-                </div>
-              ))}
+              {waitlistMode ? (
+                <>
+                  {[
+                    { value: `${totalLessons}`, label: "Lessons" },
+                    { value: `${config.phases.length}`, label: "Phases" },
+                    { value: config.totalTime, label: "Total read time" },
+                  ].map((s) => (
+                    <div key={s.label}>
+                      <p className="text-2xl font-bold text-white">{s.value}</p>
+                      <p className="text-xs text-white/40 uppercase tracking-widest">{s.label}</p>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => setShowWaitlistModal(true)}
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-full text-white font-bold text-sm transition-all hover:opacity-90"
+                    style={{ backgroundColor: config.catalog.accent }}
+                  >
+                    <Mail className="w-4 h-4" />
+                    Join the Waitlist
+                  </button>
+                </>
+              ) : (
+                [
+                  { value: `${totalLessons}`, label: "Lessons" },
+                  { value: `${config.phases.length}`, label: "Phases" },
+                  { value: `${freeLessons}`, label: "Free" },
+                  { value: config.totalTime, label: "Total read time" },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <p className="text-2xl font-bold text-white">{s.value}</p>
+                    <p className="text-xs text-white/40 uppercase tracking-widest">{s.label}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -693,7 +763,9 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                             <button
                               key={lesson.id}
                               onClick={() => {
-                                if (isPro) {
+                                if (waitlistMode) {
+                                  setShowWaitlistModal(true);
+                                } else if (isPro) {
                                   if (lesson.link) setLessonModal({ url: lesson.link, title: lesson.title });
                                 } else if (lesson.free) {
                                   if (lesson.link) openFreeLesson(lesson.link, lesson.title);
@@ -703,7 +775,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                               }}
                               className="w-full flex items-center gap-2 pl-3 pr-2 py-1.5 text-left group"
                             >
-                              {lesson.free || isPro ? (
+                              {isLessonAccessible(lesson) ? (
                                 <span className="w-3.5 h-3.5 rounded-full border border-[#8fa38d] bg-[#8fa38d]/20 flex-shrink-0" />
                               ) : (
                                 <Lock className="w-3 h-3 text-white/20 flex-shrink-0" />
@@ -722,7 +794,16 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
 
               {/* Sidebar CTA */}
               <div className="p-4 border-t border-white/10">
-                {isPro ? (
+                {waitlistMode ? (
+                  <button
+                    onClick={() => setShowWaitlistModal(true)}
+                    className="w-full py-2.5 rounded-xl text-white text-xs font-bold transition-colors flex items-center justify-center gap-2"
+                    style={{ backgroundColor: config.catalog.accent }}
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    Join the Waitlist
+                  </button>
+                ) : isPro ? (
                   <div className="w-full py-2.5 rounded-xl bg-[#8fa38d]/20 text-[#8fa38d] text-xs font-bold flex items-center justify-center gap-2">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     Pro Access Active
@@ -746,7 +827,6 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
             {/* Mobile sticky nav bar */}
             <div className="lg:hidden sticky top-16 z-30 -mx-4 px-4 pt-2 pb-2 bg-[#f9f5f2]/95 backdrop-blur-sm border-b border-[#e7ddd3]">
               <div className="flex flex-wrap gap-1.5 justify-center">
-                {/* All Lessons pill */}
                 <button
                   onClick={() => setShowMobileNav(true)}
                   className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#3a3a3a] text-white whitespace-nowrap shadow-sm"
@@ -754,7 +834,6 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                   <BookOpen className="w-3 h-3" />
                   All Lessons
                 </button>
-                {/* Phase pills */}
                 {config.phases.map((phase) => (
                   <button
                     key={phase.id}
@@ -772,7 +851,27 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
             </div>
 
             {/* Access banner */}
-            {isPro ? (
+            {waitlistMode ? (
+              <div
+                className="border rounded-2xl px-5 py-4 flex items-start gap-3"
+                style={{ backgroundColor: `${config.catalog.accent}15`, borderColor: `${config.catalog.accent}40` }}
+              >
+                <Mail className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: config.catalog.accent }} />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-[#3a3a3a]">Early Access ~ Content launching soon</p>
+                  <p className="text-xs text-[#6b6b6b] mt-0.5">
+                    Browse the full lesson outline below and join the waitlist to be notified when this playbook goes live.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowWaitlistModal(true)}
+                  className="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest hover:underline whitespace-nowrap"
+                  style={{ color: config.catalog.accent }}
+                >
+                  Join →
+                </button>
+              </div>
+            ) : isPro ? (
               <div className="bg-[#d4e0d3]/50 border border-[#8fa38d]/40 rounded-2xl px-5 py-4 flex items-center gap-3">
                 <CheckCircle2 className="w-4 h-4 text-[#8fa38d] flex-shrink-0" />
                 <div>
@@ -820,7 +919,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                       </h2>
                       <p className="text-sm text-[#6b6b6b]">{phase.description}</p>
                     </div>
-                    {!isPro && phaseIdx > 0 && phase.lessons.every((l) => !l.free) && (
+                    {(waitlistMode || (!isPro && phaseIdx > 0 && phase.lessons.every((l) => !l.free))) && (
                       <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center">
                         <Lock className="w-4 h-4 text-[#6b6b6b]" />
                       </div>
@@ -830,120 +929,158 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
 
                 {/* Lesson cards */}
                 <div className="space-y-3">
-                  {phase.lessons.map((lesson) => (
-                    <div
-                      key={lesson.id}
-                      className={`relative bg-white border rounded-2xl overflow-hidden transition-all duration-200 ${lesson.free || isPro
-                          ? "border-[#e7ddd3] hover:border-[#e3a99c] hover:shadow-md cursor-pointer"
-                          : "border-[#e7ddd3] cursor-pointer"
+                  {phase.lessons.map((lesson) => {
+                    const accessible = isLessonAccessible(lesson);
+                    return (
+                      <div
+                        key={lesson.id}
+                        className={`relative bg-white border rounded-2xl overflow-hidden transition-all duration-200 ${
+                          accessible
+                            ? "border-[#e7ddd3] hover:border-[#e3a99c] hover:shadow-md cursor-pointer"
+                            : "border-[#e7ddd3] cursor-pointer"
                         }`}
-                      onClick={() => handleLessonClick(lesson)}
-                    >
-                      <div className="p-5">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex items-start gap-4 flex-1 min-w-0">
-                            <div
-                              className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold"
-                              style={{
-                                backgroundColor: lesson.free || isPro ? phase.bg : "#f0ebe6",
-                                color: lesson.free || isPro ? phase.accent : "#aaaaaa",
-                              }}
-                            >
-                              {lesson.number}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                                <h3 className="font-bold text-sm leading-snug text-[#3a3a3a]">
-                                  {lesson.title}
-                                </h3>
-                                {lesson.free ? (
-                                  <span className="text-[9px] font-bold uppercase tracking-widest text-[#8fa38d] bg-[#d4e0d3] px-2 py-0.5 rounded-full flex-shrink-0">
-                                    Free
-                                  </span>
-                                ) : isPro ? (
-                                  <span className="text-[9px] font-bold uppercase tracking-widest text-[#8fa38d] bg-[#d4e0d3] px-2 py-0.5 rounded-full flex-shrink-0">
-                                    Unlocked
-                                  </span>
-                                ) : (
-                                  <span className="text-[9px] font-bold uppercase tracking-widest text-[#e3a99c] bg-[#f2d6c9] px-2 py-0.5 rounded-full flex-shrink-0">
-                                    Pro
-                                  </span>
-                                )}
-                                <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full flex-shrink-0 ${tagStyle(lesson.tag)}`}>
-                                  {lesson.tag}
-                                </span>
+                        onClick={() => handleLessonClick(lesson)}
+                      >
+                        <div className="p-5">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-4 flex-1 min-w-0">
+                              <div
+                                className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold"
+                                style={{
+                                  backgroundColor: accessible ? phase.bg : "#f0ebe6",
+                                  color: accessible ? phase.accent : "#aaaaaa",
+                                }}
+                              >
+                                {lesson.number}
                               </div>
-                              <p className="text-xs text-[#6b6b6b] leading-relaxed mb-3">
-                                {lesson.description}
-                              </p>
-                              <ul className="space-y-1">
-                                {lesson.bullets.map((bullet) => (
-                                  <li key={bullet} className="flex items-start gap-2 text-xs text-[#6b6b6b]">
-                                    <span
-                                      className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
-                                      style={{ backgroundColor: phase.accent }}
-                                    />
-                                    {bullet}
-                                  </li>
-                                ))}
-                              </ul>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                                  <h3 className="font-bold text-sm leading-snug text-[#3a3a3a]">
+                                    {lesson.title}
+                                  </h3>
+                                  {waitlistMode ? (
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#6b8cba] bg-[#dde8f5] px-2 py-0.5 rounded-full flex-shrink-0">
+                                      Soon
+                                    </span>
+                                  ) : lesson.free ? (
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#8fa38d] bg-[#d4e0d3] px-2 py-0.5 rounded-full flex-shrink-0">
+                                      Free
+                                    </span>
+                                  ) : isPro ? (
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#8fa38d] bg-[#d4e0d3] px-2 py-0.5 rounded-full flex-shrink-0">
+                                      Unlocked
+                                    </span>
+                                  ) : (
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#e3a99c] bg-[#f2d6c9] px-2 py-0.5 rounded-full flex-shrink-0">
+                                      Pro
+                                    </span>
+                                  )}
+                                  <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full flex-shrink-0 ${tagStyle(lesson.tag)}`}>
+                                    {lesson.tag}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-[#6b6b6b] leading-relaxed mb-3">
+                                  {lesson.description}
+                                </p>
+                                <ul className="space-y-1">
+                                  {lesson.bullets.map((bullet) => (
+                                    <li key={bullet} className="flex items-start gap-2 text-xs text-[#6b6b6b]">
+                                      <span
+                                        className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
+                                        style={{ backgroundColor: phase.accent }}
+                                      />
+                                      {bullet}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
                             </div>
-                          </div>
 
-                          {/* Right side CTA */}
-                          <div className="flex-shrink-0 flex flex-col items-end gap-2">
-                            <div className="flex items-center gap-1 text-[10px] text-[#aaaaaa]">
-                              <Clock className="w-3 h-3" />
-                              {lesson.time}
-                            </div>
-                            {lesson.free || isPro ? (
-                              lesson.link ? (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (isPro) {
-                                      setLessonModal({ url: lesson.link!, title: lesson.title });
-                                    } else {
-                                      openFreeLesson(lesson.link!, lesson.title);
-                                    }
-                                  }}
-                                  className="flex items-center gap-1 text-[10px] font-bold text-[#8fa38d] hover:text-[#e3a99c] transition-colors whitespace-nowrap"
-                                >
-                                  Open <BookOpen className="w-3 h-3" />
-                                </button>
-                              ) : null
-                            ) : (
-                              <div className="w-7 h-7 rounded-lg bg-[#f0ebe6] flex items-center justify-center">
-                                <Lock className="w-3.5 h-3.5 text-[#aaaaaa]" />
+                            {/* Right side CTA */}
+                            <div className="flex-shrink-0 flex flex-col items-end gap-2">
+                              <div className="flex items-center gap-1 text-[10px] text-[#aaaaaa]">
+                                <Clock className="w-3 h-3" />
+                                {lesson.time}
                               </div>
-                            )}
+                              {waitlistMode ? (
+                                <div className="w-7 h-7 rounded-lg bg-[#f0ebe6] flex items-center justify-center">
+                                  <Lock className="w-3.5 h-3.5 text-[#aaaaaa]" />
+                                </div>
+                              ) : accessible ? (
+                                lesson.link ? (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (isPro) {
+                                        setLessonModal({ url: lesson.link!, title: lesson.title });
+                                      } else {
+                                        openFreeLesson(lesson.link!, lesson.title);
+                                      }
+                                    }}
+                                    className="flex items-center gap-1 text-[10px] font-bold text-[#8fa38d] hover:text-[#e3a99c] transition-colors whitespace-nowrap"
+                                  >
+                                    Open <BookOpen className="w-3 h-3" />
+                                  </button>
+                                ) : null
+                              ) : (
+                                <div className="w-7 h-7 rounded-lg bg-[#f0ebe6] flex items-center justify-center">
+                                  <Lock className="w-3.5 h-3.5 text-[#aaaaaa]" />
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
+                        {!accessible && (
+                          <div className="h-0.5 bg-gradient-to-r from-transparent via-[#e7ddd3] to-transparent" />
+                        )}
                       </div>
-                      {!lesson.free && !isPro && (
-                        <div className="h-0.5 bg-gradient-to-r from-transparent via-[#e7ddd3] to-transparent" />
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
-                {/* Phase 0 → unlock nudge */}
-                {phaseIdx === 0 && !isPro && (
-                  <div className="mt-4 border-2 border-dashed border-[#e3a99c]/40 rounded-2xl p-6 text-center bg-[#f2d6c9]/20">
-                    <Lock className="w-5 h-5 text-[#e3a99c] mx-auto mb-3" />
-                    <p className="font-bold text-[#3a3a3a] mb-1 text-sm">
-                      Most of Phases 1~5 are Pro-only
-                    </p>
-                    <p className="text-xs text-[#6b6b6b] mb-4 max-w-sm mx-auto">
-                      Unlock all {totalLessons - freeLessons} remaining Pro lessons to continue from document prep to citizenship.
-                    </p>
-                    <button
-                      onClick={() => setShowModal(true)}
-                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3a3a3a] text-white text-xs font-bold hover:bg-[#e3a99c] transition-colors"
-                    >
-                      <Zap className="w-3.5 h-3.5" />
-                      Unlock Playbook Pro
-                    </button>
+                {/* After phase 0: nudge */}
+                {phaseIdx === 0 && (
+                  <div className="mt-4 border-2 border-dashed rounded-2xl p-6 text-center"
+                    style={{
+                      borderColor: waitlistMode ? `${config.catalog.accent}40` : "#e3a99c40",
+                      backgroundColor: waitlistMode ? `${config.catalog.accent}10` : "#f2d6c920",
+                    }}
+                  >
+                    <Lock className="w-5 h-5 mx-auto mb-3" style={{ color: waitlistMode ? config.catalog.accent : "#e3a99c" }} />
+                    {waitlistMode ? (
+                      <>
+                        <p className="font-bold text-[#3a3a3a] mb-1 text-sm">
+                          Full content coming soon
+                        </p>
+                        <p className="text-xs text-[#6b6b6b] mb-4 max-w-sm mx-auto">
+                          Join the waitlist to be notified the moment all {totalLessons} lessons go live.
+                        </p>
+                        <button
+                          onClick={() => setShowWaitlistModal(true)}
+                          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-white text-xs font-bold hover:opacity-90 transition-opacity"
+                          style={{ backgroundColor: config.catalog.accent }}
+                        >
+                          <Mail className="w-3.5 h-3.5" />
+                          Join the Waitlist
+                        </button>
+                      </>
+                    ) : !isPro && (
+                      <>
+                        <p className="font-bold text-[#3a3a3a] mb-1 text-sm">
+                          Most of Phases 1~5 are Pro-only
+                        </p>
+                        <p className="text-xs text-[#6b6b6b] mb-4 max-w-sm mx-auto">
+                          Unlock all {totalLessons - freeLessons} remaining Pro lessons to continue from document prep to citizenship.
+                        </p>
+                        <button
+                          onClick={() => setShowModal(true)}
+                          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#3a3a3a] text-white text-xs font-bold hover:bg-[#e3a99c] transition-colors"
+                        >
+                          <Zap className="w-3.5 h-3.5" />
+                          Unlock Playbook Pro
+                        </button>
+                      </>
+                    )}
                   </div>
                 )}
               </section>
@@ -951,16 +1088,42 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
 
             {/* ── Final CTA ────────────────────────────────────────── */}
             <div className="bg-[#3a3a3a] rounded-3xl p-8 md:p-10 text-center mt-8">
-              <div className="w-12 h-12 rounded-2xl bg-[#e3a99c]/20 flex items-center justify-center mx-auto mb-5">
-                <Trophy className="w-6 h-6 text-[#e3a99c]" />
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-5"
+                style={{ backgroundColor: waitlistMode ? `${config.catalog.accent}20` : "#e3a99c20" }}
+              >
+                {waitlistMode ? (
+                  <Mail className="w-6 h-6" style={{ color: config.catalog.accent }} />
+                ) : (
+                  <Trophy className="w-6 h-6 text-[#e3a99c]" />
+                )}
               </div>
               <h2 className="font-[family-name:var(--font-heading)] text-2xl md:text-3xl font-bold text-white mb-3">
-                {config.finalCtaTitle}
+                {waitlistMode ? "Be first in line" : config.finalCtaTitle}
               </h2>
               <p className="text-white/50 text-sm max-w-md mx-auto mb-7 leading-relaxed">
-                {config.finalCtaDescription}
+                {waitlistMode
+                  ? `Join the waitlist and get notified the moment ${config.heroTitle} launches ~ often with an early access discount.`
+                  : config.finalCtaDescription}
               </p>
-              {!isPro ? (
+              {waitlistMode ? (
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <button
+                    onClick={() => setShowWaitlistModal(true)}
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-white font-bold transition-all hover:opacity-90"
+                    style={{ backgroundColor: config.catalog.accent }}
+                  >
+                    <Mail className="w-4 h-4" />
+                    Join the Waitlist
+                  </button>
+                  <Link
+                    href="https://calendly.com/abie-gamao/spain-dnv"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-white/20 text-white/70 text-sm font-medium hover:border-white/40 hover:text-white transition-colors"
+                  >
+                    Book a Strategy Call
+                  </Link>
+                </div>
+              ) : !isPro ? (
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button
                     onClick={() => setShowModal(true)}
@@ -982,7 +1145,7 @@ export default function PlaybookTemplate({ config }: { config: PlaybookConfig })
                   Full Access Active ~ enjoy the journey!
                 </div>
               )}
-              {!isPro && (
+              {!isPro && !waitlistMode && (
                 <p className="text-white/20 text-xs mt-4">
                   Paid consultation ~ book your session now.
                 </p>

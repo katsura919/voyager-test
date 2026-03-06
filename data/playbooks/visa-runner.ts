@@ -27,7 +27,7 @@ const visaRunner: PlaybookConfig = {
     tagline: "90/180 decoded ~ travel freely without the panic",
     description:
       "The Schengen rules, the Balkans visa run strategy, and Abie's 8-month field guide from the road ~ everything you need to travel smart while you wait for Spain.",
-    status: "available",
+    status: "waitlist",
     accent: "#6b8cba",
     bg: "#dde8f5",
   },

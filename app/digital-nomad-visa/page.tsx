@@ -298,7 +298,7 @@ export default function DigitalNomadVisaPage() {
 
           {/* Filipino-specific note */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#e3a99c]/10 border border-[#e3a99c]/30 mb-10">
-            <span className="text-sm text-[#e3a99c] font-semibold">Guided by a Filipino already living in Spain 🇵🇭→🇪🇸</span>
+            <span className="text-sm text-[#e3a99c] font-semibold">Guided by a Filipino already living in Spain <br /> 🇵🇭→🇪🇸</span>
           </div>
 
           {/* Trust bar */}
@@ -577,11 +577,11 @@ export default function DigitalNomadVisaPage() {
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {[
-                  "🇵🇭 Philippines","🇲🇽 Mexico","🇨🇴 Colombia","🇦🇷 Argentina","🇵🇪 Peru",
-                  "🇻🇪 Venezuela","🇨🇱 Chile","🇪🇨 Ecuador","🇧🇴 Bolivia","🇵🇾 Paraguay",
-                  "🇺🇾 Uruguay","🇨🇷 Costa Rica","🇵🇦 Panama","🇬🇹 Guatemala","🇭🇳 Honduras",
-                  "🇳🇮 Nicaragua","🇸🇻 El Salvador","🇩🇴 Dom. Republic","🇨🇺 Cuba","🇵🇹 Portugal",
-                  "🇬🇶 Eq. Guinea","🇦🇩 Andorra",
+                  "🇵🇭 Philippines", "🇲🇽 Mexico", "🇨🇴 Colombia", "🇦🇷 Argentina", "🇵🇪 Peru",
+                  "🇻🇪 Venezuela", "🇨🇱 Chile", "🇪🇨 Ecuador", "🇧🇴 Bolivia", "🇵🇾 Paraguay",
+                  "🇺🇾 Uruguay", "🇨🇷 Costa Rica", "🇵🇦 Panama", "🇬🇹 Guatemala", "🇭🇳 Honduras",
+                  "🇳🇮 Nicaragua", "🇸🇻 El Salvador", "🇩🇴 Dom. Republic", "🇨🇺 Cuba", "🇵🇹 Portugal",
+                  "🇬🇶 Eq. Guinea", "🇦🇩 Andorra",
                 ].map((c) => (
                   <span key={c} className="px-2 py-0.5 rounded-full bg-white border border-[#e0eaeb] text-[11px] text-[#3a3a3a]">{c}</span>
                 ))}

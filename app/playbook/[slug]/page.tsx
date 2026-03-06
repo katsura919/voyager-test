@@ -1,15 +1,15 @@
 import { notFound } from "next/navigation";
-import { getPlaybook, getAvailableSlugs } from "@/data/playbooks/index";
+import { getPlaybook, getWaitlistPlaybook, getAvailableSlugs } from "@/data/playbooks/index";
 import PlaybookTemplate from "@/components/playbook/PlaybookTemplate";
 
-// Pre-render all available playbooks at build time
+// Pre-render all available + waitlist playbooks at build time
 export async function generateStaticParams() {
   return getAvailableSlugs();
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const playbook = getPlaybook(slug);
+  const playbook = getPlaybook(slug) ?? getWaitlistPlaybook(slug);
   if (!playbook) return {};
   return {
     title: `${playbook.heroTitle} ~ Happy Voyager`,
@@ -23,9 +23,12 @@ export default async function PlaybookPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
   const playbook = getPlaybook(slug);
+  if (playbook) return <PlaybookTemplate config={playbook} />;
 
-  if (!playbook) notFound();
+  const waitlistPlaybook = getWaitlistPlaybook(slug);
+  if (waitlistPlaybook) return <PlaybookTemplate config={waitlistPlaybook} waitlistMode />;
 
-  return <PlaybookTemplate config={playbook} />;
+  notFound();
 }

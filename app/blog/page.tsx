@@ -2,6 +2,7 @@ import BlogCard from "@/components/BlogCard";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogFilters from "@/components/BlogFilters";
+import PageTransition from "@/components/ui/PageTransition";
 
 import { getSupabaseBlogs, getSupabaseCategories } from "@/lib/supabase-blogs";
 import Link from "next/link";
@@ -40,6 +41,7 @@ export default async function BlogListingPage({
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[var(--color-background)] flex flex-col font-sans">
       <Header />
 
@@ -250,5 +252,6 @@ export default async function BlogListingPage({
 
       <Footer />
     </div>
+    </PageTransition>
   );
 }

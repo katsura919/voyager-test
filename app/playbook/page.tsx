@@ -1,8 +1,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { PLAYBOOKS, COMING_SOON } from "@/data/playbooks/index";
+import { PLAYBOOKS, WAITLIST_PLAYBOOKS, COMING_SOON } from "@/data/playbooks/index";
 import { Lock } from "lucide-react";
+import PageTransition from "@/components/ui/PageTransition";
+import WaitlistCardButton from "@/components/playbook/WaitlistCardButton";
 
 export const metadata = {
   title: "Playbook Library ~ Happy Voyager",
@@ -11,17 +13,17 @@ export const metadata = {
 };
 
 export default function PlaybookCatalogPage() {
-  const totalLessons = PLAYBOOKS.reduce(
+  const totalLessons = [...PLAYBOOKS, ...WAITLIST_PLAYBOOKS].reduce(
     (acc, p) => acc + p.phases.reduce((a, ph) => a + ph.lessons.length, 0),
     0
   );
 
   return (
-    <>
-      <Header darkBg />
+    <PageTransition>
       <div className="min-h-screen bg-[#f9f5f2] text-[#3a3a3a]">
+        <Header darkBg />
 
-        {/* ── Hero ─────────────────────────────────────────────── */}
+        {/* Hero */}
         <div className="bg-[#3a3a3a] text-white pt-28 pb-16 px-6">
           <div className="max-w-4xl mx-auto text-center">
             <span className="inline-block text-[10px] font-bold tracking-widest uppercase bg-[#e3a99c]/20 text-[#e3a99c] border border-[#e3a99c]/30 px-3 py-1.5 rounded-full mb-6">
@@ -35,9 +37,9 @@ export default function PlaybookCatalogPage() {
             </p>
             <div className="flex flex-wrap gap-6 justify-center">
               {[
-                { value: `${PLAYBOOKS.length + COMING_SOON.length}`, label: "Playbooks" },
+                { value: `${PLAYBOOKS.length + WAITLIST_PLAYBOOKS.length + COMING_SOON.length}`, label: "Playbooks" },
                 { value: `${totalLessons}+`, label: "Lessons" },
-                { value: "1", label: "Available now" },
+                { value: `${PLAYBOOKS.length}`, label: "Available now" },
                 { value: `${COMING_SOON.length}`, label: "Coming soon" },
               ].map((s) => (
                 <div key={s.label} className="text-center">
@@ -49,20 +51,17 @@ export default function PlaybookCatalogPage() {
           </div>
         </div>
 
-        {/* ── Catalog Grid ─────────────────────────────────────── */}
+        {/* Catalog Grid */}
         <div className="max-w-5xl mx-auto px-6 py-16">
 
           {/* Available */}
-          <div className="mb-4">
+          <div className="mb-12">
             <p className="text-[10px] font-bold tracking-widest uppercase text-[#8fa38d] mb-6">
               ✓ Available Now
             </p>
             <div className="grid md:grid-cols-2 gap-5">
               {PLAYBOOKS.map((playbook) => {
-                const lessonCount = playbook.phases.reduce(
-                  (acc, p) => acc + p.lessons.length,
-                  0
-                );
+                const lessonCount = playbook.phases.reduce((acc, p) => acc + p.lessons.length, 0);
                 const phaseCount = playbook.phases.length;
 
                 return (
@@ -71,11 +70,7 @@ export default function PlaybookCatalogPage() {
                     href={`/playbook/${playbook.slug}`}
                     className="group bg-white border border-[#e7ddd3] rounded-3xl overflow-hidden hover:border-[#e3a99c] hover:shadow-lg transition-all duration-300"
                   >
-                    {/* Card header */}
-                    <div
-                      className="px-6 pt-6 pb-4"
-                      style={{ backgroundColor: playbook.catalog.bg }}
-                    >
+                    <div className="px-6 pt-6 pb-4" style={{ backgroundColor: playbook.catalog.bg }}>
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <span className="text-4xl">{playbook.catalog.emoji}</span>
                         <span
@@ -90,8 +85,6 @@ export default function PlaybookCatalogPage() {
                       </h2>
                       <p className="text-sm text-[#6b6b6b]">{playbook.catalog.tagline}</p>
                     </div>
-
-                    {/* Card body */}
                     <div className="px-6 py-5">
                       <p className="text-sm text-[#6b6b6b] leading-relaxed mb-4">
                         {playbook.catalog.description}
@@ -125,8 +118,74 @@ export default function PlaybookCatalogPage() {
             </div>
           </div>
 
+          {/* Early Access (Waitlist) */}
+          {WAITLIST_PLAYBOOKS.length > 0 && (
+            <div className="mb-12">
+              <p className="text-[10px] font-bold tracking-widest uppercase text-[#6b8cba] mb-6">
+                🚀 Early Access
+              </p>
+              <div className="grid md:grid-cols-2 gap-5">
+                {WAITLIST_PLAYBOOKS.map((playbook) => {
+                  const lessonCount = playbook.phases.reduce((acc, p) => acc + p.lessons.length, 0);
+                  const phaseCount = playbook.phases.length;
+
+                  return (
+                    <div
+                      key={playbook.slug}
+                      className="bg-white border border-[#e7ddd3] rounded-3xl overflow-hidden"
+                    >
+                      <div className="px-6 pt-6 pb-4 relative" style={{ backgroundColor: playbook.catalog.bg }}>
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <span className="text-4xl">{playbook.catalog.emoji}</span>
+                          <span
+                            className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full border"
+                            style={{ color: playbook.catalog.accent, borderColor: `${playbook.catalog.accent}50`, backgroundColor: `${playbook.catalog.accent}15` }}
+                          >
+                            Early Access
+                          </span>
+                        </div>
+                        <h2 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[#3a3a3a] mb-1">
+                          {playbook.heroTitle}
+                        </h2>
+                        <p className="text-sm text-[#6b6b6b]">{playbook.catalog.tagline}</p>
+                      </div>
+                      <div className="px-6 py-5">
+                        <p className="text-sm text-[#6b6b6b] leading-relaxed mb-4">
+                          {playbook.catalog.description}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex gap-4">
+                            <div>
+                              <p className="text-lg font-bold text-[#3a3a3a]">{lessonCount}</p>
+                              <p className="text-[10px] text-[#aaaaaa] uppercase tracking-widest">Lessons</p>
+                            </div>
+                            <div>
+                              <p className="text-lg font-bold text-[#3a3a3a]">{phaseCount}</p>
+                              <p className="text-[10px] text-[#aaaaaa] uppercase tracking-widest">Phases</p>
+                            </div>
+                            <div>
+                              <p className="text-lg font-bold text-[#3a3a3a]">{playbook.totalTime}</p>
+                              <p className="text-[10px] text-[#aaaaaa] uppercase tracking-widest">Read time</p>
+                            </div>
+                          </div>
+                          <WaitlistCardButton playbook={playbook} />
+                        </div>
+                        <Link
+                          href={`/playbook/${playbook.slug}`}
+                          className="mt-3 flex items-center gap-1.5 text-[11px] text-[#aaaaaa] hover:text-[#6b6b6b] transition-colors"
+                        >
+                          Preview what&apos;s inside →
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Coming soon */}
-          <div className="mt-12">
+          <div className="mt-4">
             <p className="text-[10px] font-bold tracking-widest uppercase text-[#aaaaaa] mb-6">
               🔒 Coming Soon
             </p>
@@ -184,6 +243,6 @@ export default function PlaybookCatalogPage() {
 
         <Footer />
       </div>
-    </>
+    </PageTransition>
   );
 }
