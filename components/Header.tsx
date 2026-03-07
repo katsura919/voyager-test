@@ -13,6 +13,7 @@ import {
   MobileNavMenu,
   MobileNavToggle,
 } from "@/components/ui/resizable-navbar";
+import BookCallButton from "@/components/BookCallButton";
 
 const navLinks = [
   { name: "About", link: "/my-story" },
@@ -397,12 +398,9 @@ function HeaderInner({ darkBg }: { darkBg?: boolean }) {
               PRO
             </span>
           </Link>
-          <Link
-            href="https://calendly.com/abie-gamao/spain-dnv"
-            className="px-5 py-2.5 rounded-full border border-[#3a3a3a]/30 text-[#3a3a3a] text-sm font-semibold hover:bg-[#3a3a3a] hover:text-white transition-all duration-300 whitespace-nowrap"
-          >
+          <BookCallButton className="px-5 py-2.5 rounded-full border border-[#3a3a3a]/30 text-[#3a3a3a] text-sm font-semibold hover:bg-[#3a3a3a] hover:text-white transition-all duration-300 whitespace-nowrap">
             Book a Call
-          </Link>
+          </BookCallButton>
         </div>
       </NavBody>
 
@@ -605,13 +603,11 @@ function HeaderInner({ darkBg }: { darkBg?: boolean }) {
             </a>
           ))}
 
-          <Link
-            href="https://calendly.com/abie-gamao/spain-dnv"
-            onClick={() => setIsMobileMenuOpen(false)}
+          <BookCallButton
             className="mt-2 px-8 py-3 rounded-full bg-[#3a3a3a] text-white font-semibold hover:bg-[#e3a99c] transition-colors w-full text-center block"
           >
             Book a Call
-          </Link>
+          </BookCallButton>
         </MobileNavMenu>
       </MobileNav>
     </Navbar>

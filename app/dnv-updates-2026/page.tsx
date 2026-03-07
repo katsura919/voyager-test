@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import BookCallButton from "@/components/BookCallButton";
 import {
   ArrowRight,
   AlertTriangle,
@@ -526,14 +527,13 @@ export default function DNVUpdates2026Page() {
                 Full DNV Guide
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
-              <Link
-                href="https://calendly.com/abie-gamao/spain-dnv"
-                target="_blank"
-                rel="noopener noreferrer"
+              <BookCallButton
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-all duration-300 text-sm"
+                url="https://calendly.com/abie-gamao/spain-dnv"
+                title="Book a Strategy Call"
               >
                 Book a Strategy Call
-              </Link>
+              </BookCallButton>
             </div>
           </section>
 

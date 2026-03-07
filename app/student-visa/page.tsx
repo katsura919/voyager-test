@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
 import Link from "next/link";
+import BookCallButton from "@/components/BookCallButton";
 import {
   CheckCircle2,
   XCircle,
@@ -456,13 +457,12 @@ export default function StudentVisaPage() {
                       <p className="text-sm font-semibold text-[#3a3a3a]">{row.doc}</p>
                       <p className="text-xs text-[#6b6b6b] mt-0.5">{row.note}</p>
                     </div>
-                    <span className={`flex-shrink-0 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${
-                      row.required === "always"
-                        ? "bg-[#f2d6c9] text-[#e3a99c]"
-                        : row.required === "6+ months"
+                    <span className={`flex-shrink-0 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${row.required === "always"
+                      ? "bg-[#f2d6c9] text-[#e3a99c]"
+                      : row.required === "6+ months"
                         ? "bg-[#e0eaeb] text-[#7a8f90]"
                         : "bg-[#f0ebe6] text-[#aaaaaa]"
-                    }`}>
+                      }`}>
                       {row.required === "always" ? "Required" : row.required === "6+ months" ? "6+ months" : "Recommended"}
                     </span>
                   </div>
@@ -638,13 +638,14 @@ export default function StudentVisaPage() {
             <p className="text-white/60 mb-8 max-w-md mx-auto text-sm leading-relaxed">
               Book a strategy call. We'll look at your income, goals, and timeline ~ and tell you which visa gives you the best path to staying in Spain long-term.
             </p>
-            <Link
-              href="https://calendly.com/abie-gamao/spain-dnv"
+            <BookCallButton
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#e3a99c] text-white font-bold text-lg hover:bg-[#d38b7b] hover:shadow-xl hover:shadow-[#e3a99c]/30 transition-all duration-300 group"
+              url="https://calendly.com/abie-gamao/spain-dnv"
+              title="Book a Strategy Call"
             >
               <span>Book a Strategy Call</span>
               <Plane className="w-5 h-5 group-hover:-rotate-45 transition-transform duration-300" />
-            </Link>
+            </BookCallButton>
             <p className="text-white/40 text-xs mt-4">Paid consultation ~ book your session now.</p>
           </section>
 

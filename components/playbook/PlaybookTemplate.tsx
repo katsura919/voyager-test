@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import BookCallButton from "@/components/BookCallButton";
 import {
   Lock,
   Unlock,
@@ -1009,8 +1010,8 @@ export default function PlaybookTemplate({
                     key={phase.id}
                     onClick={() => scrollToPhase(phase.id)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors whitespace-nowrap ${activePhase === phase.id
-                        ? "bg-[#e3a99c] text-white"
-                        : "bg-white border border-[#e7ddd3] text-[#6b6b6b]"
+                      ? "bg-[#e3a99c] text-white"
+                      : "bg-white border border-[#e7ddd3] text-[#6b6b6b]"
                       }`}
                   >
                     {phase.emoji} {phase.phase}
@@ -1118,8 +1119,8 @@ export default function PlaybookTemplate({
                       <div
                         key={lesson.id}
                         className={`relative bg-white border rounded-2xl overflow-hidden transition-all duration-200 ${accessible
-                            ? "border-[#e7ddd3] hover:border-[#e3a99c] hover:shadow-md cursor-pointer"
-                            : "border-[#e7ddd3] cursor-pointer"
+                          ? "border-[#e7ddd3] hover:border-[#e3a99c] hover:shadow-md cursor-pointer"
+                          : "border-[#e7ddd3] cursor-pointer"
                           }`}
                         onClick={() => handleLessonClick(lesson, phase.accent, phase.bg)}
                       >
@@ -1298,12 +1299,13 @@ export default function PlaybookTemplate({
                     <Mail className="w-4 h-4" />
                     Join the Waitlist
                   </button>
-                  <Link
-                    href="https://calendly.com/abie-gamao/spain-dnv"
+                  <BookCallButton
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-white/20 text-white/70 text-sm font-medium hover:border-white/40 hover:text-white transition-colors"
+                    url="https://calendly.com/abie-gamao/spain-dnv"
+                    title="Book a Strategy Call"
                   >
                     Book a Strategy Call
-                  </Link>
+                  </BookCallButton>
                 </div>
               ) : !isPro ? (
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -1314,12 +1316,13 @@ export default function PlaybookTemplate({
                     <Zap className="w-4 h-4" />
                     Unlock Playbook Pro
                   </button>
-                  <Link
-                    href="https://calendly.com/abie-gamao/spain-dnv"
+                  <BookCallButton
                     className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-white/20 text-white/70 text-sm font-medium hover:border-white/40 hover:text-white transition-colors"
+                    url="https://calendly.com/abie-gamao/spain-dnv"
+                    title="Book a Strategy Call"
                   >
                     Book a Strategy Call
-                  </Link>
+                  </BookCallButton>
                 </div>
               ) : (
                 <div className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#8fa38d]/20 text-[#8fa38d] font-bold">

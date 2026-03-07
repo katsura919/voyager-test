@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PricingSection from "@/components/PricingSection";
+import BookCallButton from "@/components/BookCallButton";
 import {
   FileText,
   Check,
@@ -319,15 +320,10 @@ export default function DigitalNomadVisaPage() {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://calendly.com/abie-gamao/spain-dnv"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-10 py-5 rounded-full bg-[#3a3a3a] text-white font-bold text-lg hover:bg-[#e3a99c] transition-all duration-300 shadow-xl transform hover:-translate-y-1"
-            >
+            <BookCallButton className="flex items-center gap-3 px-10 py-5 rounded-full bg-[#3a3a3a] text-white font-bold text-lg hover:bg-[#e3a99c] transition-all duration-300 shadow-xl transform hover:-translate-y-1">
               Book a Strategy Call
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </BookCallButton>
             <Link
               href="#whats-included"
               className="flex items-center gap-2 px-8 py-5 rounded-full border border-[#e7ddd3] text-[#3a3a3a] font-semibold hover:bg-white hover:shadow-md transition-all duration-300"
@@ -942,15 +938,10 @@ export default function DigitalNomadVisaPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://calendly.com/abie-gamao/spain-dnv"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-10 py-5 rounded-full bg-[#e3a99c] text-white font-bold text-lg hover:bg-white hover:text-[#3a3a3a] transition-all duration-300 shadow-xl shadow-[#e3a99c]/20 transform hover:-translate-y-1"
-            >
+            <BookCallButton className="flex items-center gap-3 px-10 py-5 rounded-full bg-[#e3a99c] text-white font-bold text-lg hover:bg-white hover:text-[#3a3a3a] transition-all duration-300 shadow-xl shadow-[#e3a99c]/20 transform hover:-translate-y-1">
               Book a Strategy Call
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </BookCallButton>
             <Link
               href="/contact"
               className="flex items-center gap-2 px-8 py-5 rounded-full border border-white/30 text-white font-semibold hover:bg-white/10 transition-all duration-300"

@@ -11,6 +11,7 @@ import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import OtherServicesSection from "@/components/OtherServicesSection";
 import DNVTeaser from "@/components/DNVTeaser";
+import BookCallButton from "@/components/BookCallButton";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/ui/PageTransition";
@@ -41,12 +42,9 @@ export default function Home() {
                   Book a free 15-min call and we&apos;ll point you in the right direction.
                 </p>
               </div>
-              <a
-                href="https://calendly.com/abie-gamao/spain-dnv"
-                className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-[#3a3a3a] text-[#3a3a3a] font-bold text-sm hover:bg-[#3a3a3a] hover:text-white transition-all duration-300 whitespace-nowrap"
-              >
+              <BookCallButton className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-[#3a3a3a] text-[#3a3a3a] font-bold text-sm hover:bg-[#3a3a3a] hover:text-white transition-all duration-300 whitespace-nowrap">
                 Book a Free 15-min Call
-              </a>
+              </BookCallButton>
             </div>
           </div>
         </AnimateIn>

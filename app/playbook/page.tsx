@@ -5,6 +5,7 @@ import { PLAYBOOKS, WAITLIST_PLAYBOOKS, COMING_SOON } from "@/data/playbooks/ind
 import { Lock } from "lucide-react";
 import PageTransition from "@/components/ui/PageTransition";
 import WaitlistCardButton from "@/components/playbook/WaitlistCardButton";
+import BookCallButton from "@/components/BookCallButton";
 
 export const metadata = {
   title: "Playbook Library ~ Happy Voyager",
@@ -232,12 +233,9 @@ export default function PlaybookCatalogPage() {
             <p className="text-white/50 text-sm max-w-md mx-auto mb-6 leading-relaxed">
               Abie will help you find the right visa path, understand your timeline, and put together a plan tailored to your situation.
             </p>
-            <Link
-              href="https://calendly.com/abie-gamao/spain-dnv"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#e3a99c] text-white font-bold hover:bg-[#d38b7b] transition-colors"
-            >
+            <BookCallButton className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#e3a99c] text-white font-bold hover:bg-[#d38b7b] transition-colors">
               Book a Call →
-            </Link>
+            </BookCallButton>
           </div>
         </div>
 

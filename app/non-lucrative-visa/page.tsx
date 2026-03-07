@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
 import Link from "next/link";
+import BookCallButton from "@/components/BookCallButton";
 import {
   CheckCircle2,
   XCircle,
@@ -531,12 +532,13 @@ export default function NonLucrativeVisaPage() {
           <div className="mt-6 p-5 rounded-2xl bg-[#d4e0d3]/30 border border-[#d4e0d3]">
             <p className="text-sm text-[#3a3a3a]">
               <span className="font-bold text-[#8fa38d]">💡 Our recommendation:</span> Before applying, consult a cross-border tax advisor who knows both your home country and Spanish tax law. The savings from planning ahead can be significant.{" "}
-              <Link
-                href="https://calendly.com/abie-gamao/spain-dnv"
+              <BookCallButton
                 className="font-bold text-[#8fa38d] hover:underline"
+                url="https://calendly.com/abie-gamao/spain-dnv"
+                title="Book a Strategy Call"
               >
                 Book a call with us
-              </Link>{" "}
+              </BookCallButton>{" "}
               ~ we can point you in the right direction.
             </p>
           </div>
@@ -719,13 +721,14 @@ export default function NonLucrativeVisaPage() {
               <p className="text-white/60 mb-8 max-w-lg mx-auto">
                 NLV, DNV, or something else entirely ~ let's figure it out together. One 45-minute call and you'll know exactly what you need to do next.
               </p>
-              <Link
-                href="https://calendly.com/abie-gamao/spain-dnv"
+              <BookCallButton
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#e3a99c] text-white font-bold text-lg hover:bg-[#d38b7b] hover:shadow-xl hover:shadow-[#e3a99c]/30 transition-all duration-300 group"
+                url="https://calendly.com/abie-gamao/spain-dnv"
+                title="Book a Strategy Call"
               >
                 <span>Book a Strategy Call</span>
                 <Plane className="w-5 h-5 group-hover:-rotate-45 transition-transform duration-300" />
-              </Link>
+              </BookCallButton>
               <p className="text-white/40 text-xs mt-4">Paid consultation ~ book your session now.</p>
             </div>
           </div>

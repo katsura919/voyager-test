@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import BookCallButton from "@/components/BookCallButton";
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -232,17 +233,15 @@ export default function DocumentChecklistPage() {
                             <div
                                 key={doc.id}
                                 onClick={() => toggleItem(doc.id)}
-                                className={`checklist-card group flex items-start gap-4 p-5 rounded-xl border cursor-pointer transition-all duration-200 ${
-                                    checkedItems[doc.id]
-                                        ? 'bg-[#e3a99c]/5 border-[#e3a99c] opacity-70'
-                                        : 'bg-white border-[#e7ddd3] hover:border-[#e3a99c]/50 hover:shadow-sm'
-                                }`}
+                                className={`checklist-card group flex items-start gap-4 p-5 rounded-xl border cursor-pointer transition-all duration-200 ${checkedItems[doc.id]
+                                    ? 'bg-[#e3a99c]/5 border-[#e3a99c] opacity-70'
+                                    : 'bg-white border-[#e7ddd3] hover:border-[#e3a99c]/50 hover:shadow-sm'
+                                    }`}
                             >
-                                <div className={`mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                                    checkedItems[doc.id]
-                                        ? 'bg-[#e3a99c] border-[#e3a99c] text-white'
-                                        : 'border-[#e7ddd3] group-hover:border-[#e3a99c]'
-                                }`}>
+                                <div className={`mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${checkedItems[doc.id]
+                                    ? 'bg-[#e3a99c] border-[#e3a99c] text-white'
+                                    : 'border-[#e7ddd3] group-hover:border-[#e3a99c]'
+                                    }`}>
                                     {checkedItems[doc.id] && <CheckCircle2 className="w-4 h-4" />}
                                 </div>
 
@@ -286,13 +285,14 @@ export default function DocumentChecklistPage() {
                                 <span>Avail our Services</span>
                                 <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <Link
-                                href="https://calendly.com/abie-gamao/spain-dnv"
+                            <BookCallButton
                                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#3a3a3a] text-white font-bold text-lg hover:bg-[#e3a99c] hover:shadow-xl hover:shadow-[#e3a99c]/30 transition-all duration-300 group w-full sm:w-auto justify-center"
+                                url="https://calendly.com/abie-gamao/spain-dnv"
+                                title="Book a Strategy Call"
                             >
                                 <span>Book a call</span>
                                 <Plane className="w-5 h-5 group-hover:-rotate-45 transition-transform duration-300" />
-                            </Link>
+                            </BookCallButton>
                         </div>
                     </div>
 

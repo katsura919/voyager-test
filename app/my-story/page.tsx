@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ArrowRight, Globe, MapPin, Plane, Calendar, CheckCircle2, Heart, Zap, Instagram, AtSign, Linkedin, Youtube, Facebook, Mail, Briefcase, RefreshCw, AlertTriangle, FileText, User, Loader2 } from "lucide-react";
 import Link from "next/link";
+import BookCallButton from "@/components/BookCallButton";
 
 function ContactFormEmbed() {
   const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", message: "" });
@@ -140,7 +141,7 @@ const timeline = [
   {
     period: "The Crash",
     title: "The lost of safety net",
-    body: "After six years of working for someone else, I was suddenly locked out of my job and left without a safety net. The nomad life that felt like freedom suddenly felt very fragile. I had a choice: go home and accept defeat, or treat my life like a system that needed a hard reset.",
+    body: "After years of working for someone else, I was suddenly locked out of my job and left without a safety net. The nomad life that felt like freedom suddenly felt very fragile. I had a choice: go home and accept defeat, or treat my life like a system that needed a hard reset.",
     icon: AlertTriangle,
     color: "#e3a99c",
     align: "right",
@@ -492,11 +493,10 @@ export default function MyStoryPage() {
             </Link>
 
             {/* Card 2 ~ Strategy Call */}
-            <Link
-              href="https://calendly.com/abie-gamao/spain-dnv"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative bg-[#3a3a3a] rounded-3xl p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+            <BookCallButton
+              className="group relative bg-[#3a3a3a] rounded-3xl p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col text-left"
+              url="https://calendly.com/abie-gamao/spain-dnv"
+              title="Book a Strategy Call"
             >
               <div className="w-10 h-10 rounded-2xl bg-[#e3a99c]/20 flex items-center justify-center mb-4">
                 <Calendar className="w-5 h-5 text-[#e3a99c]" />
@@ -512,7 +512,7 @@ export default function MyStoryPage() {
                 Book a call
                 <ArrowRight className="w-3.5 h-3.5" />
               </span>
-            </Link>
+            </BookCallButton>
 
             {/* Card 3 ~ Done-with-You Package */}
             <Link
@@ -669,19 +669,18 @@ export default function MyStoryPage() {
                 </div>
               </div>
 
-              <Link
-                href="https://calendly.com/abie-gamao/spain-dnv"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 bg-[#3a3a3a] rounded-3xl p-6 group hover:bg-[#e3a99c] transition-colors duration-300"
+              <BookCallButton
+                className="flex w-full items-center justify-between gap-3 bg-[#3a3a3a] rounded-3xl p-6 group hover:bg-[#e3a99c] transition-colors duration-300 text-left"
+                url="https://calendly.com/abie-gamao/spain-dnv"
+                title="Book a Strategy Call"
               >
                 <div>
                   <p className="text-xs font-bold tracking-widest uppercase text-white/50 mb-1">Prefer to talk?</p>
                   <p className="font-bold text-white text-sm">Book a Strategy Call</p>
-                  <p className="text-xs text-white/50 mt-0.5">30 min · Calendly</p>
+                  <p className="text-xs text-white/50 mt-0.5">30 min · Video call</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-              </Link>
+              </BookCallButton>
             </div>
           </div>
         </div>
@@ -710,12 +709,13 @@ export default function MyStoryPage() {
               Check If You Qualify
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link
-              href="https://calendly.com/abie-gamao/spain-dnv"
+            <BookCallButton
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-all duration-300"
+              url="https://calendly.com/abie-gamao/spain-dnv"
+              title="Book a Strategy Call"
             >
               Book a Strategy Call
-            </Link>
+            </BookCallButton>
           </div>
           <p className="mt-8 text-white/30 text-sm">
             Or start free →{" "}

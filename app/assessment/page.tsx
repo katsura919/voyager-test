@@ -23,6 +23,7 @@ import {
   Loader2,
   Lock,
 } from "lucide-react";
+import BookCallButton from "@/components/BookCallButton";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -491,8 +492,8 @@ export default function AssessmentPage() {
                         key={option.id}
                         onClick={() => handleSelect(option.id)}
                         className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all duration-200 group ${isChosen
-                            ? "border-[#e3a99c] bg-[#f2d6c9]/20"
-                            : "border-[#e7ddd3] bg-white hover:border-[#e3a99c]/50 hover:bg-[#f9f5f2]"
+                          ? "border-[#e3a99c] bg-[#f2d6c9]/20"
+                          : "border-[#e7ddd3] bg-white hover:border-[#e3a99c]/50 hover:bg-[#f9f5f2]"
                           }`}
                       >
                         <span className="text-2xl flex-shrink-0 w-10 text-center">{option.emoji}</span>
@@ -527,8 +528,8 @@ export default function AssessmentPage() {
                   onClick={handleNext}
                   disabled={!selected}
                   className={`flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm transition-all duration-200 ${selected
-                      ? "bg-[#3a3a3a] text-white hover:bg-[#e3a99c] hover:text-[#3a3a3a]"
-                      : "bg-[#e7ddd3] text-[#aaaaaa] cursor-not-allowed"
+                    ? "bg-[#3a3a3a] text-white hover:bg-[#e3a99c] hover:text-[#3a3a3a]"
+                    : "bg-[#e7ddd3] text-[#aaaaaa] cursor-not-allowed"
                     }`}
                 >
                   {step === totalSteps ? "Almost there →" : "Next Question"}
@@ -765,28 +766,26 @@ export default function AssessmentPage() {
                         See the Packages
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
-                      <Link
-                        href="https://calendly.com/abie-gamao/spain-dnv"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <BookCallButton
                         className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-all text-sm"
+                        url="https://calendly.com/abie-gamao/spain-dnv"
+                        title="Book a Strategy Call"
                       >
                         <CalendarCheck className="w-4 h-4" />
                         Book a Strategy Call
-                      </Link>
+                      </BookCallButton>
                     </>
                   ) : (
                     <>
-                      <Link
-                        href="https://calendly.com/abie-gamao/spain-dnv"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <BookCallButton
                         className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#e3a99c] text-[#3a3a3a] font-bold hover:bg-white transition-all text-sm group"
+                        url="https://calendly.com/abie-gamao/spain-dnv"
+                        title="Book a Strategy Call"
                       >
                         <CalendarCheck className="w-4 h-4" />
                         Book a Strategy Call
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                      </Link>
+                      </BookCallButton>
                       <Link
                         href="/digital-nomad-visa"
                         className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-all text-sm"
