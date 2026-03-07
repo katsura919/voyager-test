@@ -12,8 +12,7 @@ export function TopbarLinks() {
       href: "/playbook/spain-dnv/home",
       active:
         pathname.includes("/home") ||
-        pathname === "/playbook/spain-dnv" ||
-        pathname.includes("/whats-this-playbook-about"),
+        pathname === "/playbook/spain-dnv",
     },
     {
       label: "Guides",
