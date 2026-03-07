@@ -596,7 +596,7 @@ export default function MyStoryPage() {
               <div className="flex flex-col gap-3">
                 {[
                   { icon: <Globe className="w-4 h-4 text-[#e3a99c]" />, bg: "bg-[#f2d6c9]/40", label: "abiemaxey.com", sub: "Personal website", href: "https://abiemaxey.com" },
-                  { icon: <Briefcase className="w-4 h-4 text-[#7a8f90]" />, bg: "bg-[#bbcccd]/30", label: "Media Kit & Services", sub: "Content creation · Work with me", href: "https://abie-portfolio.vercel.app/" },
+                  { icon: <Briefcase className="w-4 h-4 text-[#7a8f90]" />, bg: "bg-[#bbcccd]/30", label: "Media Kit & Services", sub: "Content creation · Work with me", href: "https://abiemaxey.vercel.app/" },
                 ].map((w) => (
                   <Link
                     key={w.label}
