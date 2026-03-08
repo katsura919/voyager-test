@@ -9,6 +9,7 @@ import { TopbarLinks } from "@/components/playbook/TopbarLinks";
 import { phases } from "./data";
 import { motion, AnimatePresence } from "motion/react";
 import { SearchModal } from "@/components/playbook/SearchModal";
+import { AIChatbot } from "@/components/playbook/AIChatbot";
 
 export default function PlaybookLayout({
   children,
@@ -136,6 +137,8 @@ export default function PlaybookLayout({
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
       />
+
+      <AIChatbot />
 
       <div className="flex-1 flex overflow-hidden max-w-[1400px] w-full mx-auto">
         {isLessonPage && sidebarOpen && (
