@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
-import { guides } from "../data";
+import { guides, type ContentBlock } from "../data";
 import { use } from "react";
 
 export default function GuidePage(props: { params: Promise<{ guideId: string }> }) {
@@ -62,6 +62,70 @@ export default function GuidePage(props: { params: Promise<{ guideId: string }> 
     );
   };
 
+  const renderText = (text: string) => {
+    // Matches [label](url) or raw http/https URLs
+    const markdownRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    // Use a unified approach or check for markdown first
+    const parts: (string | React.ReactNode)[] = [];
+    let lastIndex = 0;
+    
+    // First, handle markdown links
+    const markdownMatches = Array.from(text.matchAll(markdownRegex));
+    
+    // This is getting complex, let's simplify by using a single regex that captures both
+    // and splitting based on that.
+    const combinedRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s]+)/g;
+    const segments = text.split(combinedRegex);
+    
+    // regex.split with capture groups returns the captured groups in the array
+    // [textBefore, label, url, rawUrl, textAfter, ...]
+    // For each match, we get 3 extra elements.
+    
+    const result: (string | React.ReactNode)[] = [];
+    let i = 0;
+    while (i < segments.length) {
+      const plain = segments[i];
+      if (plain) result.push(plain);
+      
+      if (i + 1 < segments.length) {
+        const label = segments[i + 1];
+        const url = segments[i + 2];
+        const rawUrl = segments[i + 3];
+        
+        if (label && url) {
+          result.push(
+            <a
+              key={`link-${i}`}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#2383e2] hover:underline underline-offset-4"
+            >
+              {label}
+            </a>
+          );
+        } else if (rawUrl) {
+          result.push(
+            <a
+              key={`link-${i}`}
+              href={rawUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#2383e2] hover:underline underline-offset-4"
+            >
+              {rawUrl}
+            </a>
+          );
+        }
+      }
+      i += 4;
+    }
+    
+    return result.length > 0 ? result : text;
+  };
+
   return (
     <>
       {/* ─── Main Content ─── */}
@@ -91,111 +155,224 @@ export default function GuidePage(props: { params: Promise<{ guideId: string }> 
 
                   <div className="space-y-4">
                     {section.content.map((block, bIdx) => {
-                      if (block.type === "intro") {
-                        return (
-                          <p
-                            key={bIdx}
-                            className="text-[#37352f] text-base leading-relaxed"
-                          >
-                            {block.text}
-                          </p>
-                        );
-                      }
+                      const renderBlock = (block: ContentBlock, key: string | number) => {
+                        if (block.type === "intro") {
+                          return (
+                            <p
+                              key={key}
+                              className="text-[#37352f] text-base leading-relaxed"
+                            >
+                              {renderText(block.text)}
+                            </p>
+                          );
+                        }
 
-                      if (block.type === "callout") {
-                        return (
-                          <div
-                            key={bIdx}
-                            className={`flex items-start gap-3 p-4 rounded ${
-                              block.bgClass || "bg-[#f1f1ef]"
-                            } border ${
-                              block.borderClass || "border-transparent"
-                            } my-4`}
-                          >
-                            <span className="text-xl leading-none flex-shrink-0 mt-0.5">
-                              {block.icon}
-                            </span>
-                            <div className="text-[#37352f] text-[15px] leading-relaxed whitespace-pre-wrap">
-                              {block.text}
+                        if (block.type === "callout") {
+                          return (
+                            <div
+                              key={key}
+                              className={`flex items-start gap-3 p-4 rounded ${
+                                block.bgClass || "bg-[#f1f1ef]"
+                              } border ${
+                                block.borderClass || "border-transparent"
+                              } my-4`}
+                            >
+                              <span className="text-xl leading-none flex-shrink-0 mt-0.5">
+                                {block.icon}
+                              </span>
+                              <div className="text-[#37352f] text-[15px] leading-relaxed whitespace-pre-wrap">
+                                {renderText(block.text)}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      }
+                          );
+                        }
 
-                      if (block.type === "highlight") {
-                        return (
-                          <div key={bIdx} className="my-4">
-                            {block.label && (
-                              <h3 className="font-semibold text-[#37352f] text-base mb-2">
-                                {block.label}
-                              </h3>
-                            )}
-                            <ul className="list-disc pl-6 space-y-1">
-                              {block.items.map((item, i) => (
-                                <li
-                                  key={i}
-                                  className="text-[15px] text-[#37352f] leading-relaxed pl-1"
-                                >
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        );
-                      }
-
-                      if (block.type === "checklist") {
-                        return (
-                          <div key={bIdx} className="my-4">
-                            {block.label && (
-                              <h3 className="font-semibold text-[#37352f] text-base mb-2">
-                                {block.label}
-                              </h3>
-                            )}
-                            <div className="space-y-1.5">
-                              {block.items.map((item, i) => {
-                                const isChecked = completedItems[item] || false;
-                                return (
-                                  <label
+                        if (block.type === "highlight") {
+                          return (
+                            <div key={key} className="my-4">
+                              {block.label && (
+                                <h3 className="font-semibold text-[#37352f] text-base mb-2">
+                                  {block.label}
+                                </h3>
+                              )}
+                              <ul className="list-disc pl-6 space-y-1">
+                                {block.items.map((item: string, i: number) => (
+                                  <li
                                     key={i}
-                                    className="flex items-start gap-2.5 cursor-pointer group hover:bg-[#efefed] rounded p-1 -ml-1 transition-colors"
+                                    className="text-[15px] text-[#37352f] leading-relaxed pl-1"
                                   >
-                                    <div className="mt-[3px] relative cursor-pointer">
-                                      <input
-                                        type="checkbox"
-                                        className="peer sr-only"
-                                        checked={isChecked}
-                                        onChange={() => toggleItem(item)}
-                                      />
-                                      <div className="w-[15px] h-[15px] rounded-[3px] border border-[#d3d1cb] bg-white transition-colors peer-checked:bg-[#2383e2] peer-checked:border-[#2383e2] flex items-center justify-center">
-                                        {isChecked && (
-                                          <svg
-                                            viewBox="0 0 14 14"
-                                            className="w-3 h-3 text-white fill-current"
-                                          >
-                                            <polygon points="5.5 11.9993304 14 3.49933039 12.5 2 5.5 8.99933039 1.5 4.9968652 0 6.49933039" />
-                                          </svg>
-                                        )}
-                                      </div>
-                                    </div>
-                                    <span
-                                      className={`text-[15px] leading-relaxed select-text ${
-                                        isChecked
-                                          ? "text-[#787774] line-through opacity-70"
-                                          : "text-[#37352f]"
-                                      }`}
-                                    >
-                                      {item}
-                                    </span>
-                                  </label>
-                                );
-                              })}
+                                    {renderText(item)}
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
-                          </div>
-                        );
-                      }
+                          );
+                        }
 
-                      return null;
+                        if (block.type === "checklist") {
+                          return (
+                            <div key={key} className="my-4">
+                              {block.label && (
+                                <h3 className="font-semibold text-[#37352f] text-base mb-2">
+                                  {block.label}
+                                </h3>
+                              )}
+                              <div className="space-y-1.5">
+                                {block.items.map((item: string, i: number) => {
+                                  const isChecked = completedItems[item] || false;
+                                  return (
+                                    <label
+                                      key={i}
+                                      className="flex items-start gap-2.5 cursor-pointer group hover:bg-[#efefed] rounded p-1 -ml-1 transition-colors"
+                                    >
+                                      <div className="mt-[3px] relative cursor-pointer">
+                                        <input
+                                          type="checkbox"
+                                          className="peer sr-only"
+                                          checked={isChecked}
+                                          onChange={() => toggleItem(item)}
+                                        />
+                                        <div className="w-[15px] h-[15px] rounded-[3px] border border-[#d3d1cb] bg-white transition-colors peer-checked:bg-[#2383e2] peer-checked:border-[#2383e2] flex items-center justify-center">
+                                          {isChecked && (
+                                            <svg
+                                              viewBox="0 0 14 14"
+                                              className="w-3 h-3 text-white fill-current"
+                                            >
+                                              <polygon points="5.5 11.9993304 14 3.49933039 12.5 2 5.5 8.99933039 1.5 4.9968652 0 6.49933039" />
+                                            </svg>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <span
+                                        className={`text-[15px] leading-relaxed select-text ${
+                                          isChecked
+                                            ? "text-[#787774] line-through opacity-70"
+                                            : "text-[#37352f]"
+                                        }`}
+                                      >
+                                        {renderText(item)}
+                                      </span>
+                                    </label>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        if (block.type === "image") {
+                          return (
+                            <div key={key} className="my-8">
+                              <div className="rounded-xl overflow-hidden border border-[#EAE9E9] bg-[#F7F7F5] transition-all hover:shadow-md">
+                                <img
+                                  src={block.src}
+                                  alt={block.alt || "Guide image"}
+                                  className="w-full h-auto object-cover max-h-[480px]"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1543733394-970364f3fa02?q=80&w=1000&auto=format&fit=crop";
+                                  }}
+                                />
+                              </div>
+                              {block.caption && (
+                                <p className="text-[13px] text-[#787774] mt-2 text-center italic">
+                                  {block.caption}
+                                </p>
+                              )}
+                            </div>
+                          );
+                        }
+
+                        if (block.type === "divider") {
+                          return (
+                            <hr
+                              key={key}
+                              className="my-8 border-t border-[#EAE9E9]"
+                            />
+                          );
+                        }
+
+                        if (block.type === "table") {
+                          return (
+                            <div
+                              key={key}
+                              className="my-6 overflow-hidden rounded-lg border border-[#EAE9E9]"
+                            >
+                              <table className="w-full border-collapse text-left text-[14px]">
+                                <thead>
+                                  <tr className="bg-[#F7F7F5] border-b border-[#EAE9E9]">
+                                    {block.headers.map((header: string, hIdx: number) => (
+                                      <th
+                                        key={hIdx}
+                                        className="px-4 py-3 font-semibold text-[#37352f]"
+                                      >
+                                        {header}
+                                      </th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-[#EAE9E9]">
+                                  {block.rows.map((row: string[], rIdx: number) => (
+                                    <tr
+                                      key={rIdx}
+                                      className="hover:bg-[#FBFBFA] transition-colors"
+                                    >
+                                      {row.map((cell: string, cIdx: number) => (
+                                        <td
+                                          key={cIdx}
+                                          className="px-4 py-3 text-[#37352f] whitespace-pre-wrap leading-relaxed"
+                                        >
+                                          {renderText(cell)}
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          );
+                        }
+
+                        if (block.type === "expandable") {
+                          return (
+                            <details
+                              key={key}
+                              id={block.id}
+                              className="group my-4 border border-[#EAE9E9] rounded-lg overflow-hidden bg-[#F7F7F5]/50"
+                            >
+                              <summary className="flex items-center gap-2 p-4 cursor-pointer hover:bg-[#EFEFED] transition-colors list-none font-medium text-[#37352f]">
+                                <svg
+                                  width="12"
+                                  height="12"
+                                  viewBox="0 0 12 12"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="transition-transform group-open:rotate-90 text-[#787774]"
+                                >
+                                  <path
+                                    d="M4 2L8 6L4 10"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                                {block.title}
+                              </summary>
+                              <div className="p-4 pt-0 space-y-4 border-t border-[#EAE9E9] bg-white">
+                                <div className="mt-4">
+                                  {block.content.map((nestedBlock: ContentBlock, nIdx: number) => 
+                                    renderBlock(nestedBlock, `${key}-nested-${nIdx}`)
+                                  )}
+                                </div>
+                              </div>
+                            </details>
+                          );
+                        }
+
+                        return null;
+                      };
+
+                      return renderBlock(block, bIdx);
                     })}
                   </div>
                 </section>
@@ -215,24 +392,47 @@ export default function GuidePage(props: { params: Promise<{ guideId: string }> 
           <nav className="flex flex-col relative ml-1">
             <div className="absolute left-0 top-1 bottom-1 w-[1px] bg-[#EAE9E9] z-0" />
             {activeGuide.sections.map((section) => (
-              <a
-                key={section.id}
-                href={`#${section.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById(section.id)?.scrollIntoView({
-                    behavior: "smooth",
-                  });
-                  window.history.pushState(null, "", `#${section.id}`);
-                }}
-                className={`text-[13px] leading-[1.4] py-1.5 pl-4 relative z-10 border-l-[2px] transition-colors ${
-                  activeSection === section.id
-                    ? "text-[#37352f] font-medium border-[#37352f]"
-                    : "text-[#787774] hover:text-[#37352f] border-transparent"
-                }`}
-              >
-                {section.title}
-              </a>
+              <div key={section.id} className="flex flex-col">
+                <a
+                  href={`#${section.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById(section.id)?.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                    window.history.pushState(null, "", `#${section.id}`);
+                  }}
+                  className={`text-[13px] leading-[1.4] py-1.5 pl-4 relative z-10 border-l-[2px] transition-colors ${
+                    activeSection === section.id
+                      ? "text-[#37352f] font-medium border-[#37352f]"
+                      : "text-[#787774] hover:text-[#37352f] border-transparent"
+                  }`}
+                >
+                  {section.title}
+                </a>
+                {/* Nested expandable blocks in TOC */}
+                {section.content.map((block, idx) =>
+                  block.type === "expandable" && block.id ? (
+                    <a
+                      key={block.id || idx}
+                      href={`#${block.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const el = document.getElementById(block.id!);
+                        if (el) {
+                          el.scrollIntoView({ behavior: "smooth" });
+                          const details = el.closest("details");
+                          if (details) details.open = true;
+                        }
+                        window.history.pushState(null, "", `#${block.id}`);
+                      }}
+                      className="text-[12px] leading-[1.4] py-1 pl-8 pr-2 text-[#787774] hover:text-[#37352f] transition-colors mb-1 border-l-[2px] border-transparent"
+                    >
+                      {block.title}
+                    </a>
+                  ) : null
+                )}
+              </div>
             ))}
           </nav>
         </div>

@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { guides } from "./data";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function GuidesLayout({
   children,
@@ -59,19 +60,89 @@ export default function GuidesLayout({
                 {guides.map((guide) => {
                   const isActive = activeGuideId === guide.id;
                   return (
-                    <button
-                      key={guide.id}
-                      onClick={() => handleGuideClick(guide.id)}
-                      className={`flex items-center gap-2.5 w-full px-3 py-1.5 rounded-md text-left transition-colors group ${
-                        isActive
-                          ? "bg-[#efefed] text-[#37352f] font-semibold"
-                          : "text-[#787774] hover:bg-[#f7f7f5] hover:text-[#37352f] font-medium"
-                      }`}
-                    >
-                      <span className="text-[14px] truncate leading-tight py-0.5">
-                        {guide.title}
-                      </span>
-                    </button>
+                    <div key={guide.id} className="space-y-0.5">
+                      <button
+                        onClick={() => handleGuideClick(guide.id)}
+                        className={`flex items-center gap-2.5 w-full px-3 py-1.5 rounded-md text-left transition-colors group ${
+                          isActive
+                            ? "bg-[#efefed] text-[#37352f] font-semibold"
+                            : "text-[#787774] hover:bg-[#f7f7f5] hover:text-[#37352f] font-medium"
+                        }`}
+                      >
+                        <span className="text-[14px] truncate leading-tight py-0.5">
+                          {guide.title}
+                        </span>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isActive && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="ml-4 my-1 border-l border-[#EAE9E9] pl-3 space-y-0.5">
+                              {guide.sections.map((section) => (
+                                <div key={section.id} className="space-y-0.5">
+                                  <a
+                                    href={`#${section.id}`}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      document
+                                        .getElementById(section.id)
+                                        ?.scrollIntoView({
+                                          behavior: "smooth",
+                                        });
+                                      window.history.pushState(
+                                        null,
+                                        "",
+                                        `#${section.id}`
+                                      );
+                                    }}
+                                    className="block py-1 text-[13px] text-[#787774] hover:text-[#37352f] transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
+                                  >
+                                    {section.title}
+                                  </a>
+                                  {/* Render nested expandables as sub-items */}
+                                  {section.content.map((block, idx) =>
+                                    block.type === "expandable" && block.id ? (
+                                      <a
+                                        key={block.id || idx}
+                                        href={`#${block.id}`}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          const el = document.getElementById(
+                                            block.id!
+                                          );
+                                          if (el) {
+                                            el.scrollIntoView({
+                                              behavior: "smooth",
+                                            });
+                                            // Optional: Open the details tag if it's closed
+                                            const details = el.closest("details");
+                                            if (details) details.open = true;
+                                          }
+                                          window.history.pushState(
+                                            null,
+                                            "",
+                                            `#${block.id}`
+                                          );
+                                        }}
+                                        className="block py-1 pl-3 text-[12px] text-[#787774]/80 hover:text-[#37352f] transition-colors border-l border-transparent hover:border-[#EAE9E9]"
+                                      >
+                                        {block.title}
+                                      </a>
+                                    ) : null
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   );
                 })}
               </div>

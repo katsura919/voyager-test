@@ -35,6 +35,11 @@ export function TopbarLinks() {
       active: false,
       disabled: true,
     },
+    {
+      label: "FAQs & Tips",
+      href: "/playbook/spain-dnv/faqs-and-tips",
+      active: pathname.includes("/faqs-and-tips"),
+    },
   ];
 
   return (

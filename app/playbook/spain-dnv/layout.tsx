@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { TopbarLinks } from "@/components/playbook/TopbarLinks";
 import { phases } from "./data";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function PlaybookLayout({
   children,
@@ -160,31 +161,43 @@ export default function PlaybookLayout({
                         </span>
                       </button>
 
-                      {isExpanded && (
-                        <div className="ml-4 pl-3 border-l-[2px] border-[#EAE9E9] space-y-0.5 mt-1 mb-2">
-                          {phase.lessons.map((lesson) => (
-                            <Link
-                              key={lesson.id}
-                              href={`/playbook/spain-dnv/lessons/lesson-${parseInt(lesson.number)}`}
-                              className={`flex items-center gap-2 px-2 py-1.5 rounded text-[13px] hover:text-[#37352f] hover:bg-[#f7f7f5] transition-colors ${
-                                pathname.includes(
-                                  `/lessons/lesson-${parseInt(lesson.number)}`,
-                                )
-                                  ? "bg-[#efefed] text-[#37352f] font-medium"
-                                  : "text-[#787774]"
-                              }`}
-                            >
-                              <span className="text-[11px] font-medium text-[#787774] w-5 flex-shrink-0">
-                                {lesson.number}
-                              </span>
-                              <span className="truncate">{lesson.title}</span>
-                              {!lesson.free && (
-                                <Lock className="w-3 h-3 text-[#c4c4c2] flex-shrink-0 ml-auto" />
-                              )}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="ml-4 pl-3 border-l-[2px] border-[#EAE9E9] space-y-0.5 mt-1 mb-2">
+                              {phase.lessons.map((lesson) => (
+                                <Link
+                                  key={lesson.id}
+                                  href={`/playbook/spain-dnv/lessons/lesson-${parseInt(lesson.number)}`}
+                                  className={`flex items-center gap-2 px-2 py-1.5 rounded text-[13px] hover:text-[#37352f] hover:bg-[#f7f7f5] transition-colors ${
+                                    pathname.includes(
+                                      `/lessons/lesson-${parseInt(lesson.number)}`,
+                                    )
+                                      ? "bg-[#efefed] text-[#37352f] font-medium"
+                                      : "text-[#787774]"
+                                  }`}
+                                >
+                                  <span className="text-[11px] font-medium text-[#787774] w-5 flex-shrink-0">
+                                    {lesson.number}
+                                  </span>
+                                  <span className="truncate">
+                                    {lesson.title}
+                                  </span>
+                                  {!lesson.free && (
+                                    <Lock className="w-3 h-3 text-[#c4c4c2] flex-shrink-0 ml-auto" />
+                                  )}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   );
                 })}
