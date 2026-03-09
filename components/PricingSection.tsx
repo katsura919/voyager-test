@@ -21,7 +21,8 @@ const pricingPlans = [
     cta: "Get the Playbook Pro",
     popular: false,
     color: "#bbcccd",
-    paymentLink: "https://buy.stripe.com/cNi9AMc6Sexk5Nf6trew803",
+    paymentLink: "https://buy.stripe.com/test_00w28keqb4c83b48tX9bO00",
+    playbookAccess: true,
   },
   {
     name: "The Guided Navigator",
@@ -214,6 +215,18 @@ export default function PricingSection() {
               >
                 {plan.cta}
               </a>
+
+              {/* Already purchased link — Playbook Pro only */}
+              {"playbookAccess" in plan && (
+                <div className="mt-3 text-center">
+                  <a
+                    href="/playbook"
+                    className="font-[family-name:var(--font-body)] text-xs text-[#aaaaaa] hover:text-[#e3a99c] transition-colors"
+                  >
+                    Already purchased? Access your Playbook →
+                  </a>
+                </div>
+              )}
 
 
             </div>
