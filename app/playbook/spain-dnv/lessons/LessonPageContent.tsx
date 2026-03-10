@@ -26,6 +26,7 @@ interface LessonPageProps {
   time: string;
   tag: string;
   free: boolean;
+  link?: string | null;
   phase: {
     phase: string;
     title: string;
@@ -45,6 +46,7 @@ export default function LessonPageContent({
   time,
   tag,
   free,
+  link,
   phase,
   prev,
   next,
@@ -159,6 +161,27 @@ export default function LessonPageContent({
               ))}
             </div>
           </div>
+
+          {/* Companion Guide */}
+          {link && (
+            <div className="mb-10 p-5 rounded-xl border border-[#EAE9E9] bg-[#f7f7f5] flex items-center justify-between gap-4">
+              <div>
+                <p className="text-[12px] text-[#787774] font-medium mb-0.5 uppercase tracking-wide">
+                  Companion Guide
+                </p>
+                <p className="text-[14px] text-[#37352f] font-semibold">
+                  Read the full guide for this lesson
+                </p>
+              </div>
+              <Link
+                href={link}
+                className="flex items-center gap-1.5 px-4 py-2 bg-[#37352f] text-white text-[13px] font-semibold rounded-lg hover:bg-[#4a4945] transition-colors flex-shrink-0"
+              >
+                Open Guide
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          )}
 
           {/* Mark Complete */}
           <div className="mb-12">

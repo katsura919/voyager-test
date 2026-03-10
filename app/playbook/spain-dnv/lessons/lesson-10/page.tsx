@@ -17,6 +17,7 @@ const data = {
   "time": "20 min",
   "tag": "Core Lesson",
   "free": false,
+  "link": "/how-to-apply-spain-digital-nomad-visa",
   "phase": {
     "phase": "Phase 2",
     "title": "Apply",

@@ -14,6 +14,7 @@ const data = {
   "time": "8 min",
   "tag": "Free Guide",
   "free": true,
+  "link": "/spain-bank-account-guide",
   "phase": {
     "phase": "Phase 3",
     "title": "Arrive",

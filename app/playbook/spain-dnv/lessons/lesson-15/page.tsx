@@ -14,6 +14,7 @@ const data = {
   "time": "10 min",
   "tag": "Free Guide",
   "free": true,
+  "link": "/nie-and-tie-guide",
   "phase": {
     "phase": "Phase 3",
     "title": "Arrive",

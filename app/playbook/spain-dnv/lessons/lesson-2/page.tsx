@@ -14,6 +14,7 @@ const data = {
   "time": "8 min",
   "tag": "Guide",
   "free": true,
+  "link": "/digital-nomad-visa",
   "phase": {
     "phase": "Phase 0",
     "title": "Qualify",

@@ -16,6 +16,7 @@ const data = {
   "time": "10 min",
   "tag": "Updated 2026",
   "free": false,
+  "link": "/dnv-updates-2026",
   "phase": {
     "phase": "Phase 2",
     "title": "Apply",

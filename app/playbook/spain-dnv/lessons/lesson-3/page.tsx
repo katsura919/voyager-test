@@ -14,6 +14,7 @@ const data = {
   "time": "10 min",
   "tag": "Checklist",
   "free": true,
+  "link": "/document-checklist",
   "phase": {
     "phase": "Phase 1",
     "title": "Prepare",

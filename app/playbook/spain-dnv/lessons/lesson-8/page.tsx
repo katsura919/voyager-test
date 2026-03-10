@@ -17,6 +17,7 @@ const data = {
   "time": "5 min",
   "tag": "Strategy + Tool",
   "free": false,
+  "link": "/schengen-calculator",
   "phase": {
     "phase": "Phase 1",
     "title": "Prepare",

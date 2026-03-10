@@ -14,6 +14,7 @@ const data = {
   "time": "8 min",
   "tag": "Pre-Requisite",
   "free": false,
+  "link": "/schengen-visa",
   "phase": {
     "phase": "Phase 1",
     "title": "Prepare",

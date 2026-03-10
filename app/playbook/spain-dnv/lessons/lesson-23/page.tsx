@@ -17,6 +17,7 @@ const data = {
   "time": "20 min",
   "tag": "Core Lesson",
   "free": false,
+  "link": "/road-to-spanish-citizenship",
   "phase": {
     "phase": "Phase 5",
     "title": "Become Spanish",

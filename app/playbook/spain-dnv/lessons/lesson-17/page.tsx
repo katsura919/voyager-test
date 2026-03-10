@@ -17,6 +17,7 @@ const data = {
   "time": "10 min",
   "tag": "Step-by-Step",
   "free": false,
+  "link": "/appointments",
   "phase": {
     "phase": "Phase 3",
     "title": "Arrive",

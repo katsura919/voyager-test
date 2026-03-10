@@ -16,6 +16,7 @@ const data = {
   "time": "8 min",
   "tag": "Guide",
   "free": false,
+  "link": "/translations",
   "phase": {
     "phase": "Phase 3",
     "title": "Arrive",
