@@ -120,7 +120,7 @@ export const guides: Guide[] = [
           {
             type: "callout",
             icon: "→",
-            text: "FUN FACT: Did you know that you can get a Schengen Visa from any country regardless if you're just a tourist?\n\nhttps://www.instagram.com/reel/DNuzDc_RAwj/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==\n\nYou just need to prove:\nYou're a long-term traveller (been out of your country for more than 6 months+)\nor..\nYou have an exceptional circumstance. Read more about it here.\n\nI did this twice in the USA and Bosnia via the Netherlands Embassy. Here's the proof.\n\nI love applying via the Netherlands as they have been really generous. I always get 90-days multiple entry even when I only requested for 2-weeks. I heard you can do this via France Embassy as well. But they tend to give you lesser days than Netherlands.",
+            text: "FUN FACT: Did you know that you can get a Schengen Visa from any country regardless if you're just a tourist?\n \nYou just need to prove:\nYou're a long-term traveller (been out of your country for more than 6 months+)\nor..\nYou have an exceptional circumstance. Read more about it here.\n\nI did this twice in the USA and Bosnia via the Netherlands Embassy. Here's the proof.\n\nI love applying via the Netherlands as they have been really generous. I always get 90-days multiple entry even when I only requested for 2-weeks. I heard you can do this via France Embassy as well. But they tend to give you lesser days than Netherlands.",
             bgClass: "bg-[#EDF3EC]",
             borderClass: "border-[#D1E2CD]",
           },
@@ -202,12 +202,6 @@ export const guides: Guide[] = [
             type: "intro",
             text: "To be honest, I wasn't completely sold on Spain on my first visit. I felt like exploring more of the EU before I commit. Im glad I did. I would not know Croatia and the Balkans the way I know now and appreciate its people.\n\nSo I was thinking, if I wanted a taste of EU without too much paperwork, taxes & bureaucracy, Croatia seems like a good amount of trial of the European life.. and so I did.\n\nI am sharing this just in case you want to test the EU waters first just like me.",
           },
-          {
-            type: "highlight",
-            items: [
-              "If you're interest about this visa, join the [Croatia's Digital Nomad Playbook waitlist](https://example.com).",
-            ],
-          },
         ],
       },
       {
@@ -249,14 +243,32 @@ export const guides: Guide[] = [
             type: "table",
             headers: ["Date", "What"],
             rows: [
-              ["Nov 13", "Arrived in Málaga, Spain (from Croatia)\n- Got Declaration of Entry\n- Granted NIE on the spot"],
-              ["Nov 14", "Paid for my NIE, and submitted the forms required, official NIE issued."],
-              ["Nov 20", "Digital Certificate issued, appointment to verify is required."],
+              [
+                "Nov 13",
+                "Arrived in Málaga, Spain (from Croatia)\n- Got Declaration of Entry\n- Granted NIE on the spot",
+              ],
+              [
+                "Nov 14",
+                "Paid for my NIE, and submitted the forms required, official NIE issued.",
+              ],
+              [
+                "Nov 20",
+                "Digital Certificate issued, appointment to verify is required.",
+              ],
               ["Nov 24", "Submitted my DNV application to the UGE"],
-              ["Dec 19", "Requerimiento received (additional requirement)\n- New DNV requirement implemented: self-employment proof"],
-              ["Dec 20", "Submitted DTI Certification\n- I quickly created one online!"],
+              [
+                "Dec 19",
+                "Requerimiento received (additional requirement)\n- New DNV requirement implemented: self-employment proof",
+              ],
+              [
+                "Dec 20",
+                "Submitted DTI Certification\n- I quickly created one online!",
+              ],
               ["Jan 8", "Approved: 3-year residency"],
-              ["Feb 3", "Scheduled TIE fingerprinting in Madrid without Padron!"],
+              [
+                "Feb 3",
+                "Scheduled TIE fingerprinting in Madrid without Padron!",
+              ],
               ["Feb 20", "TIE ready for pickup!"],
             ],
           },
@@ -360,9 +372,7 @@ export const guides: Guide[] = [
           {
             type: "highlight",
             label: "3. Apartment (at least 1 month)",
-            items: [
-              "You will need this address for all official forms.",
-            ],
+            items: ["You will need this address for all official forms."],
           },
           {
             type: "intro",
@@ -370,7 +380,7 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/submission_flow.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244060/Screenshot_2026-02-15_at_12.58.49_AM_ap5rbu.png",
             alt: "Submission Flow",
           },
         ],
@@ -528,7 +538,7 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2025-12-12 at 1.05.28 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244171/Screenshot_2025-12-12_at_1.05.28_AM_w0zlev.png",
             alt: "Folder Structure Screenshot",
             caption: "Spain DNV Documents Folder Structure",
           },
@@ -649,7 +659,7 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2026-02-15 at 12.58.49 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244308/Screenshot_2026-02-15_at_12.58.49_AM_1_fxgrh7.png",
             alt: "UGE Portal - Access Procedure",
           },
           {
@@ -658,7 +668,7 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2026-02-15 at 2.41.08 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244332/Screenshot_2026-02-15_at_2.41.08_AM_m1uwbg.png",
             alt: "UGE Portal - New Application",
           },
           {
@@ -667,7 +677,7 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2026-02-15 at 3.16.40 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244355/Screenshot_2026-02-15_at_3.16.40_AM_fy836b.png",
             alt: "UGE Portal - Form Detail",
           },
           {
@@ -676,7 +686,7 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2026-02-15 at 3.17.26 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244383/Screenshot_2026-02-15_at_3.17.26_AM_hfk9vm.png",
             alt: "UGE Portal - Upload Complete",
           },
         ],
@@ -752,14 +762,15 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2026-02-15 at 3.20.50 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244927/Screenshot_2026-02-15_at_3.20.50_AM_ueqsnn.png",
             alt: "Sede Electronica Notifications",
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2026-02-15 at 3.24.56 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773244996/Screenshot_2026-02-15_at_3.24.56_AM_sqf29d.png",
             alt: "Notification Detail",
-            caption: "Example of what notifications look like. The 3rd one here was the 'Resolucion', which contains the Approval letter!",
+            caption:
+              "Example of what notifications look like. The 3rd one here was the 'Resolucion', which contains the Approval letter!",
           },
           {
             type: "intro",
@@ -767,13 +778,10 @@ export const guides: Guide[] = [
           },
           {
             type: "image",
-            src: "/assets/Screenshot 2026-02-15 at 3.24.00 AM.png",
+            src: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773245021/Screenshot_2026-02-15_at_3.24.00_AM_nq1viy.png",
             alt: "Modify Application View",
-            caption: "As you can see, I had to submit several revisions before final approval.",
-          },
-          {
-            type: "intro",
-            text: "**Next:** Tips + Final Words",
+            caption:
+              "As you can see, I had to submit several revisions before final approval.",
           },
         ],
       },
