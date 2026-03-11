@@ -5,7 +5,8 @@ import { Check, Star, Zap, ArrowRight, ShieldCheck } from "lucide-react";
 const pricingPlans = [
   {
     name: "The Playbook Pro",
-    description: "The complete self-guided blueprint for independent applicants",
+    description:
+      "The complete self-guided blueprint for independent applicants",
     price: "79",
     originalPrice: "149",
     currency: "€",
@@ -21,12 +22,13 @@ const pricingPlans = [
     cta: "Get the Playbook Pro",
     popular: false,
     color: "#bbcccd",
-    paymentLink: "https://buy.stripe.com/test_00w28keqb4c83b48tX9bO00",
+    paymentLink: "https://buy.stripe.com/test_00w6oA4PB0ZWcLE7pT9bO01",
     playbookAccess: true,
   },
   {
     name: "The Guided Navigator",
-    description: "Expert strategy and review to ensure your application is bulletproof",
+    description:
+      "Expert strategy and review to ensure your application is bulletproof",
     price: "199",
     originalPrice: "350",
     currency: "€",
@@ -44,7 +46,8 @@ const pricingPlans = [
   },
   {
     name: "The VIP Concierge",
-    description: "Full done-for-you service from start to finish. Lawyers charge €2,000–€3,500 for this.",
+    description:
+      "Full done-for-you service from start to finish. Lawyers charge €2,000–€3,500 for this.",
     price: "599",
     originalPrice: "900",
     currency: "€",

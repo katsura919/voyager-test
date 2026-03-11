@@ -28,7 +28,6 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
 
         const email = session.customer_details?.email || session.customer_email;
-        const name = session.customer_details?.name || null;
         const sessionId = session.id;
 
         if (!email) {
@@ -36,11 +35,38 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ received: true });
         }
 
+        // Extract custom fields from the payment link form
+        // These are set as "Full Name" (key: full_name) and "Business Name" (key: business_name)
+        const customFields = session.custom_fields ?? [];
+
+        const getCustomField = (key: string): string | null => {
+            const field = customFields.find(
+                (f) => f.key.toLowerCase() === key.toLowerCase()
+            );
+            return field?.text?.value ?? null;
+        };
+
+        // Name: prefer custom field "Full Name", fall back to card holder name
+        const name =
+            getCustomField("fullname") ||
+            getCustomField("full_name") ||
+            session.customer_details?.name ||
+            null;
+
+        // Company: optional custom field "Business Name"
+        const company =
+            getCustomField("businessname") ||
+            getCustomField("business_name") ||
+            null;
+
+        console.log("📋 Custom fields:", JSON.stringify(customFields));
+        console.log(`👤 Name: ${name} | 🏢 Company: ${company}`);
+
         // Upsert user info
         const { data: purchaser, error: purchaserError } = await supabaseAdmin
             .from("playbook_purchasers")
             .upsert(
-                { email, name },
+                { email, name, company },
                 { onConflict: "email" }
             )
             .select("id")
