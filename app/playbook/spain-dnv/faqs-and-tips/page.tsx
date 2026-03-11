@@ -25,7 +25,7 @@ import Link from "next/link";
 
 export default function FaqsAndTipsPage() {
   return (
-    <div className="min-h-screen bg-[#FBFBFA]">
+    <div className="min-h-screen bg-none">
       
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Header */}

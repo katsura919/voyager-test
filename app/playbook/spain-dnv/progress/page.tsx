@@ -13,7 +13,7 @@ export default function ProgressPage() {
   const progressPercent = Math.round((completedCount / totalLessons) * 100);
 
   return (
-    <div className="flex w-full h-full bg-white text-[#37352f] font-sans">
+    <div className="flex w-full h-full bg-none text-[#37352f] font-sans">
       <div className="flex-1 px-[calc(min(64px,5vw))] lg:px-12 py-6">
         <div className="max-w-[840px] pl-0 lg:pl-10 mx-auto w-full pb-24">
           {/* Header */}
@@ -27,7 +27,7 @@ export default function ProgressPage() {
           </div>
 
           {/* Overall Progress Card */}
-          <div className="bg-[#F7F6F3] rounded-xl p-6 mb-8">
+          <div className="bg-white rounded-xl p-6 mb-8">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-semibold text-[#37352f]">
                 Overall Completion
@@ -81,7 +81,7 @@ export default function ProgressPage() {
                   className="border border-[#EAE9E9] rounded-xl overflow-hidden"
                 >
                   {/* Phase Header */}
-                  <div className="px-5 py-4 bg-[#FAFAFA]">
+                  <div className="px-5 py-4 bg-white">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span
@@ -113,7 +113,7 @@ export default function ProgressPage() {
                   </div>
 
                   {/* Lessons List */}
-                  <div className="divide-y divide-[#EAE9E9]">
+                  <div className="bg-white divide-y divide-[#EAE9E9]">
                     {phase.lessons.map((lesson) => {
                       const isDone = completedLessons[lesson.id] || false;
                       const lessonNum = parseInt(lesson.number);
