@@ -15,6 +15,7 @@ export interface Phase {
   phase: string;
   title: string;
   description: string;
+  milestone: string;
   accent: string;
   bg: string;
   lessons: Lesson[];
@@ -60,6 +61,7 @@ export const phases: Phase[] = [
     title: "Qualify",
     description:
       "Confirm you're eligible before you spend a minute on paperwork.",
+    milestone: "By the end: you know exactly which visa path is yours and whether you qualify today.",
     accent: "#8fa38d",
     bg: "#d4e0d3",
     lessons: [
@@ -106,6 +108,7 @@ export const phases: Phase[] = [
     phase: "Phase 1",
     title: "Prepare",
     description: "Build your application file before you touch the portal.",
+    milestone: "By the end: every document is gathered, apostilled, translated, and ready to upload.",
     accent: "#e3a99c",
     bg: "#f2d6c9",
     lessons: [
@@ -231,6 +234,7 @@ export const phases: Phase[] = [
     title: "Apply",
     description:
       "Submit a clean, complete application that doesn't come back with a requerimiento.",
+    milestone: "By the end: your application is submitted and you have a reference number from UGE.",
     accent: "#7a8f90",
     bg: "#e0eaeb",
     lessons: [
@@ -323,6 +327,7 @@ export const phases: Phase[] = [
     title: "Arrive",
     description:
       "Land in Spain and complete your legal setup within the correct windows.",
+    milestone: "By the end: you have your Padron, NIE, TIE appointment booked, and a Spanish bank account.",
     accent: "#8fa38d",
     bg: "#d4e0d3",
     lessons: [
@@ -446,6 +451,7 @@ export const phases: Phase[] = [
     title: "Maintain",
     description:
       "Keep your visa valid, your residency clean, and your taxes sorted.",
+    milestone: "By the end: renewal is filed, your tax strategy is set, and your residency clock is protected.",
     accent: "#e3a99c",
     bg: "#f2d6c9",
     lessons: [
@@ -519,6 +525,7 @@ export const phases: Phase[] = [
     phase: "Phase 5",
     title: "Become Spanish",
     description: "The endgame. EU passport. Schengen for life.",
+    milestone: "By the end: you know your exact citizenship date and have a clear path to your EU passport.",
     accent: "#c9a84c",
     bg: "#f5ecd7",
     lessons: [

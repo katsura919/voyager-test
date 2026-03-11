@@ -1,5 +1,10 @@
 {
   "enabledMcpjsonServers": [
     "supabase"
-  ]
+  ],
+  "permissions": {
+    "allow": [
+      "Bash(find '/d/ReactJS/TALENT-MUCHO-CLIENTS/HAPPY VOYAGER/happy-voyager-landing' -maxdepth 2 -name tailwind.config.* -o -name next.config.* -o -name package.json)"
+    ]
+  }
 }
