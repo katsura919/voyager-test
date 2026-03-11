@@ -35,31 +35,18 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ received: true });
         }
 
-        // Extract custom fields from the payment link form
-        // These are set as "Full Name" (key: full_name) and "Business Name" (key: business_name)
-        const customFields = session.custom_fields ?? [];
-
-        const getCustomField = (key: string): string | null => {
-            const field = customFields.find(
-                (f) => f.key.toLowerCase() === key.toLowerCase()
-            );
-            return field?.text?.value ?? null;
+        // Stripe's name_collection feature stores data in customer_details:
+        //   individual_name → the person's actual name (required)
+        //   business_name  → the company/business (optional)
+        // NOTE: customer_details.name is set to business_name by Stripe, so we avoid it.
+        const customerDetails = session.customer_details as Stripe.Checkout.Session.CustomerDetails & {
+            individual_name?: string | null;
+            business_name?: string | null;
         };
 
-        // Name: prefer custom field "Full Name", fall back to card holder name
-        const name =
-            getCustomField("fullname") ||
-            getCustomField("full_name") ||
-            session.customer_details?.name ||
-            null;
+        const name = customerDetails?.individual_name || null;
+        const company = customerDetails?.business_name || null;
 
-        // Company: optional custom field "Business Name"
-        const company =
-            getCustomField("businessname") ||
-            getCustomField("business_name") ||
-            null;
-
-        console.log("📋 Custom fields:", JSON.stringify(customFields));
         console.log(`👤 Name: ${name} | 🏢 Company: ${company}`);
 
         // Upsert user info
@@ -126,7 +113,7 @@ export async function POST(req: NextRequest) {
                             </li>
                           </ol>
                           <br/>
-                          <p style="color: #6b6b6b; font-size: 14px; line-height: 1.6;">Enjoy your journey!<br/>The Happy Voyager Team</p>
+                          <p style="color: #6b6b6b; font-size: 14px; line-height: 1.6;">Enjoy your journey!<br/>Abie Maxey</p>
                         </div>
                     `,
                 });
