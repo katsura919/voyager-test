@@ -32,7 +32,7 @@ export default function GuidesLayout({
   return (
     <div className="flex w-full items-start">
       {/* ─── Left Sidebar: Guide List ─── */}
-      <aside className="hidden md:flex w-[240px] flex-shrink-0 flex-col border-r border-[#EAE9E9] bg-white sticky top-[32px] max-h-[calc(100vh-140px)] overflow-y-auto w-[240px] z-10 relative">
+      <aside className="hidden md:flex w-[240px] flex-shrink-0 flex-col border-r border-[#EAE9E9] bg-none sticky top-[32px] max-h-[calc(100vh-140px)] overflow-y-auto w-[240px] z-10 relative">
         <div className="pt-2 pb-20">
           <div className="px-4 space-y-6">
             <div className="space-y-0.5">
@@ -65,7 +65,7 @@ export default function GuidesLayout({
                         onClick={() => handleGuideClick(guide.id)}
                         className={`flex items-center gap-2.5 w-full px-3 py-1.5 rounded-md text-left transition-colors group ${
                           isActive
-                            ? "bg-[#efefed] text-[#37352f] font-semibold"
+                            ? "bg-[#e3a99c] text-[#37352f] font-semibold"
                             : "text-[#787774] hover:bg-[#f7f7f5] hover:text-[#37352f] font-medium"
                         }`}
                       >
@@ -98,7 +98,7 @@ export default function GuidesLayout({
                                       window.history.pushState(
                                         null,
                                         "",
-                                        `#${section.id}`
+                                        `#${section.id}`,
                                       );
                                     }}
                                     className="block py-1 text-[13px] text-[#787774] hover:text-[#37352f] transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
@@ -114,27 +114,28 @@ export default function GuidesLayout({
                                         onClick={(e) => {
                                           e.preventDefault();
                                           const el = document.getElementById(
-                                            block.id!
+                                            block.id!,
                                           );
                                           if (el) {
                                             el.scrollIntoView({
                                               behavior: "smooth",
                                             });
                                             // Optional: Open the details tag if it's closed
-                                            const details = el.closest("details");
+                                            const details =
+                                              el.closest("details");
                                             if (details) details.open = true;
                                           }
                                           window.history.pushState(
                                             null,
                                             "",
-                                            `#${block.id}`
+                                            `#${block.id}`,
                                           );
                                         }}
                                         className="block py-1 pl-3 text-[12px] text-[#787774]/80 hover:text-[#37352f] transition-colors border-l border-transparent hover:border-[#EAE9E9]"
                                       >
                                         {block.title}
                                       </a>
-                                    ) : null
+                                    ) : null,
                                   )}
                                 </div>
                               ))}

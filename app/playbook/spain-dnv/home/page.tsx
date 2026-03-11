@@ -114,7 +114,7 @@ export default function PlaybookHome() {
             <div className="px-6 py-4 border-b border-[#e7ddd3] bg-white">
               <h3 className="text-[15px] font-semibold text-[#3a3a3a]">How long will this take?</h3>
             </div>
-            <div className="grid grid-cols-3 divide-x divide-[#e7ddd3] bg-[#f9f5f2]">
+            <div className="grid grid-cols-3 divide-x divide-[#e7ddd3] bg-white">
               {[
                 { label: "Read-only", time: "2–3 hours", note: "Just learning the path" },
                 { label: "Active research", time: "1–2 weeks", note: "Gathering documents" },

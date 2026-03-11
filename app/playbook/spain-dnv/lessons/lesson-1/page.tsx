@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useProgress } from "../../progress-context";
 import {
   ArrowRight,
   ArrowLeft,
@@ -420,36 +421,19 @@ const phase = {
 // ─── Page Component ───────────────────────────────────────────────────────────
 
 export default function Lesson1Page() {
+  const { completedLessonIds, markComplete } = useProgress();
+
   const [step, setStep] = useState(0); // 0 = intro, 1-6 = questions, 7 = result
   const [answers, setAnswers] = useState<Answers>({});
   const [selected, setSelected] = useState<string | null>(null);
-  const [completedLessons, setCompletedLessons] = useState<
-    Record<string, boolean>
-  >({});
 
   const totalSteps = questions.length;
   const currentQuestion = questions[step - 1];
   const isIntro = step === 0;
   const isResult = step === totalSteps + 1;
 
-  useEffect(() => {
-    const saved = localStorage.getItem("playbook_lesson_progress");
-    if (saved) {
-      try {
-        setCompletedLessons(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse lesson progress", e);
-      }
-    }
-  }, []);
-
   const toggleComplete = () => {
-    const updated = {
-      ...completedLessons,
-      l01: !completedLessons["l01"],
-    };
-    setCompletedLessons(updated);
-    localStorage.setItem("playbook_lesson_progress", JSON.stringify(updated));
+    markComplete("l01", !isDone);
   };
 
   const handleSelect = (optionId: string) => setSelected(optionId);
@@ -474,7 +458,7 @@ export default function Lesson1Page() {
   };
 
   const result = isResult ? calculateResult(answers) : null;
-  const isDone = completedLessons["l01"] || false;
+  const isDone = completedLessonIds.includes("l01");
 
   const StatusIcon = result
     ? result.status === "strong"

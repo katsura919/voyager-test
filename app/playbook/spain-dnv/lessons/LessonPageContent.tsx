@@ -9,7 +9,17 @@ import {
   ChevronRight,
   CheckCircle,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useProgress } from "../progress-context";
+import { phases } from "../data";
+
+// Build a lookup from lesson folder number → lesson id using data.ts as source of truth
+// e.g. lesson-9 → l08, lesson-8 → l07b
+const lessonFolderToId: Record<number, string> = {};
+phases.forEach((p) => {
+  p.lessons.forEach((l) => {
+    lessonFolderToId[parseInt(l.number)] = l.id;
+  });
+});
 
 interface LessonNav {
   number: string;
@@ -51,31 +61,24 @@ export default function LessonPageContent({
   prev,
   next,
 }: LessonPageProps) {
-  const [completedLessons, setCompletedLessons] = useState<
-    Record<string, boolean>
-  >({});
+  const { completedLessonIds, markComplete } = useProgress();
 
-  useEffect(() => {
-    const saved = localStorage.getItem("playbook_lesson_progress");
-    if (saved) {
-      try {
-        setCompletedLessons(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse lesson progress", e);
-      }
-    }
-  }, []);
+  const isDone = completedLessonIds.includes(lessonId);
+
+  // Derive prev lesson's id from its path (e.g. "/playbook/spain-dnv/lessons/lesson-9" → folder 9 → "l08")
+  const prevFolderNum = prev?.path ? parseInt(prev.path.split("/lesson-")[1]) : null;
+  const prevLessonId = prevFolderNum != null ? lessonFolderToId[prevFolderNum] : null;
+
+  // A lesson is locked if it's not the first one AND the previous lesson isn't completed
+  const isLocked =
+    number !== "01" &&
+    prevLessonId != null &&
+    !completedLessonIds.includes(prevLessonId);
 
   const toggleComplete = () => {
-    const updated = {
-      ...completedLessons,
-      [lessonId]: !completedLessons[lessonId],
-    };
-    setCompletedLessons(updated);
-    localStorage.setItem("playbook_lesson_progress", JSON.stringify(updated));
+    if (isLocked) return;
+    markComplete(lessonId, !isDone);
   };
-
-  const isDone = completedLessons[lessonId] || false;
 
   return (
     <div className="flex w-full h-full bg-white text-[#37352f] font-sans">
@@ -137,6 +140,25 @@ export default function LessonPageContent({
             </p>
           </div>
 
+          {/* Locked banner */}
+          {isLocked && prev && (
+            <div className="mb-8 p-5 rounded-xl border border-[#e7ddd3] bg-[#faf8f6] flex items-start gap-3">
+              <Lock className="w-4 h-4 text-[#b0a89e] flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-[14px] font-semibold text-[#3a3a3a] mb-1">
+                  Complete the previous lesson to unlock this one
+                </p>
+                <Link
+                  href={prev.path}
+                  className="text-[13px] font-semibold hover:underline"
+                  style={{ color: phase.accent }}
+                >
+                  Go to Lesson {prev.number}: {prev.title} →
+                </Link>
+              </div>
+            </div>
+          )}
+
           {/* Key Points */}
           <div className="mb-10">
             <h2 className="text-[20px] font-semibold text-[#37352f] mb-5">
@@ -187,8 +209,11 @@ export default function LessonPageContent({
           <div className="mb-12">
             <button
               onClick={toggleComplete}
+              disabled={isLocked}
               className={`flex items-center gap-3 px-5 py-3 rounded-lg border text-[14px] font-semibold transition-colors ${
-                isDone
+                isLocked
+                  ? "bg-[#f7f7f5] text-[#c4c4c2] border-[#EAE9E9] cursor-not-allowed opacity-60"
+                  : isDone
                   ? "bg-[#37352f] text-white border-[#37352f]"
                   : "bg-white text-[#37352f] border-[#EAE9E9] hover:bg-[#f7f7f5]"
               }`}

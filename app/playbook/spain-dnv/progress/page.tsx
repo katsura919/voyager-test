@@ -1,27 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { CheckCircle, Circle, Trophy, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { phases, totalLessons } from "../data";
+import { useProgress } from "../progress-context";
 
 export default function ProgressPage() {
-  const [completedLessons, setCompletedLessons] = useState<
-    Record<string, boolean>
-  >({});
+  const { completedLessonIds } = useProgress();
+  const completedLessons = Object.fromEntries(completedLessonIds.map((id) => [id, true]));
 
-  useEffect(() => {
-    const saved = localStorage.getItem("playbook_lesson_progress");
-    if (saved) {
-      try {
-        setCompletedLessons(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse lesson progress", e);
-      }
-    }
-  }, []);
-
-  const completedCount = Object.values(completedLessons).filter(Boolean).length;
+  const completedCount = completedLessonIds.length;
   const progressPercent = Math.round((completedCount / totalLessons) * 100);
 
   return (
