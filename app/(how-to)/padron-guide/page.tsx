@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, AlertCircle, BookOpen, MapPin } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertCircle, BookOpen, MapPin, CreditCard, Heart, GraduationCap, Landmark, FileText, Users, Home } from "lucide-react";
 
 export const metadata = {
   title: "How to Register on the Padrón in Spain: The 2026 Guide ~ Happy Voyager",
@@ -10,12 +10,12 @@ export const metadata = {
 };
 
 const useCases = [
-  { icon: "🪪", title: "TIE appointment", desc: "Required in most provinces before you can book your fingerprint appointment at the police station." },
-  { icon: "🏥", title: "Healthcare registration", desc: "Your Padrón certificate is required to register with your local Centro de Salud and get your Tarjeta Sanitaria." },
-  { icon: "🏫", title: "School enrollment", desc: "Children must be registered at the address nearest to the school they want to attend." },
-  { icon: "🏦", title: "Bank accounts", desc: "Some Spanish banks require a Padrón certificate when opening an account as a foreign resident." },
-  { icon: "📋", title: "DNV renewal", desc: "UGE requires a Padrón certificate (less than 3 months old) as part of your annual DNV renewal application." },
-  { icon: "🗳️", title: "Local services & benefits", desc: "Access to some municipal services, library cards, discounted gym memberships, and local subsidy programs." },
+  { icon: CreditCard, title: "TIE appointment", desc: "Required in most provinces before you can book your fingerprint appointment at the police station." },
+  { icon: Heart, title: "Healthcare registration", desc: "Your Padrón certificate is required to register with your local Centro de Salud and get your Tarjeta Sanitaria." },
+  { icon: GraduationCap, title: "School enrollment", desc: "Children must be registered at the address nearest to the school they want to attend." },
+  { icon: Landmark, title: "Bank accounts", desc: "Some Spanish banks require a Padrón certificate when opening an account as a foreign resident." },
+  { icon: FileText, title: "DNV renewal", desc: "UGE requires a Padrón certificate (less than 3 months old) as part of your annual DNV renewal application." },
+  { icon: Users, title: "Local services & benefits", desc: "Access to some municipal services, library cards, discounted gym memberships, and local subsidy programs." },
 ];
 
 const documents = [
@@ -60,7 +60,7 @@ export default function PadronGuidePage() {
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-wrap gap-2 mb-5">
             <span className="text-[10px] font-bold tracking-widest uppercase bg-[#d4e0d3]/20 text-[#8fa38d] border border-[#8fa38d]/30 px-3 py-1.5 rounded-full">
-              🏠 Settling In Spain
+              <Home className="w-3 h-3 inline mr-1" />Settling In Spain
             </span>
             <span className="text-[10px] font-bold tracking-widest uppercase bg-white/10 text-white/60 px-3 py-1.5 rounded-full">
               Updated 2026
@@ -116,7 +116,7 @@ export default function PadronGuidePage() {
           {useCases.map((uc) => (
             <div key={uc.title} className="bg-white border border-[#e7ddd3] rounded-2xl p-5">
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-xl">{uc.icon}</span>
+                <uc.icon className="w-4 h-4 text-[#8fa38d] flex-shrink-0" />
                 <h3 className="font-semibold text-sm text-[#3a3a3a]">{uc.title}</h3>
               </div>
               <p className="text-xs text-[#6b6b6b] leading-relaxed">{uc.desc}</p>

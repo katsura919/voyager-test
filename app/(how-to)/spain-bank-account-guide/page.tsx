@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, AlertCircle, BookOpen } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertCircle, BookOpen, Landmark, Building2, Circle } from "lucide-react";
 
 export const metadata = {
   title: "Opening a Bank Account in Spain as an Expat (2026 Guide) ~ Happy Voyager",
@@ -12,7 +12,7 @@ export const metadata = {
 const banks = [
   {
     name: "Sabadell",
-    emoji: "🏦",
+    icon: Landmark,
     verdict: "Most foreigner-friendly",
     pros: ["English-speaking staff in many branches", "Accepts non-residents with NIE", "Good app and online banking", "English online portal available"],
     cons: ["Monthly maintenance fee if balance falls below threshold", "Some branches not helpful ~ visit a larger branch"],
@@ -22,7 +22,7 @@ const banks = [
   },
   {
     name: "BBVA",
-    emoji: "🏛️",
+    icon: Building2,
     verdict: "Best mobile app",
     pros: ["Excellent BBVA app rated consistently highly", "No fees with minimum balance", "Wide ATM network", "Online account opening possible in some cases"],
     cons: ["English support hit-or-miss at branches", "Stricter on proof of income documentation"],
@@ -32,7 +32,7 @@ const banks = [
   },
   {
     name: "CaixaBank",
-    emoji: "🔵",
+    icon: Circle,
     verdict: "Largest network",
     pros: ["Biggest branch and ATM network in Spain", "ImaginBank (digital arm) for younger clients", "Partnership with Correos ~ great rural access"],
     cons: ["Customer service quality varies significantly by branch", "High fees if you don't meet minimum balance requirements"],
@@ -88,7 +88,7 @@ export default function SpainBankAccountGuidePage() {
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-wrap gap-2 mb-5">
             <span className="text-[10px] font-bold tracking-widest uppercase bg-[#dde8f5]/20 text-[#6b8cba] border border-[#6b8cba]/30 px-3 py-1.5 rounded-full">
-              🏦 Banking in Spain
+              <Landmark className="w-3 h-3 inline mr-1" />Banking in Spain
             </span>
             <span className="text-[10px] font-bold tracking-widest uppercase bg-white/10 text-white/60 px-3 py-1.5 rounded-full">
               Updated 2026
@@ -156,7 +156,7 @@ export default function SpainBankAccountGuidePage() {
               <div className="px-6 pt-5 pb-4 flex items-start justify-between gap-4" style={{ backgroundColor: bank.bg }}>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-2xl">{bank.emoji}</span>
+                    <bank.icon className="w-5 h-5" style={{ color: bank.accent }} />
                     <h3 className="font-[family-name:var(--font-heading)] text-lg font-bold text-[#3a3a3a]">{bank.name}</h3>
                   </div>
                   <p className="text-xs font-semibold" style={{ color: bank.accent }}>{bank.verdict}</p>
