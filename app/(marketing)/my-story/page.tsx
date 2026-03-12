@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ArrowRight, Globe, MapPin, Plane, Calendar, CheckCircle2, Heart, Zap, Instagram, AtSign, Linkedin, Youtube, Facebook, Mail, Briefcase, RefreshCw, AlertTriangle, FileText, User, Loader2 } from "lucide-react";
+import { IconBuilding, IconWorld, IconDeviceLaptop, IconFlag } from "@tabler/icons-react";
 import Link from "next/link";
 import BookCallButton from "@/components/BookCallButton";
 
@@ -418,9 +419,15 @@ export default function MyStoryPage() {
               I&apos;ve done the impossible. Now I&apos;m here to help others do the same.
             </p>
             <div className="flex flex-wrap gap-3">
-              {["🏙️ Living in Spain", "🌍 27+ countries", "💻 Fully remote", "🇵🇭 Global South, proud"].map((tag) => (
-                <span key={tag} className="px-4 py-2 rounded-full bg-[#f9f5f2] border border-[#e7ddd3] text-sm font-medium text-[#3a3a3a]">
-                  {tag}
+              {[
+                { icon: IconBuilding, label: "Living in Spain" },
+                { icon: IconWorld, label: "27+ countries" },
+                { icon: IconDeviceLaptop, label: "Fully remote" },
+                { icon: IconFlag, label: "Global South, proud" },
+              ].map(({ icon: Icon, label }) => (
+                <span key={label} className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f9f5f2] border border-[#e7ddd3] text-sm font-medium text-[#3a3a3a]">
+                  <Icon size={14} stroke={1.5} />
+                  {label}
                 </span>
               ))}
             </div>

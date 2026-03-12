@@ -71,22 +71,63 @@ export default function PlaybookCatalogPage() {
                     href={`/playbook/${playbook.slug}`}
                     className="group bg-white border border-[#e7ddd3] rounded-3xl overflow-hidden hover:border-[#e3a99c] hover:shadow-lg transition-all duration-300"
                   >
-                    <div className="px-6 pt-6 pb-4" style={{ backgroundColor: playbook.catalog.bg }}>
-                      <div className="flex items-start justify-between gap-3 mb-3">
-                        <span className="text-4xl">{playbook.catalog.emoji}</span>
-                        <span
-                          className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full text-white"
-                          style={{ backgroundColor: playbook.catalog.accent }}
-                        >
-                          Available
-                        </span>
+                    {/* Card header — cover image or colored bg */}
+                    {playbook.catalog.coverImage ? (
+                      <div className="relative">
+                        <img
+                          src={playbook.catalog.coverImage}
+                          alt={playbook.heroTitle}
+                          className="w-full h-44 object-cover"
+                        />
+                        <div className="absolute top-3 right-3 flex gap-1.5">
+                          {playbook.catalog.hasAiGuide && (
+                            <span className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-[#3a3a3a]/80 text-white backdrop-blur-sm">
+                              ✦ AI Guide
+                            </span>
+                          )}
+                          <span
+                            className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full text-white"
+                            style={{ backgroundColor: playbook.catalog.accent }}
+                          >
+                            Available
+                          </span>
+                        </div>
                       </div>
-                      <h2 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[#3a3a3a] mb-1">
-                        {playbook.heroTitle}
-                      </h2>
-                      <p className="text-sm text-[#6b6b6b]">{playbook.catalog.tagline}</p>
-                    </div>
+                    ) : (
+                      <div className="px-6 pt-6 pb-4" style={{ backgroundColor: playbook.catalog.bg }}>
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <span className="text-4xl">{playbook.catalog.emoji}</span>
+                          <div className="flex gap-1.5">
+                            {playbook.catalog.hasAiGuide && (
+                              <span className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-[#3a3a3a] text-white">
+                                ✦ AI Guide
+                              </span>
+                            )}
+                            <span
+                              className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full text-white"
+                              style={{ backgroundColor: playbook.catalog.accent }}
+                            >
+                              Available
+                            </span>
+                          </div>
+                        </div>
+                        <h2 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[#3a3a3a] mb-1">
+                          {playbook.heroTitle}
+                        </h2>
+                        <p className="text-sm text-[#6b6b6b]">{playbook.catalog.tagline}</p>
+                      </div>
+                    )}
+
                     <div className="px-6 py-5">
+                      {/* Title + tagline shown below image (only when coverImage is set) */}
+                      {playbook.catalog.coverImage && (
+                        <div className="mb-3">
+                          <h2 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[#3a3a3a] mb-0.5">
+                            {playbook.heroTitle}
+                          </h2>
+                          <p className="text-sm text-[#6b6b6b]">{playbook.catalog.tagline}</p>
+                        </div>
+                      )}
                       <p className="text-sm text-[#6b6b6b] leading-relaxed mb-4">
                         {playbook.catalog.description}
                       </p>

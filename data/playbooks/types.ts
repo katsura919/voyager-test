@@ -34,6 +34,8 @@ export interface PlaybookCatalogMeta {
   status: "available" | "waitlist" | "coming-soon";
   accent: string;            // accent color for catalog card
   bg: string;                // bg color for catalog card header chip
+  coverImage?: string;       // optional cover image URL for catalog card
+  hasAiGuide?: boolean;      // show "AI Guide" badge on catalog card
 }
 
 export interface NextPlaybookPreview {

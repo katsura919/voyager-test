@@ -27,6 +27,8 @@ const spainDnv: PlaybookConfig = {
     status: "available",
     accent: "#e3a99c",
     bg: "#f2d6c9",
+    coverImage: "https://res.cloudinary.com/dg1i3ew9w/image/upload/v1773164761/AbieMaxey_s_Website_Spain_Digital_hoaw2f.png",
+    hasAiGuide: true,
   },
   nextPlaybook: {
     slug: "soft-landing",
